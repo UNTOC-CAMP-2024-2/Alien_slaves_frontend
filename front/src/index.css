@@ -4,4 +4,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
   }
-  
+
+/* index.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 모든 스크롤을 숨김 */
+  height: 100%; /* 페이지 높이 설정 */
+  box-sizing: border-box;
+}

@@ -8,7 +8,7 @@ function Navbar({ setCurrentPage }) {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '10px 20px',
+      padding: '20px 150px',
       backgroundColor: '#1a1a1a',
       color: '#fff',
     },
@@ -17,7 +17,7 @@ function Navbar({ setCurrentPage }) {
       alignItems: 'center',
     },
     logoImage: {
-      width: '30px',
+      width: '50px',
       marginRight: '10px',
     },
     title: {
@@ -30,7 +30,7 @@ function Navbar({ setCurrentPage }) {
     bottomNav: {
       display: 'flex',
       justifyContent: 'space-around',
-      padding: '10px 0',
+      padding: '25px 0',
       position: 'fixed',
       bottom: 0,
       width: '100%',
@@ -42,7 +42,7 @@ function Navbar({ setCurrentPage }) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '0.8rem',
+      fontSize: '1.0rem',
       cursor: 'pointer',
     },
   };
