@@ -22,7 +22,7 @@ function App() {
 function ImageSection() {
   return (
     <div style={styles.imageSection}>
-      <img src="웅비관 밥 사진.jpg" alt="웅비관 밥 사진.jpg" style={styles.image} />
+      <img src="/assets/웅비관 밥 사진.jpg" alt="웅비관 밥 사진.jpg" style={styles.image} />
     </div>
   );
 }
@@ -32,7 +32,7 @@ function InfoSection({ menuItems, ratings }) {
     <div style={styles.infoSection}>
       <div style={styles.dormitoryTitle}>기숙사</div>
       <div style={styles.menuTabs}>
-        <span>자유관</span> <span>진리관</span> <span>올비관</span>
+        <span>자유관</span> <span>진리관</span> <span>웅비관</span>
       </div>
       <div style={styles.mealTime}>
         <span>아침</span> <span>점심</span> <span>저녁</span>
