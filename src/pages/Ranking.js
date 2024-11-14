@@ -1,6 +1,7 @@
+// src/pages/Home.js
 import React from 'react';
 
-function Home() {
+function Ranking() {
   const styles = {
     container: {
       backgroundColor: '#000',
@@ -102,7 +103,7 @@ function Home() {
           <img src={`${process.env.PUBLIC_URL}/assets/진리관 사진.jpg`} alt="진리관" style={styles.dormImage} />
           <p style={styles.dormName}>진리관</p>
           <div style={styles.bar}>
-            <img src={`${process.env.PUBLIC_URL}/assets/2등.png`} alt="silver Trophy" style={styles.trophyImage} />
+            {/* <img src={`${process.env.PUBLIC_URL}/assets/2등.png`} alt="Silver Trophy" style={styles.trophyImage} /> */}
             <p style={styles.ratingText}>4.2 Rating</p>
           </div>
         </div>
@@ -110,15 +111,15 @@ function Home() {
           <img src={`${process.env.PUBLIC_URL}/assets/웅비관 사진.jpg`} alt="웅비관" style={styles.dormImage} />
           <p style={styles.dormName}>웅비관</p>
           <div style={styles.bar}>
-            <img src={`${process.env.PUBLIC_URL}/assets/1등.png`} alt="Gold Trophy" style={styles.trophyImage} />
+            {/* <img src={`${process.env.PUBLIC_URL}/assets/1등.png`} alt="Gold Trophy" style={styles.trophyImage} /> */}
             <p style={styles.ratingText}>4.7 Rating</p>
           </div>
         </div>
         <div style={styles.dormRating}>
-        <img src={`${process.env.PUBLIC_URL}/assets/자유관 사진.jpg`} alt="자유관" style={styles.dormImage} />
-        <p style={styles.dormName}>자유관</p>
+          <img src={`${process.env.PUBLIC_URL}/assets/자유관 사진.jpg`} alt="자유관" style={styles.dormImage} />
+          <p style={styles.dormName}>자유관</p>
           <div style={styles.bar}>
-            <img src={`${process.env.PUBLIC_URL}/assets/3등.png`} alt="bronze Trophy" style={styles.trophyImage} />
+            {/* <img src={`${process.env.PUBLIC_URL}/assets/3등.png`} alt="Bronze Trophy" style={styles.trophyImage} /> */}
             <p style={styles.ratingText}>3.7 Rating</p>
           </div>
         </div>
@@ -127,4 +128,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Ranking;

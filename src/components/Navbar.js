@@ -67,19 +67,15 @@ function Navbar() {
       <div style={styles.bottomNav}>
         <div style={styles.bottomButton} onClick={() => navigate('/home')}>
           <FaHome />
-          <span>홈</span>
         </div>
         <div style={styles.bottomButton} onClick={() => navigate('/review')}>
           <FaListAlt />
-          <span>평가</span>
         </div>
         <div style={styles.bottomButton} onClick={() => navigate('/ranking')}>
           <FaTrophy />
-          <span>랭킹 및 후기</span>
         </div>
         <div style={styles.bottomButton} onClick={() => navigate('/all')}>
           <FaBars />
-          <span>전체</span>
         </div>
       </div>
     </>
