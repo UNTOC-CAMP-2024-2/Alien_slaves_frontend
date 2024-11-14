@@ -1,16 +1,21 @@
 // src/components/Navbar.js
 import React from 'react';
 import { FaHome, FaListAlt, FaTrophy, FaBars, FaBell } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar({ setCurrentPage }) {
+function Navbar() {
+  const navigate = useNavigate();
+
   const styles = {
     navbar: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '20px 150px',
+      padding: '20px',
       backgroundColor: '#1a1a1a',
       color: '#fff',
+      width: '390px',
+      boxSizing: 'border-box',
     },
     logoContainer: {
       display: 'flex',
@@ -30,10 +35,10 @@ function Navbar({ setCurrentPage }) {
     bottomNav: {
       display: 'flex',
       justifyContent: 'space-around',
-      padding: '25px 0',
-      position: 'fixed',
+      padding: '15px 0',
+      position: 'absolute',
       bottom: 0,
-      width: '100%',
+      width: '390px',
       backgroundColor: '#1a1a1a',
       color: '#fff',
       borderTop: '1px solid #333',
@@ -60,19 +65,19 @@ function Navbar({ setCurrentPage }) {
 
       {/* 하단 탭 네비게이션 */}
       <div style={styles.bottomNav}>
-        <div style={styles.bottomButton} onClick={() => setCurrentPage('Home')}>
+        <div style={styles.bottomButton} onClick={() => navigate('/home')}>
           <FaHome />
           <span>홈</span>
         </div>
-        <div style={styles.bottomButton} onClick={() => setCurrentPage('Review')}>
+        <div style={styles.bottomButton} onClick={() => navigate('/review')}>
           <FaListAlt />
           <span>평가</span>
         </div>
-        <div style={styles.bottomButton} onClick={() => setCurrentPage('Ranking')}>
+        <div style={styles.bottomButton} onClick={() => navigate('/ranking')}>
           <FaTrophy />
           <span>랭킹 및 후기</span>
         </div>
-        <div style={styles.bottomButton} onClick={() => setCurrentPage('All')}>
+        <div style={styles.bottomButton} onClick={() => navigate('/all')}>
           <FaBars />
           <span>전체</span>
         </div>
