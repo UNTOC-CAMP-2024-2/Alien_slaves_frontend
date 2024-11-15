@@ -18,11 +18,13 @@ function Navbar() {
       boxSizing: 'border-box',
     },
     logoContainer: {
+      margin: '5px 0px',
       display: 'flex',
       alignItems: 'center',
     },
     logoImage: {
-      width: '50px',
+      width: '30px',
+      hiehgt: 'auto',
       marginRight: '10px',
     },
     title: {
@@ -38,7 +40,7 @@ function Navbar() {
       justifyContent: 'space-around',
       padding: '15px 0',
       position: 'absolute',
-      height: '50px',
+      height: '40px',
       bottom: 0,
       width: '100%',
       backgroundColor: '#1a1a1a',
