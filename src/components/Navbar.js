@@ -31,6 +31,7 @@ function Navbar() {
     },
     icon: {
       fontSize: '1.2rem',
+      margin: '0px 20px 0px 0px'
     },
     bottomNav: {
       display: 'flex',
@@ -45,10 +46,11 @@ function Navbar() {
       borderTop: '1px solid #333',
     },
     bottomButton: {
+      margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '1.0rem',
+      fontSize: '1.3rem',
       cursor: 'pointer',
     },
   };
