@@ -1,6 +1,7 @@
 // src/App.js
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import Header from './components/Header'; // Header 가져오기
 import Navbar from './components/Navbar';
 import FirstPage from './pages/FirstPage';
 import InputInformation from './pages/Input_information';
@@ -15,6 +16,8 @@ function App() {
   return (
     <div id="app-container">
       <Router>
+        {/* Header와 Navbar 조건부 렌더링 */}
+        <ConditionalHeader />
         <Routes>
           {/* 기본 경로에서 항상 FirstPage를 로드하고, AutoRedirectFirstPage에서 3초 후 이동 */}
           <Route path="/" element={<AutoRedirectFirstPage />} />
@@ -30,6 +33,16 @@ function App() {
       </Router>
     </div>
   );
+}
+
+function ConditionalHeader() {
+  const location = useLocation();
+  const headerVisibleRoutes = ['/home', '/review', '/ranking', '/all'];
+  if (headerVisibleRoutes.includes(location.pathname)) {
+    return <Header />;
+  }
+
+  return null;
 }
 
 function AutoRedirectFirstPage() {
@@ -57,10 +70,9 @@ function DormSelectWrapper() {
 }
 
 function PageWithNavbar({ component }) {
-  const navigate = useNavigate();
   return (
     <>
-      <Navbar setCurrentPage={(page) => navigate(`/${page.toLowerCase()}`)} />
+      <Navbar />
       {component}
     </>
   );
