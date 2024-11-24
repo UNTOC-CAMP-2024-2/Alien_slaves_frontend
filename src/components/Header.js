@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaBell } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // useNavigate 가져오기
 
 function Header() {
+  const navigate = useNavigate(); // 네비게이트 함수 생성
+
   const styles = {
     header: {
       display: 'flex',
@@ -27,9 +30,13 @@ function Header() {
       fontSize: '1.2rem',
       fontWeight: 'bold',
     },
-    icon: {
-      fontSize: '1.2rem',
-      margin: '0px 20px 0px 0px',
+    iconButton: {
+      background: 'none', // 배경 제거
+      border: 'none', // 테두리 제거
+      color: '#fff',
+      fontSize: '1.5rem',
+      cursor: 'pointer',
+      padding: '5px',
     },
   };
 
@@ -43,7 +50,13 @@ function Header() {
         />
         <span style={styles.title}>BUGIK</span>
       </div>
-      <FaBell style={styles.icon} />
+      {/* FaBell 아이콘을 버튼으로 변경 */}
+      <button
+        style={styles.iconButton}
+        onClick={() => navigate('/notice')} // 클릭 시 /notice로 이동
+      >
+        <FaBell />
+      </button>
     </nav>
   );
 }

@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaHome, FaListAlt, FaTrophy, FaBars } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const [iconColors, setIconColors] = useState({
+    home: '#fff',
+    review: '#fff',
+    ranking: '#fff',
+    all: '#fff',
+  });
+
+  const handleMouseEnter = (icon) => {
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#999999' }));
+  };
+
+  const handleMouseLeave = (icon) => {
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#fff' }));
+  };
 
   const styles = {
     bottomNav: {
@@ -29,26 +44,40 @@ function Navbar() {
   };
 
   return (
-    <>
-      {/* 상단 네비게이션 바 */}
-      {/* <Header /> */}
-
-      {/* 하단 탭 네비게이션 */}
-      <div style={styles.bottomNav}>
-        <div style={styles.bottomButton} onClick={() => navigate('/home')}>
-          <FaHome />
-        </div>
-        <div style={styles.bottomButton} onClick={() => navigate('/review')}>
-          <FaListAlt />
-        </div>
-        <div style={styles.bottomButton} onClick={() => navigate('/ranking')}>
-          <FaTrophy />
-        </div>
-        <div style={styles.bottomButton} onClick={() => navigate('/all')}>
-          <FaBars />
-        </div>
+    <div style={styles.bottomNav}>
+      <div
+        style={styles.bottomButton}
+        onMouseEnter={() => handleMouseEnter('home')}
+        onMouseLeave={() => handleMouseLeave('home')}
+        onClick={() => navigate('/home')}
+      >
+        <FaHome color={iconColors.home} />
       </div>
-    </>
+      <div
+        style={styles.bottomButton}
+        onMouseEnter={() => handleMouseEnter('review')}
+        onMouseLeave={() => handleMouseLeave('review')}
+        onClick={() => navigate('/review')}
+      >
+        <FaListAlt color={iconColors.review} />
+      </div>
+      <div
+        style={styles.bottomButton}
+        onMouseEnter={() => handleMouseEnter('ranking')}
+        onMouseLeave={() => handleMouseLeave('ranking')}
+        onClick={() => navigate('/ranking')}
+      >
+        <FaTrophy color={iconColors.ranking} />
+      </div>
+      <div
+        style={styles.bottomButton}
+        onMouseEnter={() => handleMouseEnter('all')}
+        onMouseLeave={() => handleMouseLeave('all')}
+        onClick={() => navigate('/all')}
+      >
+        <FaBars color={iconColors.all} />
+      </div>
+    </div>
   );
 }
 

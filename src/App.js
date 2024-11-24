@@ -1,8 +1,7 @@
-// src/App.js
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
-import Notice from './components/Notice';
+import Noticebar from './components/Noticebar';
 import Navbar from './components/Navbar';
 import FirstPage from './pages/FirstPage';
 import InputInformation from './pages/Input_information';
@@ -11,14 +10,15 @@ import Home from './pages/Home';
 import Review from './pages/Review';
 import Ranking from './pages/Ranking';
 import All from './pages/All';
+import Notice from './pages/Notice';
 import './index.css';
 
 function App() {
   return (
     <div id="app-container">
       <Router>
-        {/* Header, Notice 조건부 렌더링 */}
-        <ConditionalHeaderAndNotice />
+        {/* Header, Noticebar, Navbar 조건부 렌더링 */}
+        <ConditionalLayout />
         <Routes>
           <Route path="/" element={<AutoRedirectFirstPage />} />
           <Route path="/input" element={<InputInformationWrapper />} />
@@ -27,6 +27,7 @@ function App() {
           <Route path="/review" element={<PageWithNavbar component={<Review />} />} />
           <Route path="/ranking" element={<PageWithNavbar component={<Ranking />} />} />
           <Route path="/all" element={<PageWithNavbar component={<All />} />} />
+          <Route path="/notice" element={<PageWithNavbar component={<Notice />} />} />
           <Route path="*" element={<AutoRedirectFirstPage />} />
         </Routes>
       </Router>
@@ -34,18 +35,26 @@ function App() {
   );
 }
 
-function ConditionalHeaderAndNotice() {
+function ConditionalLayout() {
   const location = useLocation();
 
-  const headerVisibleRoutes = ['/home', '/review', '/ranking', '/all'];
-  const noticeVisibleRoutes = ['/home', '/review', '/ranking'];
+  // Header, Noticebar, Navbar가 표시될 경로 정의
+  const headerVisibleRoutes = ['/home', '/review', '/ranking', '/all', '/notice'];
+  const noticebarVisibleRoutes = ['/home', '/review', '/ranking'];
+  const navbarVisibleRoutes = ['/home', '/review', '/ranking', '/all', '/notice'];
 
-  const noticeMessage = '공지사항공지사항공지사항공지사항공지사항.';
+  const noticebarMessage = '공지사항공지사항공지사항공지사항공지사항.';
 
   return (
     <>
+      {/* 조건부 Header */}
       {headerVisibleRoutes.includes(location.pathname) && <Header />}
-      {noticeVisibleRoutes.includes(location.pathname) && <Notice message={noticeMessage} />}
+
+      {/* 조건부 Noticebar */}
+      {noticebarVisibleRoutes.includes(location.pathname) && <Noticebar message={noticebarMessage} />}
+
+      {/* 조건부 Navbar */}
+      {navbarVisibleRoutes.includes(location.pathname) && <Navbar />}
     </>
   );
 }

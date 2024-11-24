@@ -1,7 +1,7 @@
 // src/components/Notice.js
 import React from 'react';
 
-function Notice({ message }) {
+function Noticebar({ message }) {
   const styles = {
     noticeContainer: {
       display: 'flex',
@@ -29,4 +29,4 @@ function Notice({ message }) {
   );
 }
 
-export default Notice;
+export default Noticebar;
