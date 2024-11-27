@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaBell } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; // useNavigate 가져오기
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
   const navigate = useNavigate(); // 네비게이트 함수 생성
+
+  // 아이콘 색상을 상태로 관리
+  const [iconColors, setIconColors] = useState({
+    bell: '#fff', // 알림 아이콘 색상
+  });
+
+  // 마우스를 올렸을 때 아이콘 색상 변경
+  const handleMouseEnter = (icon) => {
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#999999' }));
+  };
+
+  // 마우스를 떼었을 때 아이콘 색상 원래대로
+  const handleMouseLeave = (icon) => {
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#fff' }));
+  };
 
   const styles = {
     header: {
@@ -31,12 +46,13 @@ function Header() {
       fontWeight: 'bold',
     },
     iconButton: {
-      background: 'none', // 배경 제거
-      border: 'none', // 테두리 제거
+      background: 'none',
+      border: 'none',
       color: '#fff',
       fontSize: '1.5rem',
       cursor: 'pointer',
       padding: '5px',
+      transition: 'background-color 0.3s ease', // 부드러운 배경색 전환 효과 추가
     },
   };
 
@@ -44,18 +60,19 @@ function Header() {
     <nav style={styles.header}>
       <div style={styles.logoContainer}>
         <img
-          src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`}
+          src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`} // 로고 이미지 경로 확인 필요
           alt="Rice Bowl Icon"
           style={styles.logoImage}
         />
         <span style={styles.title}>BUGIK</span>
       </div>
-      {/* FaBell 아이콘을 버튼으로 변경 */}
       <button
         style={styles.iconButton}
-        onClick={() => navigate('/notice')} // 클릭 시 /notice로 이동
+        onClick={() => navigate('/notice')}
+        onMouseEnter={() => handleMouseEnter('bell')}
+        onMouseLeave={() => handleMouseLeave('bell')}
       >
-        <FaBell />
+        <FaBell color={iconColors.bell} />
       </button>
     </nav>
   );
