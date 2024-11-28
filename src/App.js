@@ -33,6 +33,9 @@ function App() {
       </Router>
     </div>
   );
+
+  
+
 }
 
 function ConditionalLayout() {
@@ -90,5 +93,8 @@ function PageWithNavbar({ component }) {
     </>
   );
 }
+
+
+
 
 export default App;

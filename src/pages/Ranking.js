@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React from 'react';
 
 function Ranking() {
@@ -33,8 +32,10 @@ function Ranking() {
     },
     mealImage: {
       width: '90%',
+      height: '200px', // 고정된 높이 추가
       border: '2px solid #00aaff',
       borderRadius: '8px',
+      objectFit: 'cover', // 이미지 비율 유지
     },
     ratings: {
       display: 'flex',
@@ -95,7 +96,7 @@ function Ranking() {
       <div style={styles.mealInfo}>
         <p style={{ fontWeight: 'bold' }}>2024/10/26 웅비관 저녁</p>
         <div style={styles.mealImageContainer}>
-          <img src={`${process.env.PUBLIC_URL}/assets/웅비관 밥 사진.jpg`} alt="Meal" style={styles.mealImage} />
+          <img src={`${process.env.PUBLIC_URL}/assets/진리관점심밥.jpg`} alt="Meal" style={styles.mealImage} />
         </div>
       </div>
       <div style={styles.ratings}>
