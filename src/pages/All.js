@@ -17,14 +17,15 @@ function All() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: 0,
+      margin: '50px 0',
       overflow: 'hidden',
       color: '#ffffff',
     },
     title: {
-      fontSize: '1.5rem',
+      fontSize: '2rem',
       fontWeight: 'bold',
       marginBottom: '20px',
+      marginTop: '40px'
     },
     button: {
       backgroundColor: '#ffffff',
@@ -36,14 +37,14 @@ function All() {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      fontSize: '1rem',
+      fontSize: '1.3rem',
       cursor: 'pointer',
       textAlign: 'center',
       transition: 'background-color 0.3s ease',
+      fontWeight: 'bolder',
     },
     buttonHover: {
       backgroundColor: '#999999',
-
     },
     arrow: {
       fontSize: '1.2rem',

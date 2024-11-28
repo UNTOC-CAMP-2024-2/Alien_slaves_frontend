@@ -1,6 +1,5 @@
 // src/pages/1.js
 import React from 'react';
-import riceBowlIcon from '../assets/rice-bowl-icon.png';
 
 function FirstPage() {
   const styles = {
@@ -28,7 +27,7 @@ function FirstPage() {
 
   return (
     <div style={styles.container}>
-      <img src={riceBowlIcon} alt="Rice Bowl Icon" style={styles.logo} />
+      <img src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`} alt="Rice Bowl Icon (white)" style={styles.logo} />
       <div style={styles.title}>BUGIK</div>
     </div>
   );
