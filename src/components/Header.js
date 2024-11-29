@@ -52,7 +52,6 @@ function Header() {
       fontSize: '1.5rem',
       cursor: 'pointer',
       padding: '5px',
-      transition: 'background-color 0.3s ease', // 부드러운 배경색 전환 효과 추가
     },
   };
 
