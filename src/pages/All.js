@@ -17,7 +17,7 @@ function All() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: '50px 0',
+      margin: 0,
       overflow: 'hidden',
       color: '#ffffff',
     },

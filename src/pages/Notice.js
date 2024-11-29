@@ -31,7 +31,6 @@ const styles = {
     width: '100%',
   },
   noticeItem: {
-    backgroundColor: '#f9f9f9',
     marginBottom: '15px',
     padding: '15px',
     borderRadius: '8px',
@@ -57,9 +56,7 @@ const styles = {
     fontSize: '1rem',
     color: '#34495e',
   },
-  noticeItemHover: {
-    backgroundColor: '#3498db', // 마우스를 올렸을 때 배경색
-    color: '#fff', // 마우스를 올렸을 때 텍스트 색상
+  noticeItemHover: { // 마우스를 올렸을 때 배경색 // 마우스를 올렸을 때 텍스트 색상
     transform: 'scale(1.05)', // 마우스를 올렸을 때 크기 커짐
   },
 };
@@ -81,8 +78,8 @@ const Notice = () => {
             key={notice.id}
             style={styles.noticeItem}
             onClick={() => handleNoticeClick(notice.id)} // 클릭 시 동작
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#3498db'} // 마우스 오버 시 배경색 변경
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#f9f9f9'} // 마우스를 벗어날 때 원래 색상
+            // onMouseEnter={(e) => e.target.style.backgroundColor = '#3498db'} // 마우스 오버 시 배경색 변경
+            // onMouseLeave={(e) => e.target.style.backgroundColor = '#f9f9f9'} // 마우스를 벗어날 때 원래 색상
           >
             <div style={styles.noticeHeader}>
               <h2 style={styles.noticeTitle}>{notice.title}</h2>

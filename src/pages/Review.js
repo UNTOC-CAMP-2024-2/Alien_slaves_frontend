@@ -78,7 +78,7 @@ function App() {
         onSelectMealTime={setSelectedMealTime}
         onRatingChange={handleRatingChange}
       />
-    </div>
+    </div>  
   );
 }
 
@@ -249,7 +249,7 @@ const styles = {
   menuItem: {
     display: 'flex',
     justifyContent: 'space-between',
-    margin: '5px 0',
+    margin: '10px 10px',
     alignItems: 'center',
   },
   starRating: {
