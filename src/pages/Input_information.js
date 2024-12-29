@@ -13,9 +13,9 @@ function InputInformation({ onSubmit }) {
       console.log('이름:', name);
       console.log('학번:', studentId);
       console.log('단과대학:', department);
-      
+
       // onSubmit 호출
-      onSubmit();
+      onSubmit({ name, studentId, department });
 
       // 입력 필드 초기화
       setName('');
@@ -47,26 +47,33 @@ function InputInformation({ onSubmit }) {
         />
         <input
           style={styles.input}
-          type="text"
+          type="number"
           placeholder="학번을 입력해주세요."
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
         />
-        <input
-          style={styles.input}
-          type="text"
-          placeholder="단과대학을 입력해주세요."
+        <select
+          style={styles.inputSelect}
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
-        />
-        {errorMessage && <div style={styles.error}>{errorMessage}</div>}
-        <button
-          style={styles.button}
-          onClick={handleSubmit}
-          disabled={!isFormValid}
         >
-          확인
-        </button>
+          <option value="">단과대학을 선택해주세요.</option>
+          <option value="인문대학">인문대학</option>
+          <option value="사회과학대학">사회과학대학</option>
+          <option value="자연과학대학">자연과학대학</option>
+          <option value="경제통상대학학">경제통상대학학</option>
+          <option value="공과대학">공과대학</option>
+          <option value="경영대학">경영대학</option>
+          <option value="약학대학">약학학대학</option>
+          <option value="생활과학대학">생활과학대학</option>
+          <option value="사범대학">사범대학</option>
+          <option value="예술대학학">예술대학학</option>
+          <option value="첨단융합학부">첨단융합학부</option>
+          <option value="정보의생명공학대학">정보의생명공학대학</option>
+        </select>
+        {errorMessage && <div style={styles.error}>{errorMessage}</div>}
+        
+        <button style={styles.button} onClick={handleSubmit} disabled={!isFormValid}>확인</button>
       </div>
     </div>
   );
@@ -115,6 +122,16 @@ const styles = {
 
   input: {
     width: '90%',
+    padding: '10px',
+    margin: '10px 0',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
+    fontSize: '1rem',
+    backgroundColor: '#f0f0f0',
+  },
+
+  inputSelect: {
+    width: '97%',
     padding: '10px',
     margin: '10px 0',
     borderRadius: '5px',

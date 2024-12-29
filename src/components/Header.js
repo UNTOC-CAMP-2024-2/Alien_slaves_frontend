@@ -59,7 +59,7 @@ function Header() {
     <nav style={styles.header}>
       <div style={styles.logoContainer}>
         <img
-          src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`} // 로고 이미지 경로 확인 필요
+          src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`}
           alt="Rice Bowl Icon"
           style={styles.logoImage}
         />
