@@ -2,25 +2,31 @@
 import React, { useState } from 'react';
 import riceBowlIcon from '../assets/rice-bowl-icon.png';
 
-// 기숙사 사진 리스트
-const dormImages = [
-  `${process.env.PUBLIC_URL}/assets/금정회관 사진.jpg`, // 첫 번째 이미지
-  `${process.env.PUBLIC_URL}/assets/웅비관 사진.jpg`,    // 두 번째 이미지
-  `${process.env.PUBLIC_URL}/assets/자유관 사진.jpg`,    // 세 번째 이미지
-  `${process.env.PUBLIC_URL}/assets/진리관 사진.jpg`,    // 네 번째 이미지
+// 기숙사 이름과 사진 리스트
+const dormData = [
+  { name: '금정회관', image: `${process.env.PUBLIC_URL}/assets/금정회관 사진.jpg` },
+  { name: '웅비관', image: `${process.env.PUBLIC_URL}/assets/웅비관 사진.jpg` },
+  { name: '자유관', image: `${process.env.PUBLIC_URL}/assets/자유관 사진.jpg` },
+  { name: '진리관', image: `${process.env.PUBLIC_URL}/assets/진리관 사진.jpg` },
 ];
 
 function DormSelect({ onSubmit }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleNext = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % dormImages.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % dormData.length);
   };
 
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? dormImages.length - 1 : prevIndex - 1
+      prevIndex === 0 ? dormData.length - 1 : prevIndex - 1
     );
+  };
+
+  const handleConfirm = () => {
+    const selectedDorm = dormData[currentImageIndex];
+    console.log(`기숙사 선택: ${selectedDorm.name}`);
+    if (onSubmit) onSubmit(selectedDorm.name);
   };
 
   const styles = {
@@ -77,6 +83,11 @@ function DormSelect({ onSubmit }) {
     rightArrow: {
       right: '10px',
     },
+    dormName: {
+      fontSize: '1.2rem',
+      color: '#ffffff',
+      marginTop: '10px',
+    },
     button: {
       width: '30%',
       padding: '10px',
@@ -96,7 +107,7 @@ function DormSelect({ onSubmit }) {
         <div style={styles.title}>BUGIK</div>
       </div>
       <div style={styles.imageContainer}>
-        <img src={dormImages[currentImageIndex]} alt="Dormitory" style={styles.image} />
+        <img src={dormData[currentImageIndex].image} alt="Dormitory" style={styles.image} />
         <div style={{ ...styles.arrow, ...styles.leftArrow }} onClick={handlePrev}>
           ◀
         </div>
@@ -104,7 +115,8 @@ function DormSelect({ onSubmit }) {
           ▶
         </div>
       </div>
-      <button style={styles.button} onClick={onSubmit}>확인</button>
+      <div style={styles.dormName}>{dormData[currentImageIndex].name}</div>
+      <button style={styles.button} onClick={handleConfirm}>확인</button>
     </div>
   );
 }
