@@ -22,7 +22,7 @@ function App() {
         <ConditionalLayout />
         <Routes>
           <Route path="/" element={<AutoRedirectFirstPage />} />
-          <Route path="/test" element={<Test />}
+          <Route path="/test" element={<Test />} />
           <Route path="/input" element={<InputInformationWrapper />} />
           <Route path="/dorm" element={<DormSelectWrapper />} />
           <Route path="/home" element={<PageWithNavbar component={<Home />} />} />
