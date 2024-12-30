@@ -11,6 +11,7 @@ import Review from './pages/Review';
 import Ranking from './pages/Ranking';
 import All from './pages/All';
 import Notice from './pages/Notice';
+import Test from './pages/Test';
 import './index.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <ConditionalLayout />
         <Routes>
           <Route path="/" element={<AutoRedirectFirstPage />} />
+          <Route path="/test" element={<Test />}
           <Route path="/input" element={<InputInformationWrapper />} />
           <Route path="/dorm" element={<DormSelectWrapper />} />
           <Route path="/home" element={<PageWithNavbar component={<Home />} />} />
