@@ -1,164 +1,156 @@
-// import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// function InputInformation({ onSubmit }) {
-//   const [name, setName] = useState('');
-//   const [studentId, setStudentId] = useState('');
-//   const [department, setDepartment] = useState('');
-//   const [errorMessage, setErrorMessage] = useState('');
+function SignInKakao() {
+  const navigate = useNavigate();
 
-//   const handleSubmit = () => {
-//     if (name && studentId && department) {
-//       // 입력된 값들을 콘솔에 출력
-//       console.log('이름:', name);
-//       console.log('학번:', studentId);
-//       console.log('단과대학:', department);
+  const [nickname, setNickname] = useState('');
+  const [college, setCollege] = useState('');
 
-//       // onSubmit 호출
-//       onSubmit({ name, studentId, department });
+  // 닉네임 중복 확인 버튼
+  const handleCheckNickname = () => {
+    console.log('닉네임 중복 확인:', nickname);
+  };
 
-//       // 입력 필드 초기화
-//       setName('');
-//       setStudentId('');
-//       setDepartment('');
-//       setErrorMessage('');
-//     } else {
-//       setErrorMessage('모든 정보를 입력해주세요.');
-//     }
-//   };
+  // 카카오 로그인/회원가입 버튼
+  const handleKakaoSignIn = () => {
+    console.log('카카오로 회원가입/로그인 시도');
+    // 실제 구현 시, 카카오 OAuth SDK or 백엔드 API 호출
+    // 완료 후, navigate('/home') 등 페이지 이동 가능
+  };
 
-//   const isFormValid = name && studentId && department;
+  // 인라인 스타일 정의
+  const styles = {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      minHeight: '80vh',
+      backgroundColor: '#FAFAFA',
+    },
+    card: {
+      width: '320px',
+      backgroundColor: '#fff',
+      borderRadius: '8px',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+      padding: '20px',
+      textAlign: 'center',
+    },
+    header: {
+      textAlign: 'left',
+      margin: '0 0 10px 5px',
+      fontWeight: '400',
+    },
+    titleContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '15px',
+    },
+    logoImage: {
+      width: '40px',
+      height: 'auto',
+      marginRight: '10px',
+    },
+    title: {
+      margin: 0,
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+    },
+    inputRow: {
+      display: 'flex',
+      alignItems: 'center',
+      margin: '10px 0',
+    },
+    input: {
+      flex: 1,
+      padding: '8px',
+      borderRadius: '4px',
+      border: '1px solid #ddd',
+      outline: 'none',
+      fontSize: '0.9rem',
+    },
+    smallButton: {
+      marginLeft: '8px',
+      padding: '8px',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      backgroundColor: '#9CE3D4',
+      color: '#1a1a1a',
+      fontSize: '0.8rem',
+      fontWeight: 'bold',
+    },
+    // 소속 대학 전용 스타일
+    collegeInput: {
+      margin: '10px 0',
+      width: '95%',         // 원하는 길이로 조절
+      alignSelf: 'center',  // 필요 시 정렬 보정
+    },
+    kakaoButton: {
+      width: '100%',
+      padding: '12px',
+      margin: '16px 0 0 0',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      backgroundColor: '#FEE500',
+      color: '#3B1D1D',
+      fontWeight: 'bold',
+      fontSize: '0.9rem',
+    },
+  };
 
-//   return (
-//     <div style={styles.container}>
-//       <div style={styles.formBox}>
-//         <img 
-//           src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon-white.png`} 
-//           alt="Rice Bowl Icon (white)" 
-//           style={styles.logo} 
-//         />
-//         <div style={styles.title}>BUGIK</div>
-//         <input
-//           style={styles.input}
-//           type="text"
-//           placeholder="이름을 입력해주세요."
-//           value={name}
-//           onChange={(e) => setName(e.target.value)}
-//         />
-//         <input
-//           style={styles.input}
-//           type="number"
-//           placeholder="학번을 입력해주세요."
-//           value={studentId}
-//           onChange={(e) => setStudentId(e.target.value)}
-//         />
-//         <select
-//           style={styles.inputSelect}
-//           value={department}
-//           onChange={(e) => setDepartment(e.target.value)}
-//         >
-//           <option value="">단과대학을 선택해주세요.</option>
-//           <option value="인문대학">인문대학</option>
-//           <option value="사회과학대학">사회과학대학</option>
-//           <option value="자연과학대학">자연과학대학</option>
-//           <option value="경제통상대학학">경제통상대학학</option>
-//           <option value="공과대학">공과대학</option>
-//           <option value="경영대학">경영대학</option>
-//           <option value="약학대학">약학학대학</option>
-//           <option value="생활과학대학">생활과학대학</option>
-//           <option value="사범대학">사범대학</option>
-//           <option value="예술대학학">예술대학학</option>
-//           <option value="첨단융합학부">첨단융합학부</option>
-//           <option value="정보의생명공학대학">정보의생명공학대학</option>
-//         </select>
-//         {errorMessage && <div style={styles.error}>{errorMessage}</div>}
-        
-//         <button style={styles.button} onClick={handleSubmit} disabled={!isFormValid}>확인</button>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div style={styles.container}>
+      <div style={styles.card}>
+        {/* 상단 레이블 */}
+        <h3 style={styles.header}>회원가입</h3>
 
-// InputInformation.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };
+        {/* 로고와 타이틀 */}
+        <div style={styles.titleContainer}>
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`}
+            alt="Rice Bowl Icon"
+            style={styles.logoImage}
+          />
+          <h2 style={styles.title}>BUGIK</h2>
+        </div>
 
-// export default InputInformation;
+        {/* 닉네임 입력 + 중복 확인 버튼 */}
+        <div style={styles.inputRow}>
+          <input
+            type="text"
+            placeholder="닉네임을 입력해주세요."
+            style={styles.input}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <button style={styles.smallButton} onClick={handleCheckNickname}>
+            중복 확인
+          </button>
+        </div>
 
-// const styles = {
-//   container: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     height: '100vh',
-//     backgroundColor: '#1a1a1a',
-//     margin: '0',
-//     padding: '0',
-//     overflow: 'hidden',
-//   },
+        {/* 소속 대학 입력 - 별도 스타일 병합 */}
+        <input
+          type="text"
+          placeholder="소속 대학을 입력해주세요."
+          style={{ 
+            ...styles.input,       // 기본 input 스타일
+            ...styles.collegeInput // 추가/재정의할 스타일
+          }}
+          value={college}
+          onChange={(e) => setCollege(e.target.value)}
+        />
 
-//   formBox: {
-//     backgroundColor: '#ffffff',
-//     padding: '20px',
-//     borderRadius: '20px',
-//     width: '80%',
-//     maxWidth: '400px',
-//     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-//     textAlign: 'center',
-//   },
+        {/* 카카오 로그인 버튼 */}
+        <button style={styles.kakaoButton} onClick={handleKakaoSignIn}>
+          Sign in with Kakao
+        </button>
+      </div>
+    </div>
+  );
+}
 
-//   logo: {
-//     width: '70px',
-//     marginBottom: '10px',
-//   },
-
-//   title: {
-//     fontSize: '1.5rem',
-//     fontWeight: 'bold',
-//     color: '#000',
-//     marginBottom: '20px',
-//   },
-
-//   input: {
-//     width: '90%',
-//     padding: '10px',
-//     margin: '10px 0',
-//     borderRadius: '5px',
-//     border: '1px solid #ddd',
-//     fontSize: '1rem',
-//     backgroundColor: '#f0f0f0',
-//   },
-
-//   inputSelect: {
-//     width: '97%',
-//     padding: '10px',
-//     margin: '10px 0',
-//     borderRadius: '5px',
-//     border: '1px solid #ddd',
-//     fontSize: '1rem',
-//     backgroundColor: '#f0f0f0',
-//   },
-
-//   button: {
-//     width: '30%',
-//     padding: '10px',
-//     marginTop: '20px',
-//     borderRadius: '5px',
-//     border: 'none',
-//     backgroundColor: '#ddd',
-//     fontSize: '1rem',
-//     cursor: 'pointer',
-//     transition: 'background-color 0.3s ease',
-//   },
-
-//   buttonHover: {
-//     backgroundColor: '#bbb',
-//   },
-
-//   error: {
-//     color: 'red',
-//     fontSize: '0.9rem',
-//     marginTop: '10px',
-//   }
-// };
+export default SignInKakao;

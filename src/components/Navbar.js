@@ -7,20 +7,20 @@ function Navbar() {
 
   // 아이콘별 색상 상태
   const [iconColors, setIconColors] = useState({
-    home: '#fff',
-    review: '#fff',
-    ranking: '#fff',
-    contents: '#fff',
+    home: '#E3E5E9',
+    review: '#E3E5E9',
+    ranking: '#E3E5E9',
+    contents: '#E3E5E9',
   });
 
   // 마우스 오버 시 아이콘 색상 변경
   const handleMouseEnter = (icon) => {
-    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#999999' }));
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#67D3C4' }));
   };
 
   // 마우스가 벗어났을 때 색상 복귀
   const handleMouseLeave = (icon) => {
-    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#fff' }));
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#E3E5E9' }));
   };
 
   // 스타일 객체
@@ -28,12 +28,12 @@ function Navbar() {
     bottomNav: {
       display: 'flex',
       justifyContent: 'space-around',
-      padding: '15px 0',
+      padding: '25px 0',
       position: 'absolute',
       height: '40px',
       bottom: 0,
       width: '100%',
-      backgroundColor: '#1a1a1a',
+      backgroundColor: '#fafafa',
       color: '#fff',
       borderTop: '1px solid #333',
     },
@@ -42,7 +42,7 @@ function Navbar() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '1.3rem',
+      fontSize: '1.5rem',
       cursor: 'pointer',
     },
   };
