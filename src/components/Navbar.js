@@ -5,21 +5,25 @@ import { useNavigate } from 'react-router-dom';
 function Navbar() {
   const navigate = useNavigate();
 
+  // 아이콘별 색상 상태
   const [iconColors, setIconColors] = useState({
     home: '#fff',
     review: '#fff',
     ranking: '#fff',
-    all: '#fff',
+    contents: '#fff',
   });
 
+  // 마우스 오버 시 아이콘 색상 변경
   const handleMouseEnter = (icon) => {
     setIconColors((prevColors) => ({ ...prevColors, [icon]: '#999999' }));
   };
 
+  // 마우스가 벗어났을 때 색상 복귀
   const handleMouseLeave = (icon) => {
     setIconColors((prevColors) => ({ ...prevColors, [icon]: '#fff' }));
   };
 
+  // 스타일 객체
   const styles = {
     bottomNav: {
       display: 'flex',
@@ -45,6 +49,7 @@ function Navbar() {
 
   return (
     <div style={styles.bottomNav}>
+      {/* 홈 아이콘 */}
       <div
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('home')}
@@ -53,6 +58,8 @@ function Navbar() {
       >
         <FaHome color={iconColors.home} />
       </div>
+
+      {/* 리뷰 아이콘 */}
       <div
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('review')}
@@ -61,6 +68,8 @@ function Navbar() {
       >
         <FaListAlt color={iconColors.review} />
       </div>
+
+      {/* 랭킹 아이콘 */}
       <div
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('ranking')}
@@ -69,13 +78,15 @@ function Navbar() {
       >
         <FaTrophy color={iconColors.ranking} />
       </div>
+
+      {/* 전체 메뉴 아이콘 */}
       <div
         style={styles.bottomButton}
-        onMouseEnter={() => handleMouseEnter('all')}
-        onMouseLeave={() => handleMouseLeave('all')}
-        onClick={() => navigate('/all')}
+        onMouseEnter={() => handleMouseEnter('contents')}
+        onMouseLeave={() => handleMouseLeave('contents')}
+        onClick={() => navigate('/contents')}
       >
-        <FaBars color={iconColors.all} />
+        <FaBars color={iconColors.contents} />
       </div>
     </div>
   );

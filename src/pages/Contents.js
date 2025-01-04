@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function All() {
+function Contents() {
   const navigate = useNavigate();
 
   const menuItems = [
@@ -70,4 +70,4 @@ function All() {
   );
 }
 
-export default All;
+export default Contents;

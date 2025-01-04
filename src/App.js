@@ -1,102 +1,75 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+// src/App.js
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
+// 공통 컴포넌트
 import Header from './components/Header';
-import Noticebar from './components/Noticebar';
 import Navbar from './components/Navbar';
-import FirstPage from './pages/FirstPage';
-import InputInformation from './pages/Input_information';
-import DormSelect from './pages/Dorm_select';
+
+// 페이지 컴포넌트
 import Home from './pages/Home';
-import Review from './pages/Review';
+import LogIn from './pages/LogIn';
 import Ranking from './pages/Ranking';
-import All from './pages/All';
-import Notice from './pages/Notice';
+import Review from './pages/Review';
+import Contents from './pages/Contents';
+import Evaluating from './pages/Evaluating';
+import SignInEmail from './pages/SignInEmail';
+import SignInKakao from './pages/SignInKakao';
 import Test from './pages/Test';
+
+// 전역 스타일
 import './index.css';
+
+/* 
+ * (A) Header와 Navbar를 경로별로 조건부 렌더링할 컴포넌트
+ * "/login" 경로에서는 표시하지 않음.
+ */
+function ConditionHeaderNavbar() {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // 로그인 화면(/login)에서는 Header, Navbar를 숨기기
+  if (currentPath === '/login') {
+    return null; 
+  }
+
+  return (
+    <>
+      <Header />
+      <Navbar />
+    </>
+  );
+}
 
 function App() {
   return (
     <div id="app-container">
       <Router>
-        {/* Header, Noticebar, Navbar 조건부 렌더링 */}
-        <ConditionalLayout />
+        {/* (B) 조건부 렌더링 컴포넌트 */}
+        <ConditionHeaderNavbar />
+
         <Routes>
-          <Route path="/" element={<AutoRedirectFirstPage />} />
+          {/* 첫 화면을 로그인 페이지로 설정 (원하는 대로 수정 가능) */}
+          <Route path="/" element={<LogIn />} />
+
+          {/* 페이지별 라우트 */}
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/ranking" element={<Ranking />} />
+          <Route path="/review" element={<Review />} />
+          <Route path="/contents" element={<Contents />} />
+          <Route path="/evaluating" element={<Evaluating />} />
+          <Route path="/signinEmail" element={<SignInEmail />} />
+          <Route path="/signinKakao" element={<SignInKakao />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/input" element={<InputInformationWrapper />} />
-          <Route path="/dorm" element={<DormSelectWrapper />} />
-          <Route path="/home" element={<PageWithNavbar component={<Home />} />} />
-          <Route path="/review" element={<PageWithNavbar component={<Review />} />} />
-          <Route path="/ranking" element={<PageWithNavbar component={<Ranking />} />} />
-          <Route path="/all" element={<PageWithNavbar component={<All />} />} />
-          <Route path="/notice" element={<PageWithNavbar component={<Notice />} />} />
-          <Route path="*" element={<AutoRedirectFirstPage />} />
+
+          {/* 404 대체 - 없는 경로로 들어올 경우 로그인으로 */}
+          <Route path="*" element={<LogIn />} />
         </Routes>
       </Router>
     </div>
   );
-
-  
-
 }
-
-function ConditionalLayout() {
-  const location = useLocation();
-
-  // Header, Noticebar, Navbar가 표시될 경로 정의
-  const headerVisibleRoutes = ['/home', '/review', '/ranking', '/all', '/notice'];
-  const noticebarVisibleRoutes = ['/home', '/review', '/ranking'];
-  const navbarVisibleRoutes = ['/home', '/review', '/ranking', '/all', '/notice'];
-
-  const noticebarMessage = '공지사항공지사항공지사항공지사항공지사항.';
-
-  return (
-    <>
-      {/* 조건부 Header */}
-      {headerVisibleRoutes.includes(location.pathname) && <Header />}
-
-      {/* 조건부 Noticebar */}
-      {noticebarVisibleRoutes.includes(location.pathname) && <Noticebar message={noticebarMessage} />}
-
-      {/* 조건부 Navbar */}
-      {navbarVisibleRoutes.includes(location.pathname) && <Navbar />}
-    </>
-  );
-}
-
-function AutoRedirectFirstPage() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/input');
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
-  return <FirstPage />;
-}
-
-function InputInformationWrapper() {
-  const navigate = useNavigate();
-  return <InputInformation onSubmit={() => navigate('/dorm')} />;
-}
-
-function DormSelectWrapper() {
-  const navigate = useNavigate();
-  return <DormSelect onSubmit={() => navigate('/home')} />;
-}
-
-function PageWithNavbar({ component }) {
-  return (
-    <>
-      <Navbar />
-      {component}
-    </>
-  );
-}
-
-
-
 
 export default App;
