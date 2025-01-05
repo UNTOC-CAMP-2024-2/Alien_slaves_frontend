@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 // 공통 컴포넌트
 import Header from './components/Header';
 import Navbar from './components/Navbar';
+import CalendarHeader from './components/CalendarHeader'; // CalendarHeader 추가
 
 // 페이지 컴포넌트
 import Home from './pages/Home';
@@ -36,6 +37,8 @@ function ConditionHeaderNavbar() {
   return (
     <>
       <Header />
+      {/* 특정 경로에서만 CalendarHeader 렌더링 */}
+      {currentPath === '/home' && <CalendarHeader />}
       <Navbar />
     </>
   );
@@ -60,7 +63,7 @@ function App() {
           <Route path="/contents" element={<Contents />} />
           <Route path="/evaluating" element={<Evaluating />} />
           <Route path="/signinemail" element={<SignInEmail />} />
-          <Route path="/signinKakao" element={<SignInKakao />} />
+          <Route path="/signinkakao" element={<SignInKakao />} />
           <Route path="/test" element={<Test />} />
 
           {/* 404 대체 - 없는 경로로 들어올 경우 로그인으로 */}
