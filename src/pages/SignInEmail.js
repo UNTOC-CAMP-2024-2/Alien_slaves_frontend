@@ -8,7 +8,7 @@ function SignInEmail() {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [nickname, setNickname] = useState('');
-  const [college, setCollege] = useState('');
+  const [college, setCollege] = useState(''); // 선택한 대학 저장
 
   // (1) 이메일 코드 전송
   const handleSendCode = () => {
@@ -32,7 +32,9 @@ function SignInEmail() {
 
   // (5) 로그인 버튼 클릭 시 -> Home으로 이동
   const handleLogin = () => {
-    console.log('회원가입 완료 후 Home으로 이동');
+    console.log('이메일: ',  email);
+    console.log('닉네임: ', nickname);
+    console.log('선택한 소속 대학:', college);
     navigate('/home');
   };
 
@@ -63,7 +65,7 @@ function SignInEmail() {
     logoImage: {
       width: '140px',
       height: 'auto',
-      padding: '10px  '
+      padding: '10px',
     },
     inputRow: {
       display: 'flex',
@@ -87,6 +89,14 @@ function SignInEmail() {
       backgroundColor: '#e0e0e0',
       fontSize: '0.8rem',
       fontWeight: 'bold',
+    },
+    select: {
+      width: '100%',
+      padding: '8px',
+      borderRadius: '8px',
+      border: '1px solid #ddd',
+      fontSize: '0.9rem',
+      marginBottom: '10px',
     },
     loginButton: {
       width: '100%',
@@ -161,19 +171,30 @@ function SignInEmail() {
           </button>
         </div>
 
-        {/* (4) 소속 대학 입력 + 확인 버튼 */}
-        <div style={styles.inputRow}>
-          <input
-            type="text"
-            placeholder="소속 대학을 입력해주세요."
-            style={styles.input}
-            value={college}
-            onChange={(e) => setCollege(e.target.value)}
-          />
-          <button style={styles.smallButton} onClick={handleCheckCollege}>
-            확인
-          </button>
-        </div>
+        {/* (4) 소속 대학 선택 (select 태그) */}
+        <select
+          style={styles.select}
+          value={college}
+          onChange={(e) => {
+            setCollege(e.target.value);
+            handleCheckCollege(); // 소속 대학 확인 함수 호출
+          }}
+        >
+          <option value="" disabled>
+            소속 대학을 선택해주세요.
+          </option>
+          <option value="인문대학">인문대학</option>
+          <option value="사회과학대학">사회과학대학</option>
+          <option value="자연과학대학">자연과학대학</option>
+          <option value="경제통상대학">경제통상대학</option>
+          <option value="공과대학">공과대학</option>
+          <option value="경영대학">경영대학</option>
+          <option value="약학대학">약학대학</option>
+          <option value="생활과학대학">생활과학대학</option>
+          <option value="사범대학">사범대학</option>
+          <option value="예술대학">예술대학</option>
+          <option value="첨단융합학부">첨단융합학부</option>
+        </select>
 
         {/* (5) 최종 로그인 버튼 */}
         <button style={styles.loginButton} onClick={handleLogin}>
