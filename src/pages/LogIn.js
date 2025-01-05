@@ -38,8 +38,8 @@ function LogIn() {
     },
     card: {
       width: '320px',
-      backgroundColor: '#fff', 
-      borderRadius: '8px',
+      backgroundColor: '#fff',
+      borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
       padding: '20px',
       textAlign: 'center',
@@ -51,9 +51,10 @@ function LogIn() {
       marginBottom: '15px',
     },
     logoImage: {
-      width: '50px',
+      width: '140px',
       height: 'auto',
       marginRight: '10px',
+      padding: '10px'
     },
     title: {
       margin: 0,
@@ -64,17 +65,18 @@ function LogIn() {
       width: '95%',
       padding: '8px',
       margin: '10px 0',
-      borderRadius: '4px',
+      borderRadius: '8px',
       border: '1px solid #ddd',
       outline: 'none',
       fontSize: '0.9rem',
+      fontWeight: '500'
     },
     kakaoButton: {
       width: '100%',
       padding: '12px',
       margin: '12px 0',
       border: 'none',
-      borderRadius: '4px',
+      borderRadius: '8px',
       cursor: 'pointer',
       backgroundColor: '#FEE500',
       color: '#3B1D1D',
@@ -90,7 +92,7 @@ function LogIn() {
       width: '48%',
       padding: '12px',
       border: 'none',
-      borderRadius: '4px',
+      borderRadius: '8px',
       cursor: 'pointer',
       fontSize: '1rem',
       fontWeight: 'bold',
@@ -103,18 +105,17 @@ function LogIn() {
     <div style={styles.container}>
       <div style={styles.card}>
         {/* 상단의 “로그인” 레이블 */}
-        <h3 style={{ textAlign: 'left', margin: '0 0 10px 5px', fontWeight: '400' }}>
+        <h3 style={{ textAlign: 'left', margin: '0 0 10px 5px', fontWeight: '500', fontSize: '12px' }}>
           로그인
         </h3>
-        
-        {/* 로고와 제목을 가로로, 중앙 정렬 */}
+
+        {/* 로고와 텍스트가 합쳐진 하나의 이미지 */}
         <div style={styles.logoContainer}>
           <img
-            src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`}
-            alt="Rice Bowl Icon"
+            src={`${process.env.PUBLIC_URL}assets/BUGIK_Logo.jpg`}
+            alt="BUGIK Logo"
             style={styles.logoImage}
           />
-          <h2 style={styles.title}>BUGIK</h2>
         </div>
 
         {/* 입력 필드 (닉네임, 이메일) */}

@@ -29,9 +29,8 @@ function ConditionHeaderNavbar() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 로그인 화면(/login)에서는 Header, Navbar를 숨기기
-  if (currentPath === '/login') {
-    return null; 
+  if (currentPath === '/login' || currentPath === '/' || currentPath === '/signinemail' || currentPath === '/signinkakao' || currentPath === '*') {
+    return null;
   }
 
   return (
@@ -51,7 +50,7 @@ function App() {
 
         <Routes>
           {/* 첫 화면을 로그인 페이지로 설정 (원하는 대로 수정 가능) */}
-          <Route path="/" element={<LogIn />} />
+          <Route path="" element={<LogIn />} />
 
           {/* 페이지별 라우트 */}
           <Route path="/login" element={<LogIn />} />
@@ -60,7 +59,7 @@ function App() {
           <Route path="/review" element={<Review />} />
           <Route path="/contents" element={<Contents />} />
           <Route path="/evaluating" element={<Evaluating />} />
-          <Route path="/signinEmail" element={<SignInEmail />} />
+          <Route path="/signinemail" element={<SignInEmail />} />
           <Route path="/signinKakao" element={<SignInKakao />} />
           <Route path="/test" element={<Test />} />
 

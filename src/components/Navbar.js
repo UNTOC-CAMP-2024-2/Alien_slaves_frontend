@@ -33,9 +33,8 @@ function Navbar() {
       height: '40px',
       bottom: 0,
       width: '100%',
-      backgroundColor: '#fafafa',
+      backgroundColor: '#ffffff',
       color: '#fff',
-      borderTop: '1px solid #333',
     },
     bottomButton: {
       margin: 'auto',

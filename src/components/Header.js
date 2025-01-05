@@ -15,28 +15,23 @@ function Header() {
     logoContainer: {
       display: 'flex',
       alignItems: 'center',
-      // 로고와 텍스트를 가로로 나란히 배치
     },
     logoImage: {
-      width: '30px',
+      width: '140px',  // 로고 크기를 조정
       height: 'auto',
-      marginRight: '10px',// 로고와 텍스트 사이의 여백
-    },
-    title: {
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
+      padding: '10px',
     },
   };
 
   return (
     <nav style={styles.header}>
       <div style={styles.logoContainer}>
+        {/* 로고와 텍스트가 합쳐진 이미지로 대체 */}
         <img
-          src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon-white.png`}
-          alt="Rice Bowl Icon"
+          src={`${process.env.PUBLIC_URL}/assets/BUGIK_Logo.jpg`}
+          alt="BUGIK Logo"
           style={styles.logoImage}
         />
-        <span style={styles.title}>BUGIK</span>
       </div>
     </nav>
   );

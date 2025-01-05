@@ -33,8 +33,7 @@ function SignInEmail() {
   // (5) 로그인 버튼 클릭 시 -> Home으로 이동
   const handleLogin = () => {
     console.log('회원가입 완료 후 Home으로 이동');
-    // navigate('/login');  // 기존 코드
-    navigate('/home');      // 수정
+    navigate('/home');
   };
 
   // 인라인 스타일
@@ -44,23 +43,17 @@ function SignInEmail() {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      minHeight: '80vh',
+      minHeight: '100vh',
       backgroundColor: '#FAFAFA',
     },
     card: {
       width: '320px',
       backgroundColor: '#fff',
-      borderRadius: '8px',
+      borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
       padding: '20px',
       textAlign: 'center',
     },
-    header: {
-      textAlign: 'left',
-      margin: '0 0 10px 5px',
-      fontWeight: '400',
-    },
-    // 로고와 타이틀을 나란히, 가운데 정렬
     titleContainer: {
       display: 'flex',
       justifyContent: 'center',
@@ -68,14 +61,9 @@ function SignInEmail() {
       marginBottom: '10px',
     },
     logoImage: {
-      width: '40px',
+      width: '140px',
       height: 'auto',
-      marginRight: '10px', 
-    },
-    title: {
-      margin: 0,
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
+      padding: '10px  '
     },
     inputRow: {
       display: 'flex',
@@ -85,7 +73,7 @@ function SignInEmail() {
     input: {
       flex: 1,
       padding: '8px',
-      borderRadius: '4px',
+      borderRadius: '8px',
       border: '1px solid #ddd',
       outline: 'none',
       fontSize: '0.9rem',
@@ -94,7 +82,7 @@ function SignInEmail() {
       marginLeft: '8px',
       padding: '8px',
       border: 'none',
-      borderRadius: '4px',
+      borderRadius: '8px',
       cursor: 'pointer',
       backgroundColor: '#e0e0e0',
       fontSize: '0.8rem',
@@ -105,7 +93,7 @@ function SignInEmail() {
       padding: '12px',
       margin: '16px 0 0 0',
       border: 'none',
-      borderRadius: '4px',
+      borderRadius: '8px',
       cursor: 'pointer',
       backgroundColor: '#9CE3D4',
       color: '#1a1a1a',
@@ -118,16 +106,17 @@ function SignInEmail() {
     <div style={styles.container}>
       <div style={styles.card}>
         {/* 상단 레이블 */}
-        <h3 style={styles.header}>회원가입</h3>
+        <h3 style={{ textAlign: 'left', margin: '0 0 10px 5px', fontWeight: '500', fontSize: '12px' }}>
+          회원가입
+        </h3>
 
-        {/* 로고와 타이틀 */}
+        {/* 로고(글자 포함) 하나만 사용 */}
         <div style={styles.titleContainer}>
           <img
-            src={`${process.env.PUBLIC_URL}/assets/rice-bowl-icon.png`}
-            alt="Rice Bowl Icon"
+            src={`${process.env.PUBLIC_URL}/assets/BUGIK_Logo.jpg`}
+            alt="BUGIK Logo"
             style={styles.logoImage}
           />
-          <h2 style={styles.title}>BUGIK</h2>
         </div>
 
         {/* (1) 이메일 입력 + 코드 전송 버튼 */}
@@ -186,7 +175,7 @@ function SignInEmail() {
           </button>
         </div>
 
-        {/* (5) 최종 로그인 버튼 (수정) */}
+        {/* (5) 최종 로그인 버튼 */}
         <button style={styles.loginButton} onClick={handleLogin}>
           로그인
         </button>
