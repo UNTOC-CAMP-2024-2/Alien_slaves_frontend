@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
+import { IoIosText } from "react-icons/io";
 
 const styles = {
   container: {
@@ -61,7 +62,6 @@ const styles = {
     padding: '10px',
     fontSize: '20px',
   },
-  
   input: {
     width: '100%',
     padding: '10px',
@@ -70,9 +70,10 @@ const styles = {
   },
   button: {
     padding: '10px',
-    backgroundColor: '#34c759',
+    backgroundColor: '#9CE3D4',
     color: 'white',
     fontSize: '16px',
+    fontWeight: '600',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
@@ -83,28 +84,63 @@ const styles = {
   },
   listItem: {
     display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '10px',
+    backgroundColor: '#FFFFFF',
+    marginBottom: '10px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+  },
+  listItemHeader: {
+    display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '10px',
-    borderBottom: '1px solid #eee',
+    marginBottom: '10px',
+  },
+  itemTitle: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  itemPrice: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#007bff',
+  },
+  itemStatus: {
+    fontSize: '14px',
+    color: '#888',
+    marginTop: '5px',
+  },
+  itemFooter: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '10px',
+  },
+  sellerInfo: {
+    fontSize: '12px',
+    color: '#666',
+    marginTop: '18px',
   },
   chatButton: {
-    padding: '5px 10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    fontSize: '14px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    padding: '5px 0px',
+    backgroundColor: '#ffffff',
+    color: 'black',
+    fontSize: '16px',
+    fontWeight: '700',
+    textAlign: 'center',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-  },
-  sectionHeader: {
-    textAlign: 'center',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
+    margin: '10px 0px 0px 50px'
   },
 };
-
 
 function Contents() {
   const [ticket, setTicket] = useState({ name: '', validity: '', price: '' });
@@ -117,31 +153,6 @@ function Contents() {
   const handleRegister = () => {
     alert(`등록된 상품: ${ticket.name}, 유효기간: ${ticket.validity}, 가격: ${ticket.price}`);
   };
-
-  // function Contents() {
-  //   const [meals, setMeals] = useState([]); // 식단 정보를 저장할 상태
-  //   const [loading, setLoading] = useState(true); // 로딩 상태 관리
-  
-  //   useEffect(() => {
-  //     // 데이터 가져오기 함수
-  //     const fetchMeals = async () => {
-  //       try {
-  //         const response = await fetch('https://api.example.com/meals'); // 백엔드 API 엔드포인트
-  //         const data = await response.json();
-  //         setMeals(data); // API 데이터를 상태에 저장
-  //       } catch (error) {
-  //         console.error('Error fetching meals:', error);
-  //       } finally {
-  //         setLoading(false); // 로딩 상태 해제
-  //       }
-  //     };
-  
-  //     fetchMeals(); // 함수 호출
-  //   }, []);
-  
-  //   if (loading) {
-  //     return <div>Loading...</div>; // 로딩 중 표시
-  //   }
 
   return (
     <div>
@@ -165,7 +176,7 @@ function Contents() {
               placeholder="Chat GPT가 이 식단을 추천하는 이유"
               style={styles.textarea}
             />
-          </div>  
+          </div>
           <div style={styles.mealSection}>
             <div style={styles.imgWrapper}>
               <img
@@ -194,14 +205,6 @@ function Contents() {
               style={styles.input}
             />
             <input
-              type="text"
-              name="validity"
-              placeholder="유효기간"
-              value={ticket.validity}
-              onChange={handleInputChange}
-              style={styles.input}
-            />
-            <input
               type="number"
               name="price"
               placeholder="가격"
@@ -217,19 +220,39 @@ function Contents() {
 
         {/* 식권 거래 리스트 */}
         <div style={styles.section}>
-          <h3>등록된 식권</h3>
           <ul style={styles.list}>
             <li style={styles.listItem}>
-              <p>금정회관 학생 식당 정식 식권 10매 - 38,000원</p>
-              <button style={styles.chatButton}>채팅하기</button>
+              <div style={styles.listItemHeader}>
+                <p style={styles.itemTitle}>금정회관 학생 식당 정식 식권 10매</p>
+                <p style={styles.itemPrice}>38,000원</p>
+              </div>
+              <p style={styles.itemStatus}>- 판매중 -</p>
+              <div style={styles.itemFooter}>
+                <p style={styles.sellerInfo}>판매자: (닉네임)</p>
+                <button style={styles.chatButton}><IoIosText />채팅하기</button>
+              </div>
             </li>
             <li style={styles.listItem}>
-              <p>금정회관 학생 식당 정식 식권 10매 - 38,000원</p>
-              <button style={styles.chatButton}>채팅하기</button>
+              <div style={styles.listItemHeader}>
+                <p style={styles.itemTitle}>금정회관 학생 식당 정식 식권 10매</p>
+                <p style={styles.itemPrice}>38,000원</p>
+              </div>
+              <p style={styles.itemStatus}>- 판매완료 -</p>
+              <div style={styles.itemFooter}>
+                <p style={styles.sellerInfo}>판매자: (닉네임)</p>
+                <button style={styles.chatButton} disabled><IoIosText />채팅하기</button>
+              </div>
             </li>
             <li style={styles.listItem}>
-              <p>금정회관 학생 식당 일품 식권 - 39,000원</p>
-              <button style={styles.chatButton}>채팅하기</button>
+              <div style={styles.listItemHeader}>
+                <p style={styles.itemTitle}>금정회관 학생 식당 일품 식권</p>
+                <p style={styles.itemPrice}>39,000원</p>
+              </div>
+              <p style={styles.itemStatus}>- 판매중 -</p>
+              <div style={styles.itemFooter}>
+                <p style={styles.sellerInfo}>판매자: (닉네임)</p>
+                <button style={styles.chatButton}><IoIosText />채팅하기</button>
+              </div>
             </li>
           </ul>
         </div>
