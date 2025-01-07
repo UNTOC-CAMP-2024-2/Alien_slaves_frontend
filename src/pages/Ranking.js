@@ -1,134 +1,149 @@
-import React from 'react';
-import Navbar from '../components/Navbar';
+import React from "react";
+import Navbar from "../components/Navbar";
+import CalendarHeader from "../components/CalendarHeader";
 
-function Ranking() {
-  const styles = {
-    container: {
-      backgroundColor: '#000',
-      color: '#fff',
-      textAlign: 'center',
-      padding: '10px',
-    },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '10px 0',
-    },
-    logo: {
-      width: '40px',
-      marginRight: '8px',
-    },
-    title: {
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-    },
-    mealInfo: {
-      marginTop: '10px',
-    },
-    mealImageContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      margin: '10px 0',
-    },
-    mealImage: {
-      width: '90%',
-      height: '200px', // 고정된 높이 추가
-      border: '2px solid #00aaff',
-      borderRadius: '8px',
-      objectFit: 'cover', // 이미지 비율 유지
-    },
-    ratings: {
-      display: 'flex',
-      justifyContent: 'space-around',
-      marginTop: '20px',
-    },
-    dormRating: {
-      textAlign: 'center',
-      color: '#fff',
-      fontWeight: 'bold',
-      position: 'relative',
-      width: '100px',
-    },
-    trophyImage: {
-      width: '40px',
-      height: '40px',
-      marginBottom: '8px',
-    },
-    dormImage: {
-      width: '60px',
-      height: '60px',
-      borderRadius: '50%',
-      margin: '0 auto',
-    },
-    topRated: {
-      border: '2px solid #ffd700',
-      padding: '5px',
-      borderRadius: '10px',
-    },
-    bar: {
-      width: '90px',
-      height: '230px',
-      backgroundColor: '#fff',
-      margin: '8px auto 0',
-      borderRadius: '2px',
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    ratingText: {
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
-      color: '#000',
-      marginTop: '10px',
-    },
-    dormName: {
-      marginTop: '8px',
-      fontWeight: 'bold',
-      color: '#fff',
-      fontSize: '1.1rem',
-    }
-  };
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    fontSize: "20px",
+    fontWeight: '700',
+    textAlign: "center", // 글자 가운데 정렬
+    backgroundColor: "#ffffff", // 배경색 흰색
+    padding: "30px 0", // 상하 여백 추가
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // 헤더 하단 그림자
+  },
+  calendarSection: {
+    padding: "0px",
+    backgroundColor: "white",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  },
+  rankingsContainer: {
+    padding: "24px",
+    flex: 1,
+    overflowY: "auto",
+  },
+  sectionTitle: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    margin: "16px 0px",
+  },
+  gridContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "16px",
+  },
+  rankingCard: {
+    backgroundColor: "white",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    padding: "16px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  cardImage: {
+    width: "100%",
+    borderRadius: "8px",
+  },
+  cardTitle: {
+    marginTop: "8px",
+    fontSize: "14px",
+    fontWeight: "bold",
+  },
+  cardRating: {
+    marginTop: "4px",
+    color: "#fbbf24",
+  },
+  listContainer: {
+    marginBottom: "16px",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    padding: "16px",
+  },
+  listImage: {
+    width: "64px",
+    height: "64px",
+    borderRadius: "8px",
+    marginRight: "16px",
+  },
+  listTitle: {
+    fontSize: "14px",
+    fontWeight: "bold",
+  },
+  navbar: {
+    backgroundColor: "white",
+  },
+};
+
+const Ranking = () => {
+  const rankingListData = [
+    { id: 1, name: "응비관 중식", rating: 4.5, img: "/path/to/image" },
+    { id: 2, name: "응비관 중식", rating: 4.5, img: "/path/to/image" },
+  ];
+
+  const menuRankingData = [
+    { id: 1, name: "짜장면 - 응비관 중식", rating: 4.5, img: "/path/to/image" },
+    { id: 2, name: "짜장면 - 응비관 중식", rating: 4.5, img: "/path/to/image" },
+  ];
 
   return (
     <div style={styles.container}>
-      <div style={styles.mealInfo}>
-        <p style={{ fontWeight: 'bold' }}>2024/10/26 웅비관 저녁</p>
-        <div style={styles.mealImageContainer}>
-          <img src={`${process.env.PUBLIC_URL}/assets/진리관점심밥.jpg`} alt="Meal" style={styles.mealImage} />
-        </div>
+      <div style={styles.header}>랭킹</div>
+      {/* Calendar Section */}
+      <div style={styles.calendarSection}>
+        <CalendarHeader />
       </div>
-      <div style={styles.ratings}>
-        <div style={styles.dormRating}>
-          <img src={`${process.env.PUBLIC_URL}/assets/진리관 사진.jpg`} alt="진리관" style={styles.dormImage} />
-          <p style={styles.dormName}>진리관</p>
-          <div style={styles.bar}>
-            {/* <img src={`${process.env.PUBLIC_URL}/assets/2등.png`} alt="Silver Trophy" style={styles.trophyImage} /> */}
-            <p style={styles.ratingText}>4.2 Rating</p>
+
+      {/* Rankings */}
+      <div style={styles.rankingsContainer}>
+        <section>
+          <h2 style={styles.sectionTitle}>식단별 랭킹</h2>
+          <div style={styles.gridContainer}>
+            {rankingListData.map((item) => (
+              <div key={item.id} style={styles.rankingCard}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/qkq.jpg`}
+                  alt={item.name}
+                  style={styles.cardImage}
+                />
+                <h3 style={styles.cardTitle}>{item.name}</h3>
+                <p style={styles.cardRating}>⭐ {item.rating}</p>
+              </div>
+            ))}
           </div>
-        </div>
-        <div style={{ ...styles.dormRating, ...styles.topRated }}>
-          <img src={`${process.env.PUBLIC_URL}/assets/웅비관 사진.jpg`} alt="웅비관" style={styles.dormImage} />
-          <p style={styles.dormName}>웅비관</p>
-          <div style={styles.bar}>
-            {/* <img src={`${process.env.PUBLIC_URL}/assets/1등.png`} alt="Gold Trophy" style={styles.trophyImage} /> */}
-            <p style={styles.ratingText}>4.7 Rating</p>
+        </section>
+        <section>
+          <h2 style={styles.sectionTitle}>메뉴별 랭킹</h2>
+          <div>
+            {menuRankingData.map((item) => (
+              <div key={item.id} style={styles.listContainer}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/qkq.jpg`}
+                  alt={item.name}
+                  style={styles.listImage}
+                />
+                <div style={{ flex: 1 }}>
+                  <h3 style={styles.listTitle}>{item.name}</h3>
+                </div>
+                <p style={styles.cardRating}>⭐ {item.rating}</p>
+              </div>
+            ))}
           </div>
-        </div>
-        <div style={styles.dormRating}>
-          <img src={`${process.env.PUBLIC_URL}/assets/자유관 사진.jpg`} alt="자유관" style={styles.dormImage} />
-          <p style={styles.dormName}>자유관</p>
-          <div style={styles.bar}>
-            {/* <img src={`${process.env.PUBLIC_URL}/assets/3등.png`} alt="Bronze Trophy" style={styles.trophyImage} /> */}
-            <p style={styles.ratingText}>3.7 Rating</p>
-          </div>
-        </div>
+        </section>
       </div>
-      <Navbar/>
+      <div style={styles.navbar}>
+        <Navbar />
+      </div>
     </div>
   );
-}
+};
 
 export default Ranking;

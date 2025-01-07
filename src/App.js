@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 // 공통 컴포넌트
 import Header from './components/Header';
-import CalendarHeader from './components/CalendarHeader'; // CalendarHeader 추가
 
 // 페이지 컴포넌트
 import Home from './pages/Home';
@@ -34,7 +33,7 @@ function ConditionHeaderNavbar() {
       {currentPath === '/home' && <Header />}
       
       {/* CalendarHeader는 "/home"과 "/contents"에서만 렌더링 */}
-      {['/home', '/ranking'].includes(currentPath) && <CalendarHeader />}
+      {/* {['/home', '/ranking'].includes(currentPath) && <CalendarHeader />} */}
     </>
   );
 }
