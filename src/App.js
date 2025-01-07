@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 // 공통 컴포넌트
 import Header from './components/Header';
-import Navbar from './components/Navbar';
 import CalendarHeader from './components/CalendarHeader'; // CalendarHeader 추가
 
 // 페이지 컴포넌트
@@ -23,23 +22,19 @@ import Test from './pages/Test';
 import './index.css';
 
 /* 
- * (A) Header와 Navbar를 경로별로 조건부 렌더링할 컴포넌트
- * "/login" 경로에서는 표시하지 않음.
+ * (A) Header와 CalendarHeader를 경로별로 조건부 렌더링할 컴포넌트
  */
 function ConditionHeaderNavbar() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  if (currentPath === '/login' || currentPath === '/' || currentPath === '/signinemail' || currentPath === '/signinkakao' || currentPath === '*') {
-    return null;
-  }
-
   return (
     <>
-      <Header />
-      {/* 특정 경로에서만 CalendarHeader 렌더링 */}
-      {currentPath === '/home' && <CalendarHeader />}
-      <Navbar />
+      {/* Header는 "/home"에서만 렌더링 */}
+      {currentPath === '/home' && <Header />}
+      
+      {/* CalendarHeader는 "/home"과 "/contents"에서만 렌더링 */}
+      {['/home', '/ranking'].includes(currentPath) && <CalendarHeader />}
     </>
   );
 }

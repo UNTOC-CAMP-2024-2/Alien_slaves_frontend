@@ -6,7 +6,7 @@ function Header() {
       display: 'flex',
       justifyContent: 'center',   // 수평 가운데 정렬
       alignItems: 'center',       // 수직 가운데 정렬
-      padding: '20px',
+      padding: '5px',
       backgroundColor: '#FFFFFF',
       color: '#101010',
       width: '100%',

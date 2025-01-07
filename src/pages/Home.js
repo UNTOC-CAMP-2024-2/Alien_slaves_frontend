@@ -1,27 +1,97 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 
+// 스타일 객체 정의 (모든 CSS를 중앙에서 관리)
+const styles = {
+  container: {
+    // 전체 화면의 배경색과 레이아웃 설정
+    backgroundColor: '#f3f4f6',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+  },
+  content: {
+    // 상단 여백, 양쪽 마진, 하단 여백 설정
+    flex: 1,
+    marginTop: '24px',
+    marginInline: '16px',
+    paddingBottom: '64px',
+  },
+  section: {
+    // 각 섹션 간 여백 설정
+    marginBottom: '24px',
+  },
+  title: {
+    // 섹션 제목의 글꼴 크기와 스타일
+    fontSize: '18px',
+    fontWeight: '600',
+    marginBottom: '16px',
+  },
+  buttonGroup: {
+    // 버튼 그룹의 정렬과 여백 설정
+    display: 'flex',
+    justifyContent: 'start',
+    marginBottom: '16px',
+  },
+  button: (isActive) => ({
+    // 버튼의 크기, 스타일, 상태별 배경색 변경
+    padding: '8px 16px',
+    marginRight: '8px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    backgroundColor: isActive ? '#3b82f6' : '#e5e7eb', // 활성화 상태에 따라 색상 변경
+    color: isActive ? '#ffffff' : '#1f2937',
+    transition: 'background-color 0.2s', // 배경색 전환 효과
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: isActive ? '#2563eb' : '#d1d5db', // 호버 시 색상 변경
+    },
+  }),
+  grid: {
+    // 그리드 레이아웃 설정
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)', // 3열 그리드
+    gap: '16px',
+  },
+  card: {
+    // 각 카드(식단 메뉴)의 스타일
+    backgroundColor: '#ffffff',
+    padding: '16px',
+    borderRadius: '8px',
+    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  },
+  cardTitle: {
+    // 카드의 제목 스타일
+    color: '#1f2937',
+    fontWeight: 'bold',
+    marginBottom: '8px',
+  },
+  cardList: {
+    // 카드 내용의 목록 스타일
+    color: '#6b7280',
+    listStyle: 'none',
+    paddingLeft: 0,
+    margin: 0,
+  },
+  listItem: {
+    // 카드 내용의 각 항목 간 간격 설정
+    marginBottom: '4px',
+  },
+};
+
 function Home() {
+  // 기숙사와 학식 선택 상태를 관리하는 useState 훅
   const [selectedDorm, setSelectedDorm] = useState('자유관'); // 기숙사 선택 상태
   const [selectedHall, setSelectedHall] = useState('금정회관'); // 학식 선택 상태
 
-  // 아침, 점심, 저녁 메뉴 데이터 (각각 6가지 메뉴)
+  // 아침, 점심, 저녁 메뉴 데이터를 정의
   const menus = {
     dormitory: {
       자유관: {
         breakfast: ['짜장밥', '홍게짬뽕', '멘보샤', '계란찜', '우유', '바나나'],
         lunch: ['김치볶음밥', '돈까스', '계란찜', '샐러드', '미역국', '배추김치'],
         dinner: ['제육덮밥', '미역국', '배추김치', '불고기', '잡채', '어묵볶음'],
-      },
-      진리관: {
-        breakfast: ['쌀밥', '계란말이', '김치', '북어국', '햄구이', '콩나물무침'],
-        lunch: ['짜장면', '탕수육', '단무지', '나물비빔밥', '된장국', '양배추샐러드'],
-        dinner: ['된장찌개', '고등어구이', '시금치무침', '감자조림', '깍두기', '잡채'],
-      },
-      웅비관: {
-        breakfast: ['우유', '빵', '딸기잼', '사과', '삶은 달걀', '오이무침'],
-        lunch: ['라면', '만두', '오이무침', '불고기', '무생채', '미역국'],
-        dinner: ['치킨카레', '샐러드', '배추김치', '김치볶음밥', '계란찜', '어묵국'],
       },
     },
     cafeteria: {
@@ -30,51 +100,32 @@ function Home() {
         lunch: ['불고기', '미역국', '샐러드', '김치전', '어묵볶음', '양배추김치'],
         dinner: ['김치찌개', '계란후라이', '콩나물무침', '제육볶음', '잡채', '배추김치'],
       },
-      문창회관: {
-        breakfast: ['잡곡밥', '감자볶음', '김치', '단호박죽', '스크램블에그', '사과'],
-        lunch: ['짜장면', '탕수육', '단무지', '된장국', '비빔밥', '나물무침'],
-        dinner: ['된장국', '생선구이', '무생채', '떡볶이', '김말이', '깍두기'],
-      },
-      샛별회관: {
-        breakfast: ['토스트', '우유', '바나나', '삶은 달걀', '감자샐러드', '오렌지'],
-        lunch: ['치즈돈까스', '우동', '김치', '불고기', '미역국', '양배추무침'],
-        dinner: ['카레라이스', '시저샐러드', '양배추김치', '삼겹살', '된장국', '깍두기'],
-      },
-      학생회관: {
-        breakfast: ['쌀밥', '김치찌개', '스크램블에그', '두부조림', '감자볶음', '바나나'],
-        lunch: ['제육볶음', '콩나물국', '배추김치', '떡갈비', '시금치무침', '오이소박이'],
-        dinner: ['참치김치찌개', '불고기', '깍두기', '어묵볶음', '잡채', '샐러드'],
-      },
     },
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col relative">
-      {/* Content Section */}
-      <div className="flex-1 mt-6 mx-4 pb-16">
-        {/* Dormitory Section */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">기숙사</h2>
-          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */}
-            {['자유관', '진리관', '웅비관'].map((dorm, index) => (
+    <div style={styles.container}>
+      {/* 콘텐츠 섹션 */}
+      <div style={styles.content}>
+        {/* 기숙사 섹션 */}
+        <div style={styles.section}>
+          <h2 style={styles.title}>기숙사</h2>
+          <div style={styles.buttonGroup}>
+            {['자유관'].map((dorm) => (
               <button
-                key={index}
+                key={dorm}
                 onClick={() => setSelectedDorm(dorm)}
-                className={`px-4 py-2 mr-2 rounded-lg text-sm ${
-                  selectedDorm === dorm
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                } hover:bg-blue-400 transition`}
+                style={styles.button(selectedDorm === dorm)}
               >
                 {dorm}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-4">
-            {['아침', '점심', '저녁'].map((time, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="text-gray-800 font-bold mb-2">{time}</h3>
-                <ul className="text-gray-600 space-y-1">
+          <div style={styles.grid}>
+            {['아침', '점심', '저녁'].map((time) => (
+              <div key={time} style={styles.card}>
+                <h3 style={styles.cardTitle}>{time}</h3>
+                <ul style={styles.cardList}>
                   {menus.dormitory[selectedDorm][
                     time === '아침'
                       ? 'breakfast'
@@ -82,7 +133,9 @@ function Home() {
                       ? 'lunch'
                       : 'dinner'
                   ].map((menu, i) => (
-                    <li key={i}>{menu}</li>
+                    <li key={i} style={styles.listItem}>
+                      {menu}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -90,29 +143,25 @@ function Home() {
           </div>
         </div>
 
-        {/* Cafeteria Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">학식</h2>
-          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */}
-            {['금정회관', '문창회관', '샛별회관', '학생회관'].map((hall, index) => (
+        {/* 학식 섹션 */}
+        <div style={styles.section}>
+          <h2 style={styles.title}>학식</h2>
+          <div style={styles.buttonGroup}>
+            {['금정회관'].map((hall) => (
               <button
-                key={index}
+                key={hall}
                 onClick={() => setSelectedHall(hall)}
-                className={`px-4 py-2 mr-2 rounded-lg text-sm ${
-                  selectedHall === hall
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                } hover:bg-blue-400 transition`}
+                style={styles.button(selectedHall === hall)}
               >
                 {hall}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-4">
-            {['아침', '점심', '저녁'].map((time, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="text-gray-800 font-bold mb-2">{time}</h3>
-                <ul className="text-gray-600 space-y-1">
+          <div style={styles.grid}>
+            {['아침', '점심', '저녁'].map((time) => (
+              <div key={time} style={styles.card}>
+                <h3 style={styles.cardTitle}>{time}</h3>
+                <ul style={styles.cardList}>
                   {menus.cafeteria[selectedHall][
                     time === '아침'
                       ? 'breakfast'
@@ -120,7 +169,9 @@ function Home() {
                       ? 'lunch'
                       : 'dinner'
                   ].map((menu, i) => (
-                    <li key={i}>{menu}</li>
+                    <li key={i} style={styles.listItem}>
+                      {menu}
+                    </li>
                   ))}
                 </ul>
               </div>
