@@ -28,13 +28,13 @@ function Navbar() {
     bottomNav: {
       display: 'flex',
       justifyContent: 'space-around',
-      padding: '25px 0',
-      position: 'absolute',
-      height: '40px',
-      bottom: 0,
+      padding: '15px 0',
       width: '100%',
       backgroundColor: '#ffffff',
       color: '#fff',
+      position: 'sticky', // Sticky로 설정
+      bottom: 0, // 스크롤 시 화면 하단에 유지
+      zIndex: 10, // 다른 요소가 덮지 않도록
     },
     bottomButton: {
       margin: 'auto',
