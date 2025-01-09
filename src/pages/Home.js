@@ -54,7 +54,7 @@ function Home() {
       <div className="flex-1 mt-6 mx-4 pb-16">
         {/* Dormitory Section */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-3">기숙사</h2>
+          <h2 className="text-lg font-semibold mb-4">기숙사</h2>
           <div className="flex justify-start mb-4"> {/* 좌측 정렬 */}
             {['자유관', '진리관', '웅비관'].map((dorm, index) => (
               <button
@@ -93,7 +93,7 @@ function Home() {
         {/* Cafeteria Section */}
         <div>
           <h2 className="text-lg font-semibold mb-4">학식</h2>
-          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */}
+          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */} 
             {['금정회관', '문창회관', '샛별회관', '학생회관'].map((hall, index) => (
               <button
                 key={index}

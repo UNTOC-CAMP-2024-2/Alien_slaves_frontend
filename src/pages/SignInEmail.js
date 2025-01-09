@@ -49,7 +49,7 @@ function SignInEmail() {
       backgroundColor: '#FAFAFA',
     },
     card: {
-      width: '320px',
+      width: '360px',
       backgroundColor: '#fff',
       borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
@@ -89,6 +89,7 @@ function SignInEmail() {
       backgroundColor: '#e0e0e0',
       fontSize: '0.8rem',
       fontWeight: 'bold',
+      color: '#939191',
     },
     select: {
       width: '100%',
@@ -97,6 +98,7 @@ function SignInEmail() {
       border: '1px solid #ddd',
       fontSize: '0.9rem',
       marginBottom: '10px',
+      color: '#939191',
     },
     loginButton: {
       width: '100%',
@@ -106,7 +108,7 @@ function SignInEmail() {
       borderRadius: '8px',
       cursor: 'pointer',
       backgroundColor: '#9CE3D4',
-      color: '#1a1a1a',
+      color: '#ffffff',
       fontWeight: 'bold',
       fontSize: '0.9rem',
     },

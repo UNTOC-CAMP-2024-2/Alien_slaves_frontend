@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoChatbubble } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 
 function SignInKakao() {
@@ -29,7 +30,7 @@ function SignInKakao() {
       backgroundColor: '#FAFAFA',
     },
     card: {
-      width: '320px',
+      width: '360px',
       backgroundColor: '#fff',
       borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
@@ -43,7 +44,7 @@ function SignInKakao() {
       marginBottom: '15px',
     },
     logoImage: {
-      width: '140px', // 크기를 조정
+      width: '140px',
       height: 'auto',
       padding: '30px 0px 60px 0px',
     },
@@ -66,20 +67,22 @@ function SignInKakao() {
       border: 'none',
       borderRadius: '8px',
       cursor: 'pointer',
-      backgroundColor: '#9CE3D4',
-      color: '#1a1a1a',
+      backgroundColor: '#e0e0e0',
+      color: '#939191',
       fontSize: '0.8rem',
       fontWeight: 'bold',
     },
     collegeInput: {
       margin: '10px 0',
-      width: '95%', // 원하는 길이로 조절
-      alignSelf: 'center', // 필요 시 정렬 보정
+      width: '100%',
     },
     kakaoButton: {
-      width: '100%',
-      padding: '12px',
-      margin: '16px 0 0 0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '87%',
+      padding: '10px',
+      margin: '12px 0px 12px 20px',
       border: 'none',
       borderRadius: '8px',
       cursor: 'pointer',
@@ -87,6 +90,10 @@ function SignInKakao() {
       color: '#3B1D1D',
       fontWeight: 'bold',
       fontSize: '0.9rem',
+    },
+    kakaoIcon: {
+      fontSize: '1.2rem',
+      marginRight: '8px',
     },
   };
 
@@ -142,7 +149,7 @@ function SignInKakao() {
 
         {/* 카카오 로그인 버튼 */}
         <button style={styles.kakaoButton} onClick={handleKakaoSignIn}>
-          Sign in with Kakao
+          <IoChatbubble style={styles.kakaoIcon} />Sign in with Kakao
         </button>
       </div>
     </div>
