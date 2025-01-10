@@ -1,274 +1,414 @@
-// import React, { useState } from 'react';
+import React, { useState } from 'react';
+import { FaStar, FaRegStar } from 'react-icons/fa';
+import Navbar from '../components/Navbar';
 
-// function App() {
-//   const data = {
-//     자유관: {
-//       아침: { 
-//         image: '/assets/자유관아침밥.jpg', 
-//         menu: ["콩나물국", "계란말이", "김치", "감자볶음", "스크램블에그", "샐러드"], 
-//         ratings: [3.5, 4, 5, 4, 3.5, 4.5] 
-//       },
-//       점심: { 
-//         image: '/assets/자유관점심밥.jpg', 
-//         menu: ["된장찌개", "닭볶음탕", "나물무침", "깍두기", "잡채", "어묵볶음"], 
-//         ratings: [4, 4.5, 5, 4, 4.5, 5] 
-//       },
-//       저녁: { 
-//         image: '/assets/자유관저녁밥.jpg', 
-//         menu: ["김치볶음밥", "미역국", "잡채", "치킨", "볶음김치", "된장국"], 
-//         ratings: [4.5, 5, 4, 4.5, 5, 4.5] 
-//       },
-//     },
-//     진리관: {
-//       아침: { 
-//         image: '/assets/진리관아침밥.jpg', 
-//         menu: ["흑미밥", "두부조림", "김치", "콩자반", "멸치볶음", "미소국"], 
-//         ratings: [5, 4.5, 4, 4.5, 5, 4.5] 
-//       },
-//       점심: { 
-//         image: '/assets/진리관점심밥.jpg', 
-//         menu: ["청국장", "불고기", "상추쌈", "오징어볶음", "비빔국수", "우엉조림"], 
-//         ratings: [4.5, 4, 5, 4, 5, 4.5] 
-//       },
-//       저녁: { 
-//         image: '/assets/진리관저녁밥.jpg', 
-//         menu: ["비빔밥", "미소된장국", "깍두기", "고등어구이", "닭강정", "어묵국"], 
-//         ratings: [5, 5, 4.5, 4, 4.5, 5] 
-//       },
-//     },
-//     웅비관: {
-//       아침: { 
-//         image: '/assets/웅비관아침밥.jpg', 
-//         menu: ["쌀밥", "달걀프라이", "깍두기", "조랭이떡국", "참치샐러드", "소시지구이"], 
-//         ratings: [4, 3.5, 4.5, 4, 4.5, 3.5] 
-//       },
-//       점심: { 
-//         image: '/assets/웅비관점심밥.jpg', 
-//         menu: ["떡국", "소불고기", "나물무침", "스팸구이", "미나리전", "잡채"], 
-//         ratings: [4.5, 5, 4, 4.5, 5, 4.5] 
-//       },
-//       저녁: { 
-//         image: '/assets/웅비관저녁밥.jpg', 
-//         menu: ["짜장밥", "튀김", "김치", "계란찜", "카레라이스", "연근조림"], 
-//         ratings: [5, 4.5, 4, 4.5, 5, 4.5] 
-//       },
-//     },
-//   };
+const styles = {
+  container: {
+    fontFamily: 'Arial, sans-serif',
+    margin: '0 auto',
+    maxWidth: '400px',
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: '24px',
+    fontWeight: '700',
+    marginBottom: '20px',
+  },
+  buttonGroup: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    marginBottom: '20px',
+  },
+  button: {
+    backgroundColor: '#f1f1f1',
+    border: 'none',
+    borderRadius: '10px',
+    padding: '10px 12px',
+    margin: '5px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '700',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  },
+  selectedButton: {
+    backgroundColor: '#9CE3D4',
+    color: '#fff',
+  },
+  ratingsRow: {
+    justifyContent: 'space-between',
+    padding: '10px',
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    marginBottom: '10px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    display: 'flex', // 추가
+    alignItems: 'center', // 추가
+  },
+  ratingsItem: {
+    fontSize: '18px',
+    fontWeight: '600',
+  },
+  // 별 컨테이너
+  starContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    color: '#FFCD00',
+  },
+  addPhoto: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '250px',
+    backgroundColor: '#eaeaea',
+    borderRadius: '8px',
+    margin: '20px 0',
+    fontSize: '16px',
+    color: '#aaa',
+    cursor: 'pointer',
+    textAlign: 'center',
+  },
+  hiddenInput: {
+    display: 'none',
+  },
+  uploadedFile: {
+    marginTop: '10px',
+    fontSize: '14px',
+    color: '#555',
+  },
+  textArea: {
+    width: '100%',
+    height: '80px',
+    borderRadius: '8px',
+    border: '1px solid #ccc',
+    padding: '10px',
+    fontSize: '16px',
+    marginBottom: '20px',
+    resize: 'none',
+  },
+  submitButton: {
+    display: 'block',
+    width: '100%',
+    backgroundColor: '#9CE3D4',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '8px',
+    padding: '10px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: '600',
+  },
+};
 
-//   const [selectedDormitory, setSelectedDormitory] = useState("진리관");
-//   const [selectedMealTime, setSelectedMealTime] = useState("저녁");
+/**
+ * 별점을 표시하고, 클릭 시 선택한 별점을 상위로 전달하는 컴포넌트
+ * @param {number} stars 현재 별점 (1 ~ 5)
+ * @param {function} onStarClick 클릭 시 호출되는 함수 (별점 값 전달)
+ */
+const StarRating = ({ stars, onStarClick }) => {
+  const totalStars = 5; // 최대 5점
 
-//   const currentData = data[selectedDormitory][selectedMealTime];
+  return (
+    <div style={styles.starContainer}>
+      {[...Array(totalStars)].map((_, index) => {
+        const starValue = index + 1;
+        const isActive = starValue <= stars;
+        const IconComponent = isActive ? FaStar : FaRegStar;
 
-//   const handleRatingChange = (index, newRating) => {
-//     const updatedRatings = [...currentData.ratings];
-//     updatedRatings[index] = newRating;
-//     currentData.ratings = updatedRatings; // 별점 수정 반영
-//   };
+        return (
+          <span
+            key={index}
+            onClick={() => onStarClick(starValue)}
+          >
+            <IconComponent />
+          </span>
+        );
+      })}
+    </div>
+  );
+};
 
-//   return (
-//     <div style={styles.container}>
-//       <ImageSection image={currentData.image} />
-//       <InfoSection
-//         menuItems={currentData.menu}
-//         ratings={currentData.ratings}
-//         selectedDormitory={selectedDormitory}
-//         selectedMealTime={selectedMealTime}
-//         onSelectDormitory={setSelectedDormitory}
-//         onSelectMealTime={setSelectedMealTime}
-//         onRatingChange={handleRatingChange}
-//       />
-//     </div>  
-//   );
-// }
+// 초기 데이터
+const ratingsData = [
+  { name: '흑미밥', score: 5 },
+  { name: '참치김치찌개', score: 5 },
+  { name: '돈육장조림', score: 5 },
+  { name: '맛김', score: 5 },
+  { name: '콩나물무침', score: 5 },
+  { name: '배추김치', score: 5 },
+  { name: '우유(두유)', score: 5 },
+];
 
-// function ImageSection({ image }) {
-//   return (
-//     <div style={styles.imageSection}>
-//       <img src={image} alt="식사 이미지" style={styles.image} />
-//     </div>
-//   );
-// }
+/**
+ * 각 음식 항목에 대해 별점을 표시하고 클릭 시 해당 값을 업데이트하는 컴포넌트
+ */
+const FoodRatings = () => {
+    // 별점 데이터 상태 관리
+    const [ratings, setRatings] = useState(ratingsData);
+  
+    // 별 클릭 시 해당 음식 항목의 별점을 변경
+    const handleStarClick = (index, newScore) => {
+      const updatedRatings = [...ratings];
+      updatedRatings[index].score = newScore;
+  
+      // 여기서 음식 이름과 선택된 별점을 console.log로 출력
+      console.log(`음식: ${updatedRatings[index].name}, 별점: ${newScore}`);
+  
+      setRatings(updatedRatings);
+    };
+  
+    return (
+      <div>
+        {ratings.map((item, index) => (
+          <div key={index} style={styles.ratingsRow}>
+            <span style={styles.ratingsItem}>{item.name}</span>
+            <StarRating
+              stars={item.score}
+              onStarClick={(starValue) => handleStarClick(index, starValue)}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
 
-// function InfoSection({ 
-//   menuItems, ratings, selectedDormitory, selectedMealTime, 
-//   onSelectDormitory, onSelectMealTime, onRatingChange 
-// }) {
-//   return (
-//     <div style={styles.infoSection}>
-//       <div style={styles.barContainer}>
-//         {["자유관", "진리관", "웅비관"].map((name) => (
-//           <div
-//             key={name}
-//             style={{
-//               ...styles.bar,
-//               backgroundColor: name === selectedDormitory ? '#444' : '#333',
-//             }}
-//             onClick={() => onSelectDormitory(name)}
-//           >
-//             <span style={styles.barText}>{name}</span>
-//           </div>
-//         ))}
-//       </div>
-//       <div style={styles.barContainer}>
-//         {["아침", "점심", "저녁"].map((time) => (
-//           <div
-//             key={time}
-//             style={{
-//               ...styles.bar,
-//               backgroundColor: time === selectedMealTime ? '#444' : '#333',
-//             }}
-//             onClick={() => onSelectMealTime(time)}
-//           >
-//             <span style={styles.barText}>{time}</span>
-//           </div>
-//         ))}
-//       </div>
-//       <div style={styles.menu}>
-//         {menuItems.map((item, index) => (
-//           <div key={index} style={styles.menuItem}>
-//             <span>{item}</span>
-//             <StarRating 
-//               rating={ratings[index]} 
-//               onChange={(newRating) => onRatingChange(index, newRating)} 
-//             />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
+/**
+ * 최종 평가 페이지
+ */
+const Evaluating = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [reviewText, setReviewText] = useState('');
+  const [uploadedFile, setUploadedFile] = useState(null);
 
-// function StarRating({ rating, onChange }) {
-//   const [isDragging, setIsDragging] = useState(false);
-//   const [hoveredRating, setHoveredRating] = useState(rating);
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setSelectedSubCategory('');
+    setSelectedTime('');
+  };
 
-//   const handleMouseMove = (e) => {
-//     if (!isDragging) return;
-//     const { left, width } = e.currentTarget.getBoundingClientRect();
-//     const mouseX = e.clientX - left;
-//     const newRating = Math.min(5, Math.max(0, (mouseX / width) * 5)); // 0 ~ 5 범위
-//     setHoveredRating(newRating);
-//     onChange(Math.round(newRating * 2) / 2); // 반 칸 단위
-//   };
+  const handleSubCategoryClick = (subcategory) => {
+    setSelectedSubCategory(subcategory);
+    setSelectedTime('');
+  };
 
-//   const handleMouseDown = () => {
-//     setIsDragging(true);
-//   };
+  const handleTimeClick = (time) => {
+    setSelectedTime(time);
+    console.log('카테고리:', selectedCategory);
+    console.log('세부 카테고리:', selectedSubCategory);
+    console.log('시간대:', time);
+  };
 
-//   const handleMouseUp = () => {
-//     setIsDragging(false);
-//     onChange(Math.round(hoveredRating * 2) / 2);
-//   };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // 파일 객체를 브라우저에서 미리 볼 수 있는 임시 URL로 만들어줌
+      const url = URL.createObjectURL(file);
+      setUploadedFile(url);
+    }
+  };
+  
 
-//   const handleMouseLeave = () => {
-//     if (!isDragging) setHoveredRating(rating);
-//   };
+  const handleReviewSubmit = () => {
+    if (!selectedCategory || !selectedSubCategory || !selectedTime || !reviewText.trim()) {
+      alert('모든 항목을 입력해주세요.');
+      return;
+    }
 
-//   return (
-//     <div
-//       style={styles.starRating}
-//       onMouseDown={handleMouseDown}
-//       onMouseUp={handleMouseUp}
-//       onMouseMove={handleMouseMove}
-//       onMouseLeave={handleMouseLeave}
-//     >
-//       {[...Array(5)].map((_, i) => {
-//         const fillPercentage = Math.min(1, Math.max(0, hoveredRating - i));
-//         return (
-//           <div key={i} style={styles.starContainer}>
-//             <svg
-//               viewBox="0 0 24 24"
-//               fill={fillPercentage > 0 ? (fillPercentage === 1 ? 'gold' : 'url(#half-gradient)') : 'none'}
-//               stroke="gold"
-//               xmlns="http://www.w3.org/2000/svg"
-//               style={styles.star}
-//             >
-//               <defs>
-//                 <linearGradient id="half-gradient">
-//                   <stop offset={`${fillPercentage * 100}%`} stopColor="gold" />
-//                   <stop offset={`${fillPercentage * 100}%`} stopColor="none" />
-//                 </linearGradient>
-//               </defs>
-//               <path
-//                 d="M12 .587l3.668 7.425 8.209 1.195-5.938 5.799 1.4 8.165-7.339-3.857-7.338 3.857 1.399-8.165L.123 9.207l8.209-1.195L12 .587z"
-//               />
-//             </svg>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// }
+    console.log('카테고리:', selectedCategory);
+    console.log('세부 카테고리:', selectedSubCategory);
+    console.log('시간대:', selectedTime);
+    console.log('리뷰 내용:', reviewText);
+    console.log('업로드된 파일:', uploadedFile || '없음');
 
-// const styles = {
-//   container: {
-//     width: '360px',
-//     margin: 'auto',
-//     backgroundColor: '#222',
-//     borderRadius: '8px',
-//     overflow: 'hidden',
-//     marginTop: '20px',
-//     color: '#fff',
-//   },
-//   imageSection: {
-//     textAlign: 'center',
-//     padding: '10px',
-//   },
-//   image: {
-//     width: '100%',
-//     height: '200px',
-//     borderRadius: '8px',
-//     objectFit: 'cover',
-//   },
-//   infoSection: {
-//     padding: '20px',
-//   },
-//   barContainer: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     margin: '10px 0',
-//   },
-//   bar: {
-//     flex: 1,
-//     textAlign: 'center',
-//     padding: '8px 0',
-//     backgroundColor: '#333',
-//     margin: '0 5px',
-//     borderRadius: '4px',
-//     cursor: 'pointer',
-//   },
-//   barText: {
-//     color: '#fff',
-//     fontSize: '14px',
-//     fontWeight: 'bold',
-//   },
-//   menu: {
-//     marginTop: '10px',
-//   },
-//   menuItem: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     margin: '10px 10px',
-//     alignItems: 'center',
-//   },
-//   starRating: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     cursor: 'pointer',
-//     width: '120px',
-//     height: '24px',
-//     position: 'relative',
-//     overflow: 'hidden',
-//   },
-//   starContainer: {
-//     width: '20%',
-//     position: 'relative',
-//   },
-//   star: {
-//     width: '24px',
-//     height: '24px',
-//   },
-// };
+    alert('리뷰가 제출되었습니다.');
+  };
 
-// export default App;
+  return (
+    <div>
+      <div style={styles.container}>
+        <h1 style={styles.title}>평가</h1>
+        {/* 카테고리 선택 */}
+        <div style={styles.buttonGroup}>
+          <button
+            style={{
+              ...styles.button,
+              ...(selectedCategory === '학식' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleCategoryClick('학식')}
+          >
+            학식
+          </button>
+          <button
+            style={{
+              ...styles.button,
+              ...(selectedCategory === '기숙사' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleCategoryClick('기숙사')}
+          >
+            기숙사
+          </button>
+        </div>
+
+        {/* 세부 카테고리 선택 */}
+        {selectedCategory === '학식' && (
+          <div style={styles.buttonGroup}>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '금정회관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('금정회관')}
+            >
+              금정회관
+            </button>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '문창회관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('문창회관')}
+            >
+              문창회관
+            </button>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '샛별회관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('샛별회관')}
+            >
+              샛별회관
+            </button>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '학생회관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('학생회관')}
+            >
+              학생회관
+            </button>
+          </div>
+        )}
+        {selectedCategory === '기숙사' && (
+          <div style={styles.buttonGroup}>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '웅비관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('웅비관')}
+            >
+              웅비관
+            </button>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '진리관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('진리관')}
+            >
+              진리관
+            </button>
+            <button
+              style={{
+                ...styles.button,
+                ...(selectedSubCategory === '자유관' ? styles.selectedButton : {}),
+              }}
+              onClick={() => handleSubCategoryClick('자유관')}
+            >
+              자유관
+            </button>
+          </div>
+        )}
+
+                {/* 시간대 선택 */}
+        <div style={styles.buttonGroup}>
+        {selectedSubCategory === '웅비관' && (
+            <button
+            style={{
+                ...styles.button,
+                ...(selectedTime === '조식' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleTimeClick('조식')}
+            >
+            조식
+            </button>
+        )}
+        <button
+            style={{
+            ...styles.button,
+            ...(selectedTime === '아침' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleTimeClick('아침')}
+        >
+            아침
+        </button>
+        <button
+            style={{
+            ...styles.button,
+            ...(selectedTime === '점심' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleTimeClick('점심')}
+        >
+            점심
+        </button>
+        <button
+            style={{
+            ...styles.button,
+            ...(selectedTime === '저녁' ? styles.selectedButton : {}),
+            }}
+            onClick={() => handleTimeClick('저녁')}
+        >
+            저녁
+        </button>
+        </div>
+
+        {/* 음식 리스트 + 별점(클릭 가능) */}
+        <div>
+          <FoodRatings />
+        </div>
+
+        {/* 사진 업로드 */}
+        <div
+        style={{
+            ...styles.addPhoto,
+            backgroundImage: uploadedFile ? `url(${uploadedFile})` : 'none',
+            backgroundSize: 'cover',       // div에 가득 차도록
+            backgroundPosition: 'center',  // 중앙 정렬
+            backgroundRepeat: 'no-repeat',
+        }}
+        onClick={() => document.getElementById('fileInput').click()}
+        >
+        {/* 업로드된 파일이 없으면 '사진 추가' 라는 문구를 보여주고, 있으면 문구 없이 배경 이미지만 표시 */}
+        {!uploadedFile && '사진 추가'}
+        <input
+            id="fileInput"
+            type="file"
+            style={styles.hiddenInput}
+            onChange={handleFileChange}
+        />
+        </div>
+        {/* 리뷰 작성 텍스트박스 */}
+        <textarea
+          style={styles.textArea}
+          placeholder="리뷰를 작성해주세요"
+          value={reviewText}
+          onChange={(e) => setReviewText(e.target.value)}
+        ></textarea>
+
+        {/* 제출 버튼 */}
+        <button style={styles.submitButton} onClick={handleReviewSubmit}>
+          확인
+        </button>
+      </div>
+      <Navbar />
+    </div>
+  );
+};
+
+export default Evaluating;

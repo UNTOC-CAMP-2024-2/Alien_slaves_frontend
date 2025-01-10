@@ -61,9 +61,9 @@ function Navbar() {
       {/* 리뷰 아이콘 */}
       <div
         style={styles.bottomButton}
-        onMouseEnter={() => handleMouseEnter('review')}
-        onMouseLeave={() => handleMouseLeave('review')}
-        onClick={() => navigate('/review')}
+        onMouseEnter={() => handleMouseEnter('evaluating')}
+        onMouseLeave={() => handleMouseLeave('evaluating')}
+        onClick={() => navigate('/evaluating')}
       >
         <FaListAlt color={iconColors.review} />
       </div>
