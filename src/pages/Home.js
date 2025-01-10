@@ -49,32 +49,38 @@ function Home() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col relative">
+    <div style={{ backgroundColor: '#F3F4F6', minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       {/* Content Section */}
-      <div className="flex-1 mt-6 mx-4 pb-16">
+      <div style={{ flex: 1, marginTop: '1.5rem', marginInline: '1rem', paddingBottom: '4rem' }}>
         {/* Dormitory Section */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">기숙사</h2>
-          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>기숙사</h2>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}> {/* 좌측 정렬 */}
             {['자유관', '진리관', '웅비관'].map((dorm, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedDorm(dorm)}
-                className={`px-4 py-2 mr-2 rounded-lg text-sm ${
-                  selectedDorm === dorm
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                } hover:bg-blue-400 transition`}
+                style={{
+                  padding: '0.5rem 1rem',
+                  marginRight: '0.5rem',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                  backgroundColor: selectedDorm === dorm ? '#3B82F6' : '#E5E7EB',
+                  color: selectedDorm === dorm ? '#FFFFFF' : '#1F2937',
+                  transition: 'background-color 0.2s ease',
+                }}
+                onMouseOver={(e) => (e.target.style.backgroundColor = '#2563EB')}
+                onMouseOut={(e) => (e.target.style.backgroundColor = selectedDorm === dorm ? '#3B82F6' : '#E5E7EB')}
               >
                 {dorm}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
             {['아침', '점심', '저녁'].map((time, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="text-gray-800 font-bold mb-2">{time}</h3>
-                <ul className="text-gray-600 space-y-1">
+              <div key={index} style={{ backgroundColor: '#FFFFFF', padding: '1rem', borderRadius: '0.5rem', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)' }}>
+                <h3 style={{ color: '#1F2937', fontWeight: 'bold', marginBottom: '0.5rem' }}>{time}</h3>
+                <ul style={{ color: '#4B5563', listStyle: 'none', paddingLeft: 0 }}>
                   {menus.dormitory[selectedDorm][
                     time === '아침'
                       ? 'breakfast'
@@ -92,27 +98,33 @@ function Home() {
 
         {/* Cafeteria Section */}
         <div>
-          <h2 className="text-lg font-semibold mb-4">학식</h2>
-          <div className="flex justify-start mb-4"> {/* 좌측 정렬 */} 
+          <h2 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>학식</h2>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}> {/* 좌측 정렬 */} 
             {['금정회관', '문창회관', '샛별회관', '학생회관'].map((hall, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedHall(hall)}
-                className={`px-4 py-2 mr-2 rounded-lg text-sm ${
-                  selectedHall === hall
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                } hover:bg-blue-400 transition`}
+                style={{
+                  padding: '0.5rem 1rem',
+                  marginRight: '0.5rem',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                  backgroundColor: selectedHall === hall ? '#3B82F6' : '#E5E7EB',
+                  color: selectedHall === hall ? '#FFFFFF' : '#1F2937',
+                  transition: 'background-color 0.2s ease',
+                }}
+                onMouseOver={(e) => (e.target.style.backgroundColor = '#2563EB')}
+                onMouseOut={(e) => (e.target.style.backgroundColor = selectedHall === hall ? '#3B82F6' : '#E5E7EB')}
               >
                 {hall}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
             {['아침', '점심', '저녁'].map((time, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="text-gray-800 font-bold mb-2">{time}</h3>
-                <ul className="text-gray-600 space-y-1">
+              <div key={index} style={{ backgroundColor: '#FFFFFF', padding: '1rem', borderRadius: '0.5rem', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)' }}>
+                <h3 style={{ color: '#1F2937', fontWeight: 'bold', marginBottom: '0.5rem' }}>{time}</h3>
+                <ul style={{ color: '#4B5563', listStyle: 'none', paddingLeft: 0 }}>
                   {menus.cafeteria[selectedHall][
                     time === '아침'
                       ? 'breakfast'
