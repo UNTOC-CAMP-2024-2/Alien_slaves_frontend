@@ -13,8 +13,8 @@ const styles = {
     height: '60px',
   },
   header: {
-    fontSize: '24px',
-    fontWeight: '900',
+    fontSize: '20px',
+    fontWeight: '700',
   },
   section: {
     border: '1px solid #FAFAFA',

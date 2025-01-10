@@ -1,274 +1,191 @@
-import React, { useState } from 'react';
-
-function App() {
-  const data = {
-    자유관: {
-      아침: { 
-        image: '/assets/자유관아침밥.jpg', 
-        menu: ["콩나물국", "계란말이", "김치", "감자볶음", "스크램블에그", "샐러드"], 
-        ratings: [3.5, 4, 5, 4, 3.5, 4.5] 
-      },
-      점심: { 
-        image: '/assets/자유관점심밥.jpg', 
-        menu: ["된장찌개", "닭볶음탕", "나물무침", "깍두기", "잡채", "어묵볶음"], 
-        ratings: [4, 4.5, 5, 4, 4.5, 5] 
-      },
-      저녁: { 
-        image: '/assets/자유관저녁밥.jpg', 
-        menu: ["김치볶음밥", "미역국", "잡채", "치킨", "볶음김치", "된장국"], 
-        ratings: [4.5, 5, 4, 4.5, 5, 4.5] 
-      },
-    },
-    진리관: {
-      아침: { 
-        image: '/assets/진리관아침밥.jpg', 
-        menu: ["흑미밥", "두부조림", "김치", "콩자반", "멸치볶음", "미소국"], 
-        ratings: [5, 4.5, 4, 4.5, 5, 4.5] 
-      },
-      점심: { 
-        image: '/assets/진리관점심밥.jpg', 
-        menu: ["청국장", "불고기", "상추쌈", "오징어볶음", "비빔국수", "우엉조림"], 
-        ratings: [4.5, 4, 5, 4, 5, 4.5] 
-      },
-      저녁: { 
-        image: '/assets/진리관저녁밥.jpg', 
-        menu: ["비빔밥", "미소된장국", "깍두기", "고등어구이", "닭강정", "어묵국"], 
-        ratings: [5, 5, 4.5, 4, 4.5, 5] 
-      },
-    },
-    웅비관: {
-      아침: { 
-        image: '/assets/웅비관아침밥.jpg', 
-        menu: ["쌀밥", "달걀프라이", "깍두기", "조랭이떡국", "참치샐러드", "소시지구이"], 
-        ratings: [4, 3.5, 4.5, 4, 4.5, 3.5] 
-      },
-      점심: { 
-        image: '/assets/웅비관점심밥.jpg', 
-        menu: ["떡국", "소불고기", "나물무침", "스팸구이", "미나리전", "잡채"], 
-        ratings: [4.5, 5, 4, 4.5, 5, 4.5] 
-      },
-      저녁: { 
-        image: '/assets/웅비관저녁밥.jpg', 
-        menu: ["짜장밥", "튀김", "김치", "계란찜", "카레라이스", "연근조림"], 
-        ratings: [5, 4.5, 4, 4.5, 5, 4.5] 
-      },
-    },
-  };
-
-  const [selectedDormitory, setSelectedDormitory] = useState("진리관");
-  const [selectedMealTime, setSelectedMealTime] = useState("저녁");
-
-  const currentData = data[selectedDormitory][selectedMealTime];
-
-  const handleRatingChange = (index, newRating) => {
-    const updatedRatings = [...currentData.ratings];
-    updatedRatings[index] = newRating;
-    currentData.ratings = updatedRatings; // 별점 수정 반영
-  };
-
-  return (
-    <div style={styles.container}>
-      <ImageSection image={currentData.image} />
-      <InfoSection
-        menuItems={currentData.menu}
-        ratings={currentData.ratings}
-        selectedDormitory={selectedDormitory}
-        selectedMealTime={selectedMealTime}
-        onSelectDormitory={setSelectedDormitory}
-        onSelectMealTime={setSelectedMealTime}
-        onRatingChange={handleRatingChange}
-      />
-    </div>  
-  );
-}
-
-function ImageSection({ image }) {
-  return (
-    <div style={styles.imageSection}>
-      <img src={image} alt="식사 이미지" style={styles.image} />
-    </div>
-  );
-}
-
-function InfoSection({ 
-  menuItems, ratings, selectedDormitory, selectedMealTime, 
-  onSelectDormitory, onSelectMealTime, onRatingChange 
-}) {
-  return (
-    <div style={styles.infoSection}>
-      <div style={styles.barContainer}>
-        {["자유관", "진리관", "웅비관"].map((name) => (
-          <div
-            key={name}
-            style={{
-              ...styles.bar,
-              backgroundColor: name === selectedDormitory ? '#444' : '#333',
-            }}
-            onClick={() => onSelectDormitory(name)}
-          >
-            <span style={styles.barText}>{name}</span>
-          </div>
-        ))}
-      </div>
-      <div style={styles.barContainer}>
-        {["아침", "점심", "저녁"].map((time) => (
-          <div
-            key={time}
-            style={{
-              ...styles.bar,
-              backgroundColor: time === selectedMealTime ? '#444' : '#333',
-            }}
-            onClick={() => onSelectMealTime(time)}
-          >
-            <span style={styles.barText}>{time}</span>
-          </div>
-        ))}
-      </div>
-      <div style={styles.menu}>
-        {menuItems.map((item, index) => (
-          <div key={index} style={styles.menuItem}>
-            <span>{item}</span>
-            <StarRating 
-              rating={ratings[index]} 
-              onChange={(newRating) => onRatingChange(index, newRating)} 
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function StarRating({ rating, onChange }) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [hoveredRating, setHoveredRating] = useState(rating);
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const { left, width } = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - left;
-    const newRating = Math.min(5, Math.max(0, (mouseX / width) * 5)); // 0 ~ 5 범위
-    setHoveredRating(newRating);
-    onChange(Math.round(newRating * 2) / 2); // 반 칸 단위
-  };
-
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    onChange(Math.round(hoveredRating * 2) / 2);
-  };
-
-  const handleMouseLeave = () => {
-    if (!isDragging) setHoveredRating(rating);
-  };
-
-  return (
-    <div
-      style={styles.starRating}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {[...Array(5)].map((_, i) => {
-        const fillPercentage = Math.min(1, Math.max(0, hoveredRating - i));
-        return (
-          <div key={i} style={styles.starContainer}>
-            <svg
-              viewBox="0 0 24 24"
-              fill={fillPercentage > 0 ? (fillPercentage === 1 ? 'gold' : 'url(#half-gradient)') : 'none'}
-              stroke="gold"
-              xmlns="http://www.w3.org/2000/svg"
-              style={styles.star}
-            >
-              <defs>
-                <linearGradient id="half-gradient">
-                  <stop offset={`${fillPercentage * 100}%`} stopColor="gold" />
-                  <stop offset={`${fillPercentage * 100}%`} stopColor="none" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M12 .587l3.668 7.425 8.209 1.195-5.938 5.799 1.4 8.165-7.339-3.857-7.338 3.857 1.399-8.165L.123 9.207l8.209-1.195L12 .587z"
-              />
-            </svg>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+import React from 'react';
+import Navbar from '../components/Navbar';
 
 const styles = {
   container: {
-    width: '360px',
-    margin: 'auto',
-    backgroundColor: '#222',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    marginTop: '20px',
-    color: '#fff',
+    margin: '0 auto',
+    maxWidth: '400px',
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
   },
-  imageSection: {
+  title: {
     textAlign: 'center',
-    padding: '10px',
+    fontSize: '20px',
+    marginBottom: '20px',
+    fontWeight: '700',
+  },
+  reviewContainer: {
+    backgroundColor: '#fff',
+    padding: '15px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    marginBottom: '20px',
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: '15px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    marginBottom: '20px',
+  },
+  nickname: {
+    fontSize: '18px',
+    marginBottom: '10px',
+    fontWeight: '600',
+  },
+  reviewText: {
+    fontSize: '15px',
+    marginBottom: '10px',
+    fontWeight: '600',
+  },
+  starsContainer: {
+    display: 'inline-block',
+    margin: '5px 0',
+    fontWeight: '700',
+  },
+  star: {
+    fontSize: '20px',
+    margin: '0 2px',
+    display: 'inline-block',
+    transition: 'color 0.3s ease',
+  },
+  starFull: {
+    color: '#FFD700',
+  },
+  starEmpty: {
+    color: '#ccc',
+  },
+  imageContainer: {
+    textAlign: 'center',
+    marginBottom: '20px',
   },
   image: {
     width: '100%',
-    height: '200px',
     borderRadius: '8px',
-    objectFit: 'cover',
   },
-  infoSection: {
-    padding: '20px',
+  navbar: {
+    position: 'sticky',
+    bottom: '0',
+    width: '100%',
+    zIndex: '1000',
   },
-  barContainer: {
+  ratingsRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    margin: '10px 0',
-  },
-  bar: {
-    flex: 1,
-    textAlign: 'center',
-    padding: '8px 0',
-    backgroundColor: '#333',
-    margin: '0 5px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  barText: {
-    color: '#fff',
-    fontSize: '14px',
-    fontWeight: 'bold',
-  },
-  menu: {
-    marginTop: '10px',
-  },
-  menuItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '10px 10px',
     alignItems: 'center',
+    margin: '10px',
   },
-  starRating: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    width: '120px',
-    height: '24px',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  starContainer: {
-    width: '20%',
-    position: 'relative',
-  },
-  star: {
-    width: '24px',
-    height: '24px',
+  ratingsItem: {
+    fontSize: '16px',
+    fontWeight: '600',
   },
 };
 
-export default App;
+const reviews = [
+  {
+    nickname: '사용자1',
+    reviewText: '정말 맛있어요!',
+    stars: 5,
+    image: `${process.env.PUBLIC_URL}/assets/qkq.jpg`,
+    ratings: [
+      { name: '흑미밥', score: 5 },
+      { name: '참치김치찌개', score: 5 },
+      { name: '돈육장조림', score: 5 },
+      { name: '맛김', score: 5 },
+      { name: '콩나물무침', score: 5 },
+      { name: '배추김치', score: 5 },
+      { name: '우유(두유)', score: 5 },
+    ],
+  },
+  {
+    nickname: '사용자2',
+    reviewText: '다시 방문하고 싶어요!',
+    stars: 4,
+    image: `${process.env.PUBLIC_URL}assets/진리관점심밥.jpg`,
+    ratings: [
+      { name: '쌀밥', score: 4 },
+      { name: '된장찌개', score: 4 },
+      { name: '고등어구이', score: 5 },
+      { name: '계란말이', score: 4 },
+      { name: '무생채', score: 4 },
+      { name: '깍두기', score: 3 },
+      { name: '요구르트', score: 4 },
+    ],
+  },
+];
+
+const calculateAverage = (ratings) => {
+  const total = ratings.reduce((sum, item) => sum + item.score, 0);
+  return (total / ratings.length).toFixed(1);
+};
+
+const StarRating = ({ stars }) => {
+  const fullStarsCount = Math.round(stars);
+  const totalStars = 5;
+
+  return (
+    <div style={styles.starsContainer}>
+      {[...Array(totalStars)].map((_, index) => (
+        <span
+          key={index}
+          style={{
+            ...styles.star,
+            ...(index < fullStarsCount ? styles.starFull : styles.starEmpty),
+          }}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
+};
+
+const FoodRatings = ({ ratings }) => {
+  return (
+    <div>
+      {ratings.map((item, index) => (
+        <div key={index} style={styles.ratingsRow}>
+          <span style={styles.ratingsItem}>{item.name}</span>
+          <StarRating stars={item.score} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const Review = () => {
+  return (
+    <div>
+      <div style={styles.container}>
+        {/* Title */}
+        <h1 style={styles.title}>리뷰</h1>
+
+        {/* Reviews */}
+        {reviews.map((review, index) => {
+          const averageStars = calculateAverage(review.ratings);
+          return (
+            <div key={index} style={styles.reviewContainer}>
+              {/* Review Card */}
+              <div style={styles.card}>
+                <h2 style={styles.nickname}>{review.nickname}</h2>
+                <p style={styles.reviewText}>{review.reviewText}</p>
+                <StarRating stars={averageStars} />
+              </div>
+
+              {/* Image */}
+              <div style={styles.imageContainer}>
+                <img src={review.image} alt="음식 이미지" style={styles.image} />
+              </div>
+
+              {/* Food Ratings */}
+              <FoodRatings ratings={review.ratings} />
+            </div>
+          );
+        })}
+      </div>
+      <Navbar style={styles.navbar} />
+    </div>
+  );
+};
+
+export default Review;
