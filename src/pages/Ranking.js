@@ -82,11 +82,11 @@ const styles = {
     backgroundColor: "white",
     borderRadius: "8px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    padding: "16px",
+    padding: "3px",
   },
   listImage: {
-    width: "95px",
-    height: "65px",
+    width: "100px",
+    height: "80px",
     objectFit: "cover",
     borderRadius: "8px",
     marginRight: "16px",
@@ -100,6 +100,7 @@ const styles = {
     fontSize: "14px",
     color: "#fbbf24",
     fontWeight: "bold",
+    marginRight: '15px',
   },
 };
 

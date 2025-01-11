@@ -59,6 +59,7 @@ const styles = {
   imageContainer: {
     textAlign: 'center',
     marginBottom: '20px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
   },
   image: {
     width: '100%',
@@ -151,7 +152,7 @@ const FoodRatings = ({ ratings }) => {
       {ratings.map((item, index) => (
         <div key={index} style={styles.ratingsRow}>
           <span style={styles.ratingsItem}>{item.name}</span>
-          <StarRating stars={item.score} /> 
+          <StarRating stars={item.score} />
         </div>
       ))}
     </div>
