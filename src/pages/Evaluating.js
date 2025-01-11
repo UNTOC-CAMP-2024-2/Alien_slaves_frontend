@@ -402,7 +402,6 @@ const Evaluating = () => {
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
         ></textarea>
-
         {/* 제출 버튼 */}
         <button style={styles.submitButton} onClick={handleReviewSubmit}>
           확인
