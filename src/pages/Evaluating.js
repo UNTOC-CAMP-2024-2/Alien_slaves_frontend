@@ -6,7 +6,7 @@ const styles = {
   container: {
     fontFamily: 'Arial, sans-serif',
     maxWidth: '400px',
-    padding: '20px',
+    padding: '20px 10px 20px 20px',
     backgroundColor: '#f9f9f9',
   },
   title: {
@@ -24,12 +24,12 @@ const styles = {
   button: {
     backgroundColor: '#f1f1f1',
     border: 'none',
-    borderRadius: '10px',
-    padding: '10px 12px',
-    margin: '5px',
+    borderRadius: '3px',
+    padding: '6px 8px',
+    margin: '6px',
     cursor: 'pointer',
     fontSize: '14px',
-    fontWeight: '700',
+    fontWeight: '900',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
   selectedButton: {
@@ -42,15 +42,16 @@ const styles = {
     backgroundColor: '#fff',
     borderRadius: '8px',
     marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    display: 'flex', // 추가
-    alignItems: 'center', // 추가
+    fontSize: '16px',
+    color: '#424141',
   },
   ratingsItem: {
-    fontSize: '18px',
+    fontSize: '14 px',
     fontWeight: '600',
   },
-  // 별 컨테이너
   starContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -120,12 +121,12 @@ const StarRating = ({ stars, onStarClick }) => {
         const IconComponent = isActive ? FaStar : FaRegStar;
 
         return (
-          <span
+          <button
             key={index}
             onClick={() => onStarClick(starValue)}
           >
             <IconComponent />
-          </span>
+          </button>
         );
       })}
     </div>
@@ -380,8 +381,8 @@ const Evaluating = () => {
         style={{
             ...styles.addPhoto,
             backgroundImage: uploadedFile ? `url(${uploadedFile})` : 'none',
-            backgroundSize: 'cover',       // div에 가득 차도록
-            backgroundPosition: 'center',  // 중앙 정렬
+            backgroundSize: 'cover',
+            backgroundPosition: 'center', 
             backgroundRepeat: 'no-repeat',
         }}
         onClick={() => document.getElementById('fileInput').click()}
