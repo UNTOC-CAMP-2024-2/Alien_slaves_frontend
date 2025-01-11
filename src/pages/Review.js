@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 const styles = {
   container: {
@@ -79,6 +80,12 @@ const styles = {
     fontSize: '16px',
     fontWeight: '600',
   },
+  starContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    color: '#FFCD00',
+    gap: '5px'
+  },
 };
 
 const reviews = [
@@ -88,13 +95,13 @@ const reviews = [
     stars: 5,
     image: `${process.env.PUBLIC_URL}/assets/qkq.jpg`,
     ratings: [
-      { name: '흑미밥', score: 5 },
-      { name: '참치김치찌개', score: 5 },
-      { name: '돈육장조림', score: 5 },
-      { name: '맛김', score: 5 },
-      { name: '콩나물무침', score: 5 },
-      { name: '배추김치', score: 5 },
-      { name: '우유(두유)', score: 5 },
+      { name: '흑미밥', score: 3 },
+      { name: '참치김치찌개', score: 3 },
+      { name: '돈육장조림', score: 3 },
+      { name: '맛김', score: 3 },
+      { name: '콩나물무침', score: 3 },
+      { name: '배추김치', score: 3 },
+      { name: '우유(두유)', score: 3 },
     ],
   },
   {
@@ -120,33 +127,31 @@ const calculateAverage = (ratings) => {
 };
 
 const StarRating = ({ stars }) => {
-  const fullStarsCount = Math.round(stars);
-  const totalStars = 5;
+  const totalStars = 5; // 최대 5점
 
   return (
-    <div style={styles.starsContainer}>
-      {[...Array(totalStars)].map((_, index) => (
-        <span
-          key={index}
-          style={{
-            ...styles.star,
-            ...(index < fullStarsCount ? styles.starFull : styles.starEmpty),
-          }}
-        >
-          ★
-        </span>
-      ))}
+    <div style={styles.starContainer}>
+      {[...Array(totalStars)].map((_, index) => {
+        const starValue = index + 1;
+        const isActive = starValue <= stars;
+        const IconComponent = isActive ? FaStar : FaRegStar;
+
+        return (
+          <span key={index}>
+            <IconComponent />
+          </span>
+        );
+      })}
     </div>
   );
 };
-
 const FoodRatings = ({ ratings }) => {
   return (
     <div>
       {ratings.map((item, index) => (
         <div key={index} style={styles.ratingsRow}>
           <span style={styles.ratingsItem}>{item.name}</span>
-          <StarRating stars={item.score} />
+          <StarRating stars={item.score} /> 
         </div>
       ))}
     </div>

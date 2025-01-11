@@ -31,7 +31,7 @@ function LogIn() {
       backgroundColor: '#FAFAFA',
     },
     card: {
-      width: '360px',
+      width: '370px',
       backgroundColor: '#fff',
       borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
@@ -45,7 +45,7 @@ function LogIn() {
       marginBottom: '15px',
     },
     logoImage: {
-      width: '140px',
+      width: '170px',
       height: 'auto',
       marginRight: '10px',
       padding: '10px',
@@ -59,7 +59,7 @@ function LogIn() {
       outline: 'none',
       fontSize: '0.9rem',
       fontWeight: '500',
-      backgroundColor: 'F5F5F8',
+      backgroundColor: '#F5F5F8',
     },
     kakaoButton: {
       display: 'flex',

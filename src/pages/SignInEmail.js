@@ -10,6 +10,9 @@ function SignInEmail() {
   const [nickname, setNickname] = useState('');
   const [college, setCollege] = useState(''); // 선택한 대학 저장
 
+  // (5) 전화번호 상태 추가
+  const [phoneNumber, setPhoneNumber] = useState('');
+
   // (1) 이메일 코드 전송
   const handleSendCode = () => {
     console.log('이메일로 인증 코드를 전송합니다. 이메일:', email);
@@ -30,11 +33,18 @@ function SignInEmail() {
     console.log('소속 대학 확인 요청:', college);
   };
 
-  // (5) 로그인 버튼 클릭 시 -> Home으로 이동
+  // (5) 전화번호 입력 시 숫자만 남기기
+  const handlePhoneNumberChange = (e) => {
+    const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
+    setPhoneNumber(onlyNumbers);
+  };
+
+  // (6) 로그인 버튼 클릭 시 -> Home으로 이동
   const handleLogin = () => {
-    console.log('이메일: ',  email);
+    console.log('이메일: ', email);
     console.log('닉네임: ', nickname);
     console.log('선택한 소속 대학:', college);
+    console.log('전화번호:', phoneNumber);
     navigate('/home');
   };
 
@@ -49,7 +59,7 @@ function SignInEmail() {
       backgroundColor: '#FAFAFA',
     },
     card: {
-      width: '360px',
+      width: '370px',
       backgroundColor: '#fff',
       borderRadius: '26px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
@@ -63,14 +73,14 @@ function SignInEmail() {
       marginBottom: '10px',
     },
     logoImage: {
-      width: '140px',
+      width: '170px',
       height: 'auto',
       padding: '10px',
     },
     inputRow: {
       display: 'flex',
       alignItems: 'center',
-      margin: '10px 0',
+      margin: '16px 0',
     },
     input: {
       flex: 1,
@@ -79,6 +89,8 @@ function SignInEmail() {
       border: '1px solid #ddd',
       outline: 'none',
       fontSize: '0.9rem',
+      backgroundColor: '#F5F5F8',
+      color: '#939191',
     },
     smallButton: {
       marginLeft: '8px',
@@ -99,11 +111,12 @@ function SignInEmail() {
       fontSize: '0.9rem',
       marginBottom: '10px',
       color: '#939191',
+      backgroundColor: '#F5F5F8',
+      marginTop: '0px',
     },
     loginButton: {
       width: '100%',
       padding: '12px',
-      margin: '16px 0 0 0',
       border: 'none',
       borderRadius: '8px',
       cursor: 'pointer',
@@ -112,6 +125,11 @@ function SignInEmail() {
       fontWeight: 'bold',
       fontSize: '0.9rem',
     },
+
+    inputNumber: {
+      marginTop: '0px',
+      padding: '0px'
+    }
   };
 
   return (
@@ -173,9 +191,23 @@ function SignInEmail() {
           </button>
         </div>
 
-        {/* (4) 소속 대학 선택 (select 태그) */}
+                {/* (4) 전화번호 입력 - 숫자만 */}
+                <div style={styles.inputRow}>
+          <input
+            type="text"
+            placeholder="전화번호를 입력해주세요."
+            style={styles.input}
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+          />
+        </div>
+
+       {/* (5) 소속 대학 선택 (select 태그) */}
         <select
-          style={styles.select}
+          style={{
+            ...styles.select,
+            marginBottom: '20px', // ← 여기만 추가
+          }}
           value={college}
           onChange={(e) => {
             setCollege(e.target.value);
@@ -196,9 +228,10 @@ function SignInEmail() {
           <option value="사범대학">사범대학</option>
           <option value="예술대학">예술대학</option>
           <option value="첨단융합학부">첨단융합학부</option>
+          <option value="정보의생명공학대학">정보의생명공학대학</option>
         </select>
 
-        {/* (5) 최종 로그인 버튼 */}
+        {/* (6) 최종 로그인 버튼 */}
         <button style={styles.loginButton} onClick={handleLogin}>
           로그인
         </button>

@@ -15,7 +15,18 @@ function Navbar() {
 
   // 마우스 오버 시 아이콘 색상 변경
   const handleMouseEnter = (icon) => {
-    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#67D3C4' }));
+    setIconColors((prevColors) => ({ ...prevColors, [icon]: '#9CE3D4' }));
+  };
+
+  // 마우스 클릭 시 아이콘 색상 변경 + 다른 아이콘은 기본 색상
+  const handleIconClick = (icon) => {
+    setIconColors({
+      home: '#E3E5E9',
+      review: '#E3E5E9',
+      ranking: '#E3E5E9',
+      contents: '#E3E5E9',
+      [icon]: '#9CE3D4',
+    });
   };
 
   // 마우스가 벗어났을 때 색상 복귀
@@ -32,7 +43,7 @@ function Navbar() {
       width: '100%',
       backgroundColor: '#ffffff',
       color: '#fff',
-      position: 'sticky', // Sticky로 설정
+      position: 'sticky',
       bottom: 0,
       zIndex: 10,
     },
@@ -53,17 +64,19 @@ function Navbar() {
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('home')}
         onMouseLeave={() => handleMouseLeave('home')}
-        onClick={() => navigate('/home')}
+        onClickCapture={() => handleIconClick('home')} // << 추가
+        onClick={() => navigate('/home')}              // 기존 코드 유지
       >
         <FaHome color={iconColors.home} />
       </div>
 
-      {/* 리뷰 아이콘 */}
+      {/* 리뷰 아이콘 (코드상 name='evaluating'이지만 state는 'review'로 되어 있어 맞춰줌) */}
       <div
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('evaluating')}
         onMouseLeave={() => handleMouseLeave('evaluating')}
-        onClick={() => navigate('/evaluating')}
+        onClickCapture={() => handleIconClick('review')} // << 추가
+        onClick={() => navigate('/evaluating')}          // 기존 코드 유지
       >
         <FaListAlt color={iconColors.review} />
       </div>
@@ -73,7 +86,8 @@ function Navbar() {
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('ranking')}
         onMouseLeave={() => handleMouseLeave('ranking')}
-        onClick={() => navigate('/ranking')}
+        onClickCapture={() => handleIconClick('ranking')} // << 추가
+        onClick={() => navigate('/ranking')}              // 기존 코드 유지
       >
         <FaTrophy color={iconColors.ranking} />
       </div>
@@ -83,7 +97,8 @@ function Navbar() {
         style={styles.bottomButton}
         onMouseEnter={() => handleMouseEnter('contents')}
         onMouseLeave={() => handleMouseLeave('contents')}
-        onClick={() => navigate('/contents')}
+        onClickCapture={() => handleIconClick('contents')} // << 추가
+        onClick={() => navigate('/contents')}              // 기존 코드 유지
       >
         <FaBars color={iconColors.contents} />
       </div>

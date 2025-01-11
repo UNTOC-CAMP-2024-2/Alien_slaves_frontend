@@ -11,6 +11,7 @@ function Header() {
       color: '#101010',
       width: '100%',
       boxSizing: 'border-box',
+      position: 'sticky',
     },
     logoContainer: {
       display: 'flex',

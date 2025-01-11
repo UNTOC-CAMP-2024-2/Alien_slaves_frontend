@@ -5,14 +5,13 @@ import Navbar from '../components/Navbar';
 const styles = {
   container: {
     fontFamily: 'Arial, sans-serif',
-    margin: '0 auto',
     maxWidth: '400px',
     padding: '20px',
     backgroundColor: '#f9f9f9',
   },
   title: {
     textAlign: 'center',
-    fontSize: '24px',
+    fontSize: '20px',
     fontWeight: '700',
     marginBottom: '20px',
   },
@@ -56,12 +55,15 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     color: '#FFCD00',
+    gap: '5px'
   },
   addPhoto: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '250px',
+    height: 'auto',
+    minHeight: '230px',
+    maxHeight: '700px',
     backgroundColor: '#eaeaea',
     borderRadius: '8px',
     margin: '20px 0',
