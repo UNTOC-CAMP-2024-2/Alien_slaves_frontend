@@ -110,10 +110,10 @@ function SignInKakao() {
       backgroundColor: '#FEE500',
       color: '#3B1D1D',
       fontWeight: 'bold',
-      fontSize: '0.9rem',
+      fontSize: '1.0rem',
     },
     kakaoIcon: {
-      fontSize: '1.2rem',
+      fontSize: '0.9rem',
       marginRight: '8px',
     },
   };
