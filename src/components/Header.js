@@ -18,7 +18,7 @@ function Header() {
       alignItems: 'center',
     },
     logoImage: {
-      width: '140px',  // 로고 크기를 조정
+      width: '170px',  // 로고 크기를 조정
       height: 'auto',
       padding: '10px',
     },

@@ -4,7 +4,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 // 공통 컴포넌트
-// import Header from './components/Header';
+import Header from './components/Header';
 
 // 페이지 컴포넌트
 import Home from './pages/Home';
@@ -12,6 +12,7 @@ import LogIn from './pages/LogIn';
 import Ranking from './pages/Ranking';
 import Review from './pages/Review';
 import Contents from './pages/Contents';
+import ChatPage from './pages/ChatPage';
 import Evaluating from './pages/Evaluating';
 import SignInEmail from './pages/SignInEmail';
 import SignInKakao from './pages/SignInKakao';
@@ -31,7 +32,7 @@ function ConditionHeaderNavbar() {
   return (
     <>
       {/* Header는 "/home"에서만 렌더링 */}
-      {/* {currentPath === '/home' && <Header />} */}
+      {currentPath === '/home' && <Header />}
       {currentPath === '/home' && <CalendarHeader />}
       
       {/* CalendarHeader는 "/home"과 "/contents"에서만 렌더링 */}
@@ -57,9 +58,11 @@ function App() {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/review" element={<Review />} />
           <Route path="/contents" element={<Contents />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/evaluating" element={<Evaluating />} />
           <Route path="/signinemail" element={<SignInEmail />} />
           <Route path="/signinkakao" element={<SignInKakao />} />
+          
           <Route path="/test" element={<Test />} />
 
           {/* 404 대체 - 없는 경로로 들어올 경우 로그인으로 */}
