@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IoChatbubble } from "react-icons/io5";
+import { IoIosText } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 function LogIn() {
@@ -77,8 +77,9 @@ function LogIn() {
       fontSize: '1.0rem',
     },
     kakaoIcon: {
-      fontSize: '0.9rem',
+      fontSize: '1.2rem',
       marginRight: '8px',
+      marginTop: '3px',
     },
     btnGroup: {
       display: 'flex',
@@ -128,7 +129,7 @@ function LogIn() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <button style={styles.kakaoButton} onClick={handleKakaoLogin}>
-          <IoChatbubble style={styles.kakaoIcon} /> Login with Kakao
+          <IoIosText style={styles.kakaoIcon} /> Login with Kakao
         </button>
         <div style={styles.btnGroup}>
           <button style={styles.actionBtn} onClick={handleSignup}>

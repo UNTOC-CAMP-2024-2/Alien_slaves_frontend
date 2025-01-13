@@ -3,6 +3,17 @@ import Navbar from '../components/Navbar';
 import { IoIosText } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
+/** 중복되는 스타일을 재활용하기 위한 기본 스타일 정의 */
+const baseBoxShadow = {
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+};
+
+const inputBase = {
+  padding: '8px',
+  borderRadius: '5px',
+  border: '1px solid #ddd',
+};
+
 const styles = {
   container: {
     maxWidth: '480px',
@@ -20,8 +31,7 @@ const styles = {
     fontSize: '20px',
     fontWeight: '700',
   },
-
-  // 추천 식단 영역
+  // 공통 영역
   section: {
     margin: '10px',
     padding: '20px',
@@ -29,6 +39,7 @@ const styles = {
     border: '1px solid #FAFAFA',
     borderRadius: '10px',
   },
+  // 추천 식단 영역
   recommendationBlock: {
     marginBottom: '30px',
   },
@@ -53,23 +64,21 @@ const styles = {
     height: '110px',
     objectFit: 'cover',
     borderRadius: '10px',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+    ...baseBoxShadow,
   },
   textarea: {
     width: '300px',
     height: '110px',
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
     resize: 'none',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+    ...inputBase,
+    ...baseBoxShadow,
+    padding: '10px', 
   },
-
   // 밥친구 매칭 영역
   matchingTitle: {
     textAlign: 'center',
-    marginBottom: '10px',
-    fontSize: '18px',
+    marginBottom: '20px',
+    fontSize: '20px',
     fontWeight: 'bold',
   },
   formRow: {
@@ -85,19 +94,15 @@ const styles = {
     fontWeight: '600',
   },
   select: {
-    flex: '1',
-    padding: '8px',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
+    flex: 1,
+    ...inputBase, // select에도 같은 인풋 스타일 적용
   },
   input: {
-    flex: '1',
-    padding: '8px',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
+    flex: 1,
+    ...inputBase,
   },
   button: {
-    padding: '10px 15px',
+    padding: '10px 150px',
     backgroundColor: '#9CE3D4',
     color: '#fff',
     fontSize: '15px',
@@ -106,9 +111,9 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
-
+  // 매칭 목록
   listContainer: {
-    marginTop: '20px',
+    marginTop: '0px',
   },
   listItem: {
     display: 'flex',
@@ -140,12 +145,11 @@ const styles = {
     alignItems: 'center',
     gap: '5px',
     padding: '8px 10px',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#9CE3D4',
     color: 'black',
     fontSize: '14px',
     fontWeight: '700',
     textAlign: 'center',
-    border: '1px solid #9CE3D4',
     borderRadius: '5px',
     cursor: 'pointer',
   },
@@ -170,6 +174,9 @@ function Contents() {
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
   const [mealTime, setMealTime] = useState('');
   const [maxPeople, setMaxPeople] = useState('');
+
+  // 추가된 title state
+  const [title, setTitle] = useState('');
 
   const [matchingList, setMatchingList] = useState([
     {
@@ -205,13 +212,13 @@ function Contents() {
   ]);
 
   const handleRegister = () => {
-    if (!selectedRestaurant || !mealTime || !maxPeople) {
+    if (!title || !selectedRestaurant || !mealTime || !maxPeople) {
       alert('모든 항목을 입력해주세요!');
       return;
     }
     const newMatching = {
       id: matchingList.length + 1,
-      title: `새로운 밥친구 모집 (${selectedRestaurant}, ${mealTime})`,
+      title: title,
       restaurant: selectedRestaurant,
       time: mealTime,
       currentPeople: 1,
@@ -220,6 +227,8 @@ function Contents() {
       isActive: true,
     };
     setMatchingList([...matchingList, newMatching]);
+
+    setTitle('');
     setSelectedRestaurant('');
     setMealTime('');
     setMaxPeople('');
@@ -279,6 +288,16 @@ function Contents() {
       <div style={styles.section}>
         <div style={styles.matchingTitle}>밥친구 매칭</div>
         <div style={styles.formRow}>
+          <label style={styles.label}>제목:</label>
+          <input
+            type="text"
+            style={styles.input}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력해주세요."
+          />
+        </div>
+        <div style={styles.formRow}>
           <label style={styles.label}>식당 선택:</label>
           <select
             style={styles.select}
@@ -317,7 +336,7 @@ function Contents() {
             placeholder="ex) 3"
           />
         </div>
-        <div style={{ textAlign: 'right', marginTop: '10px' }}>
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
           <button style={styles.button} onClick={handleRegister}>
             등록
           </button>
@@ -331,7 +350,9 @@ function Contents() {
             <div style={styles.listItem} key={item.id}>
               <div style={styles.listItemTop}>
                 <span style={styles.listItemTitle}>{item.title}</span>
-                <span>-({item.currentPeople}/{item.maxPeople})-</span>
+                <span>
+                  -({item.currentPeople}/{item.maxPeople})-
+                </span>
               </div>
               <div style={styles.listItemSub}>
                 {item.restaurant} / {item.time}
