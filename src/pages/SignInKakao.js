@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IoChatbubble } from "react-icons/io5";
+import { IoIosText } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 function SignInKakao() {
@@ -113,8 +113,9 @@ function SignInKakao() {
       fontSize: '1.0rem',
     },
     kakaoIcon: {
-      fontSize: '0.9rem',
+      fontSize: '1.2rem',
       marginRight: '8px',
+      marginTop: '3px',
     },
   };
 
@@ -197,7 +198,7 @@ function SignInKakao() {
 
         {/* 카카오 로그인 버튼 */}
         <button style={styles.kakaoButton} onClick={handleKakaoSignIn}>
-          <IoChatbubble style={styles.kakaoIcon} />Sign in with Kakao
+          <IoIosText style={styles.kakaoIcon} />Sign in with Kakao
         </button>
       </div>
     </div>
