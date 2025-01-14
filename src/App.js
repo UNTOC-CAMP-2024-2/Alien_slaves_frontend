@@ -20,7 +20,7 @@ import Test from './pages/Test';
 
 // 전역 스타일
 import './index.css';
-import CalendarHeader from './components/CalendarHeader';
+// import CalendarHeader from './components/CalendarHeader';
 
 /* 
  * (A) Header와 CalendarHeader를 경로별로 조건부 렌더링할 컴포넌트
@@ -33,7 +33,7 @@ function ConditionHeaderNavbar() {
     <>
       {/* Header는 "/home"에서만 렌더링 */}
       {currentPath === '/home' && <Header />}
-      {currentPath === '/home' && <CalendarHeader />}
+      {/* {currentPath === '/home' && <CalendarHeader />} */}
       
       {/* CalendarHeader는 "/home"과 "/contents"에서만 렌더링 */}
       {/* {['/home', '/ranking'].includes(currentPath) && <CalendarHeader />} */}
