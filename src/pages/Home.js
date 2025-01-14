@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
+import CalendarHeader from '../components/CalendarHeader'; // 날짜 선택 컴포넌트
 import { useNavigate } from 'react-router-dom';
 
-// (A) 스타일 정의
 const styles = {
   container: {
     backgroundColor: '#F3F4F6',
@@ -61,25 +62,7 @@ const styles = {
   },
 };
 
-// (B) 메뉴 데이터
 const menus = {
-  dormitory: {
-    자유관: {
-      breakfast: ['짜장밥', '홍게짬뽕', '멘보샤', '계란찜', '우유', '바나나'],
-      lunch: ['김치볶음밥', '돈까스', '계란찜', '샐러드', '미역국', '배추김치'],
-      dinner: ['제육덮밥', '미역국', '배추김치', '불고기', '잡채', '어묵볶음'],
-    },
-    진리관: {
-      breakfast: ['쌀밥', '계란말이', '김치', '북어국', '햄구이', '콩나물무침'],
-      lunch: ['짜장면', '탕수육', '단무지', '나물비빔밥', '된장국', '양배추샐러드'],
-      dinner: ['된장찌개', '고등어구이', '시금치무침', '감자조림', '깍두기', '잡채'],
-    },
-    웅비관: {
-      breakfast: ['우유', '빵', '딸기잼', '사과', '삶은 달걀', '오이무침'],
-      lunch: ['라면', '만두', '오이무침', '불고기', '무생채', '미역국'],
-      dinner: ['치킨카레', '샐러드', '배추김치', '김치볶음밥', '계란찜', '어묵국'],
-    },
-  },
   cafeteria: {
     금정회관: {
       breakfast: ['흑미밥', '계란찜', '김치', '사골국', '두부조림', '콩나물무침'],
@@ -104,75 +87,140 @@ const menus = {
   },
 };
 
-// (C) 메뉴 가져오기 헬퍼 함수들
-function getDormMeals(dorm, time) {
-  if (time === '아침') return menus.dormitory[dorm].breakfast;
-  if (time === '점심') return menus.dormitory[dorm].lunch;
-  return menus.dormitory[dorm].dinner;
-}
+const restaurantMapping = {
+  1: "진리관",
+  2: "웅비관",
+  3: "금정회관 교직원 식당",
+  4: "금정회관 학생 식당",
+  5: "문창회관 식당",
+  6: "자유관",
+  7: "학생회관 학생 식당",
+};
 
-function getHallMeals(hall, time) {
-  if (time === '아침') return menus.cafeteria[hall].breakfast;
-  if (time === '점심') return menus.cafeteria[hall].lunch;
-  return menus.cafeteria[hall].dinner;
-}
-
-// (D) 본문
 function Home() {
-  const [selectedDorm, setSelectedDorm] = useState('자유관');   // 기숙사 선택 상태
-  const [selectedHall, setSelectedHall] = useState('금정회관'); // 학식 선택 상태
+  const [selectedDate, setSelectedDate] = useState(new Date()); // 선택된 날짜
+  const [selectedDorm, setSelectedDorm] = useState('자유관'); // 선택된 기숙사
+  const [selectedHall, setSelectedHall] = useState('금정회관'); // 선택된 학식
+  const [dormMenus, setDormMenus] = useState({ 아침: [], 점심: [], 저녁: [] }); // 기숙사 메뉴
+  // const [hallMenus, setHallMenus] = useState({ 아침: [], 점심: [], 저녁: [] }); // 학식 메뉴
   const navigate = useNavigate();
 
-  // 기숙사 버튼 핸들러
-  const handleDormClick = (dorm) => {
-    setSelectedDorm(dorm);
-  };
-  const handleDormMouseOver = (e) => {
-    e.target.style.backgroundColor = '#9CE3D4';
-  };
-  const handleDormMouseOut = (e, dorm) => {
-    e.target.style.backgroundColor =
-      selectedDorm === dorm ? '#9CE3D4' : '#E5E7EB';
+ // 날짜 기반으로 API 호출
+ const fetchMenusByDate = async (type, location, date) => {
+  const validDate = date instanceof Date ? date : new Date(date);
+
+  if (isNaN(validDate)) {
+    console.error("유효하지 않은 날짜가 전달되었습니다:", date);
+    return { 자유관: { 아침: [], 점심: [], 저녁: [] }, 진리관: { 아침: [], 점심: [], 저녁: [] }, 웅비관: { 아침: [], 점심: [], 저녁: [] } };
+  }
+
+  const formattedDate = validDate.toISOString().split("T")[0];
+  const url = `http://localhost:4000/api/v1/restaurants/meals/all?date=${formattedDate}`;
+
+  try {
+    const response = await axios.get(url, {
+      params: { type, location },
+    });
+
+    const data = response.data.data;
+
+    const uniqueData = data.filter(
+      (menu, index, self) =>
+        index ===
+        self.findIndex(
+          (m) =>
+            m.restaurant_id === menu.restaurant_id &&
+            m.time === menu.time &&
+            m.food_name === menu.food_name
+        )
+    );
+
+    // 기숙사별 데이터 초기화
+    const groupedByDorm = {
+      자유관: { 아침: [], 점심: [], 저녁: [] },
+      진리관: { 아침: [], 점심: [], 저녁: [] },
+      웅비관: { 아침: [], 점심: [], 저녁: [] },
+    };
+
+    // 데이터를 기숙사별로 그룹화
+    uniqueData.forEach((menu) => {
+      const dormName = restaurantMapping[menu.restaurant_id];
+
+      if (groupedByDorm[dormName]) {
+        if (menu.time === "조식") {
+          groupedByDorm[dormName]["아침"].push(menu.food_name);
+        } else if (menu.time === "중식") {
+          groupedByDorm[dormName]["점심"].push(menu.food_name);
+        } else if (menu.time === "석식") {
+          groupedByDorm[dormName]["저녁"].push(menu.food_name);
+        }
+      }
+    });
+
+    return groupedByDorm;
+  } catch (error) {
+    console.error(`${type} 메뉴 데이터 가져오기 실패:`, error);
+    return { 자유관: { 아침: [], 점심: [], 저녁: [] }, 진리관: { 아침: [], 점심: [], 저녁: [] }, 웅비관: { 아침: [], 점심: [], 저녁: [] } };
+  }
+};
+
+
+
+
+// 기숙사 및 학식 메뉴 데이터 가져오기
+useEffect(() => {
+  const fetchDormMenus = async () => {
+    const data = await fetchMenusByDate('dormitory', selectedDorm, selectedDate);
+    console.log('기숙사 메뉴:', data); // 콘솔 출력
+    setDormMenus(data);
   };
 
-  // 학식 버튼 핸들러
-  const handleHallClick = (hall) => {
-    setSelectedHall(hall);
-  };
-  const handleHallMouseOver = (e) => {
-    e.target.style.backgroundColor = '#9CE3D4';
-  };
-  const handleHallMouseOut = (e, hall) => {
-    e.target.style.backgroundColor =
-      selectedHall === hall ? '#9CE3D4' : '#E5E7EB';
-  };
+  // const fetchHallMenus = async () => {
+  //   const data = await fetchMenusByDate('cafeteria', selectedHall, selectedDate);
+  //   console.log('학식 메뉴:', data); // 콘솔 출력
+  //   setHallMenus(data);
+  // };
 
-  //리뷰 화면 이동
-  const handleReviewNavigate = (hall, time) => {
-    // 콘솔 로그(선택 메뉴 확인)
-    console.log(`${hall}의 ${time} 메뉴를 선택함.`);
+  fetchDormMenus();
+  // fetchHallMenus();
+}, [selectedDorm, selectedHall, selectedDate]);
 
-    // /review 페이지로 이동
-    navigate('/review');
-  };
   
 
+  // 기숙사 버튼 핸들러
+const handleDormClick = (dorm) => {
+  setSelectedDorm(dorm);
+  console.log(`현재 선택된 기숙사: ${dorm}`);
+};
+
+// 학식 버튼 핸들러
+const handleHallClick = (hall) => {
+  setSelectedHall(hall);
+  console.log(`현재 선택된 학식: ${hall}`);
+};
+
+
+  // 리뷰 페이지 이동
+  const handleReviewNavigate = (type, location, time) => {
+    console.log(`${type}의 ${location} ${time} 메뉴를 선택함.`);
+    navigate('/review', { state: { type, location, time } });
+  };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container}>  
+      {/* 날짜 선택 컴포넌트 */}
+      <CalendarHeader onDateChange={setSelectedDate} />
+
       {/* 메인 콘텐츠 */}
       <div style={styles.content}>
-        
         {/* 기숙사 Section */}
         <div style={styles.section}>
           <h2 style={styles.sectionHeading}>기숙사</h2>
           <div style={styles.buttonRow}>
-            {['자유관', '진리관', '웅비관'].map((dorm, index) => (
+            {['자유관', '진리관', '웅비관'].map((dorm) => (
               <button
-                key={index}
+                key={dorm}
                 onClick={() => handleDormClick(dorm)}
-                onMouseOver={handleDormMouseOver}
-                onMouseOut={(e) => handleDormMouseOut(e, dorm)}
                 style={{
                   ...styles.tabButton,
                   backgroundColor: selectedDorm === dorm ? '#9CE3D4' : '#E5E7EB',
@@ -183,40 +231,32 @@ function Home() {
               </button>
             ))}
           </div>
-          <div style={styles.gridContainer}>
-            {['아침', '점심', '저녁'].map((time, i) => (
+            <div style={styles.gridContainer}>
+            {['아침', '점심', '저녁'].map((time) => (
               <button
-                key={i}
-                style={{
-                  ...styles.card,
-                  border: 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-                onClick={() => handleReviewNavigate(selectedHall, time)}
+                key={time}
+                style={styles.card}
+                onClick={() => handleReviewNavigate('dormitory', selectedDorm, time)}
               >
                 <h3 style={styles.cardTitle}>{time}</h3>
                 <ul style={styles.cardList}>
-                  {getDormMeals(selectedDorm, time).map((menu, j) => (
-                    <li key={j}>{menu}</li>
+                  {dormMenus[selectedDorm]?.[time]?.map((menu, index) => (
+                    <li key={index}>{menu}</li>
                   ))}
                 </ul>
               </button>
             ))}
           </div>
-        </div> 
-        {/* ↑↑↑ 기숙사 Section 닫는 </div> 추가 */}
+        </div>
 
         {/* 학식 Section */}
         <div style={styles.section}>
           <h2 style={styles.sectionHeading}>학식</h2>
           <div style={styles.buttonRow}>
-            {['금정회관', '문창회관', '샛별회관', '학생회관'].map((hall, index) => (
+            {['금정회관', '문창회관', '샛별회관', '학생회관'].map((hall) => (
               <button
-                key={index}
+                key={hall}
                 onClick={() => handleHallClick(hall)}
-                onMouseOver={handleHallMouseOver}
-                onMouseOut={(e) => handleHallMouseOut(e, hall)}
                 style={{
                   ...styles.tabButton,
                   backgroundColor: selectedHall === hall ? '#9CE3D4' : '#E5E7EB',
@@ -228,21 +268,18 @@ function Home() {
             ))}
           </div>
           <div style={styles.gridContainer}>
-            {['아침', '점심', '저녁'].map((time, i) => (
+            {['breakfast', 'lunch', 'dinner'].map((time) => (
               <button
-                key={i}
-                style={{
-                  ...styles.card,
-                  border: 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-                onClick={() => handleReviewNavigate(selectedHall, time)}
+                key={time}
+                style={styles.card}
+                onClick={() => handleReviewNavigate('cafeteria', selectedHall, time)}
               >
-                <h3 style={styles.cardTitle}>{time}</h3>
+                <h3 style={styles.cardTitle}>
+                  {time === 'breakfast' ? '아침' : time === 'lunch' ? '점심' : '저녁'}
+                </h3>
                 <ul style={styles.cardList}>
-                  {getHallMeals(selectedHall, time).map((menu, j) => (
-                    <li key={j}>{menu}</li>
+                  {menus.cafeteria[selectedHall]?.[time]?.map((menu, index) => (
+                    <li key={index}>{menu}</li>
                   ))}
                 </ul>
               </button>
