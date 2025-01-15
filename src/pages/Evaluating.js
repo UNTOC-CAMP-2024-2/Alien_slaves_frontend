@@ -245,34 +245,85 @@ const Evaluating = () => {
   
   // 리뷰 제출
   const handleReviewSubmit = async () => {
-  try {
-    const url = `http://localhost:4000/api/v1/reviews`; // 수정된 URL
-    const formData = new FormData();
-
-    formData.append("menu_date_id", "1"); // 임시 값, 실제 데이터로 교체 필요
-    formData.append("email", "example@example.com"); // 임시 값, 실제 데이터로 교체 필요
-    formData.append("comment", reviewText);
-    if (uploadedFile) {
-      const file = await fetch(uploadedFile)
-        .then((res) => res.blob())
-        .then((blob) => new File([blob], "photo.jpg", { type: "image/jpeg" }));
-      formData.append("photo", file);
+    try {
+      const restaurantId = Object.keys(restaurantMapping).find(
+        (key) => restaurantMapping[key] === selectedSubCategory
+      );
+      const selectedMealTime =
+        selectedTime === "아침" ? "조식" : selectedTime === "점심" ? "중식" : "석식";
+  
+      if (!restaurantId || !selectedMealTime) {
+        alert("카테고리, 세부 카테고리, 시간을 선택해주세요.");
+        return;
+      }
+  
+      // `menu_date_id` 가져오기
+      const response = await axios.get(
+        `http://localhost:4000/api/v1/restaurants/${restaurantId}`
+      );
+  
+      const menuData = response.data.data;
+      const menuItem = menuData.find((item) => item.time === selectedMealTime);
+  
+      if (!menuItem || !menuItem.menu_date_id) {
+        alert("해당 날짜와 시간에 해당하는 메뉴 데이터가 없습니다.");
+        return;
+      }
+  
+      const menuDateId = menuItem.menu_date_id;
+  
+      // 로그인 사용자 이메일 가져오기
+      const emailResponse = await axios.post(
+        "http://localhost:4000/api/v1/auth/email/login",
+        {
+          email: "user1@test.com", // 실제 사용자의 이메일
+          nickname: "유저1", // 실제 사용자의 닉네임
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (!emailResponse.data || !emailResponse.data.email) {
+        alert("사용자 이메일 정보를 가져오는 데 실패했습니다.");
+        return;
+      }
+  
+      const email = emailResponse.data.email;
+  
+      // 리뷰 데이터 전송
+      const url = `http://localhost:4000/api/v1/reviews`;
+  
+      const requestBody = {
+        menu_date_id: menuDateId,
+        email,
+        comment: reviewText,
+        photo_path: uploadedFile || null, // 파일 경로 또는 null
+        review_date: new Date().toISOString(),
+      };
+  
+      const reviewResponse = await axios.post(url, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (reviewResponse.status === 200 || reviewResponse.status === 201) {
+        console.log("리뷰 제출 성공:", reviewResponse.data);
+        alert("리뷰가 성공적으로 제출되었습니다!");
+      } else {
+        console.error("리뷰 제출 실패:", reviewResponse.data);
+        alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("리뷰 제출 실패:", error);
+      alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");
     }
-
-    const response = await axios.post(url, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    console.log("리뷰 제출 성공:", response.data);
-    alert("리뷰가 성공적으로 제출되었습니다!");
-  } catch (error) {
-    console.error("리뷰 제출 실패:", error);
-    alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");
-  }
-};
-
+  };
+  
+  
 
   return (
     <div>
