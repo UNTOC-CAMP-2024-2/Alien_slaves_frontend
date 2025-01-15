@@ -1,40 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 
-// -------------------------------------------------
-// 1. 데이터/상수 정의
-// -------------------------------------------------
+// 데이터/상수 정의
 const CATEGORIES = {
   학식: ['금정회관', '문창회관', '샛별회관', '학생회관'],
   기숙사: ['웅비관', '진리관', '자유관'],
 };
 
-// ※ '웅비관'의 경우 조식도 선택 가능하다고 해서
-//   특별히 조식 옵션을 모든 기숙사에 넣지 않고, 조건 처리합니다.
-//   (필요하다면 더 확장 가능)
 const TIMES = ['아침', '점심', '저녁'];
 
-const INITIAL_RATINGS_DATA = [
-  { name: '흑미밥', score: 5 },
-  { name: '참치김치찌개', score: 5 },
-  { name: '돈육장조림', score: 5 },
-  { name: '맛김', score: 5 },
-  { name: '콩나물무침', score: 5 },
-  { name: '배추김치', score: 5 },
-  { name: '우유(두유)', score: 5 },
-];
-
-// -------------------------------------------------
-// 2. 공통 스타일 정의
-// -------------------------------------------------
 const styles = {
   container: {
     fontFamily: 'Arial, sans-serif',
     maxWidth: '400px',
     padding: '20px 10px 20px 20px',
     backgroundColor: '#f9f9f9',
-    margin: '0 auto', // 가로 중앙 정렬용
+    margin: '0 auto',
   },
   title: {
     textAlign: 'center',
@@ -75,10 +58,6 @@ const styles = {
     fontSize: '16px',
     color: '#424141',
   },
-  ratingsItem: {
-    fontSize: '14px',
-    fontWeight: '600',
-  },
   starContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -90,7 +69,6 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '230px',
-    maxHeight: '700px',
     backgroundColor: '#eaeaea',
     borderRadius: '8px',
     margin: '20px 0',
@@ -98,46 +76,47 @@ const styles = {
     color: '#aaa',
     cursor: 'pointer',
     textAlign: 'center',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
   },
-  hiddenInput: {
-    display: 'none',
-  },
-  textArea: {
+  textArea : {
     width: '100%',
-    height: '80px',
+    height: '100px',
     borderRadius: '8px',
     border: '1px solid #ccc',
     padding: '10px',
     fontSize: '16px',
-    marginBottom: '20px',
     resize: 'none',
+    marginBottom: '10px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
-  submitButton: {
-    display: 'block',
+  submitButton : {
     width: '100%',
     backgroundColor: '#9CE3D4',
     color: '#fff',
     border: 'none',
     borderRadius: '8px',
-    padding: '10px',
-    cursor: 'pointer',
+    padding: '12px',
     fontSize: '16px',
-    fontWeight: '600',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    cursor: 'pointer',
+    marginBottom: '20px',
+    transition: 'background-color 0.3s ease',
+  },
+  navbar: {
+    position: 'sticky', /* 'sticky' -> 'fixed' */
+    bottom: 0,
+    width: '100%',
+    backgroundColor: '#ffffff',
+    zIndex: 1000,
   },
 };
 
-// -------------------------------------------------
-// 3. 별점 표시용 컴포넌트
-// -------------------------------------------------
-const StarRating = ({ stars, onStarClick }) => {
-  const totalStars = 5;
 
+// 별점 표시 컴포넌트
+const StarRating = ({ stars, onStarClick }) => {
   return (
     <div style={styles.starContainer}>
-      {[...Array(totalStars)].map((_, index) => {
+      {[...Array(5)].map((_, index) => {
         const starValue = index + 1;
         const isActive = starValue <= stars;
         const IconComponent = isActive ? FaStar : FaRegStar;
@@ -156,15 +135,13 @@ const StarRating = ({ stars, onStarClick }) => {
   );
 };
 
-// -------------------------------------------------
-// 4. 음식 별점 리스트 컴포넌트
-// -------------------------------------------------
+// 음식 별점 리스트 컴포넌트
 const FoodRatings = ({ ratings, onStarChange }) => {
   return (
     <div>
       {ratings.map((item, index) => (
         <div key={item.name} style={styles.ratingsRow}>
-          <span style={styles.ratingsItem}>{item.name}</span>
+          <span>{item.name}</span>
           <StarRating
             stars={item.score}
             onStarClick={(starValue) => onStarChange(index, starValue)}
@@ -175,181 +152,229 @@ const FoodRatings = ({ ratings, onStarChange }) => {
   );
 };
 
-// -------------------------------------------------
-// 5. 최종 평가 페이지 (Evaluating)
-// -------------------------------------------------
+const restaurantMapping = {
+  1: "진리관",
+  2: "웅비관",
+  3: "금정회관 교직원 식당",
+  4: "금정회관 학생 식당",
+  5: "문창회관 식당",
+  6: "자유관",
+  7: "학생회관 학생 식당",
+};
+
+// 평가 페이지
 const Evaluating = () => {
-  // 여러 상태를 각각 관리
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [ratings, setRatings] = useState([]);
   const [reviewText, setReviewText] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [ratings, setRatings] = useState(INITIAL_RATINGS_DATA);
 
-  // 카테고리 버튼 클릭
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setSelectedSubCategory('');
-    setSelectedTime('');
-  };
-
-  // 세부 카테고리 버튼 클릭
-  const handleSubCategoryClick = (subCategory) => {
-    setSelectedSubCategory(subCategory);
-    setSelectedTime('');
-  };
-
-  // 시간대 버튼 클릭
-  const handleTimeClick = (time) => {
-    setSelectedTime(time);
-    // 확인 용
-    console.log('카테고리:', selectedCategory);
-    console.log('세부 카테고리:', selectedSubCategory);
-    console.log('시간대:', time);
-  };
-
-  // 음식 별점 변경
-  const handleStarChange = (foodIndex, newScore) => {
-    const updatedRatings = ratings.map((item, idx) =>
-      idx === foodIndex ? { ...item, score: newScore } : item
-    );
-    console.log(`음식: ${updatedRatings[foodIndex].name}, 별점: ${newScore}`);
-    setRatings(updatedRatings);
-  };
-
-  // 파일 업로드
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setUploadedFile(url);
+  // API를 통해 식단 데이터 가져오기
+  const fetchMenusByDate = async (type, location) => {
+    // 당일 날짜를 가져와서 형식 변환
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split("T")[0]; // YYYY-MM-DD 포맷
+  
+    const url = `http://localhost:4000/api/v1/restaurants/meals/all?date=${formattedDate}`;
+  
+    try {
+      const response = await axios.get(url, {
+        params: { type, location },
+      });
+  
+      const data = response.data.data;
+  
+      const uniqueData = data.filter(
+        (menu, index, self) =>
+          index ===
+          self.findIndex(
+            (m) =>
+              m.restaurant_id === menu.restaurant_id &&
+              m.time === menu.time &&
+              m.food_name === menu.food_name
+          )
+      );
+  
+      // 기숙사별 데이터 초기화
+      const groupedByDorm = {
+        자유관: { 아침: [], 점심: [], 저녁: [] },
+        진리관: { 아침: [], 점심: [], 저녁: [] },
+        웅비관: { 아침: [], 점심: [], 저녁: [] },
+      };
+  
+      // 데이터를 기숙사별로 그룹화
+      uniqueData.forEach((menu) => {
+        const dormName = restaurantMapping[menu.restaurant_id];
+  
+        if (groupedByDorm[dormName]) {
+          if (menu.time === "조식") {
+            groupedByDorm[dormName]["아침"].push(menu.food_name);
+          } else if (menu.time === "중식") {
+            groupedByDorm[dormName]["점심"].push(menu.food_name);
+          } else if (menu.time === "석식") {
+            groupedByDorm[dormName]["저녁"].push(menu.food_name);
+          }
+        }
+      });
+  
+      return groupedByDorm;
+    } catch (error) {
+      console.error(`${type} 메뉴 데이터 가져오기 실패:`, error);
+      return {
+        자유관: { 아침: [], 점심: [], 저녁: [] },
+        진리관: { 아침: [], 점심: [], 저녁: [] },
+        웅비관: { 아침: [], 점심: [], 저녁: [] },
+      };
     }
   };
 
+  // 카테고리, 세부 카테고리, 시간 변경 시 데이터 다시 가져오기
+  useEffect(() => {
+    if (selectedCategory && selectedSubCategory && selectedTime) {
+      const type = selectedCategory === '학식' ? 'cafeteria' : 'dormitory';
+      fetchMenusByDate(type, selectedSubCategory).then((data) => {
+        // 선택한 시간대에 맞는 데이터를 설정
+        const timeData = data[selectedSubCategory]?.[selectedTime] || [];
+        const formattedRatings = timeData.map((food) => ({ name: food, score: 0 }));
+        setRatings(formattedRatings);
+      });
+    }
+  }, [selectedCategory, selectedSubCategory, selectedTime]);
+  
   // 리뷰 제출
-  const handleReviewSubmit = () => {
-    if (!selectedCategory || !selectedSubCategory || !selectedTime || !reviewText.trim()) {
-      alert('모든 항목을 입력해주세요.');
-      return;
+  const handleReviewSubmit = async () => {
+  try {
+    const url = `http://localhost:4000/api/v1/reviews`; // 수정된 URL
+    const formData = new FormData();
+
+    formData.append("menu_date_id", "1"); // 임시 값, 실제 데이터로 교체 필요
+    formData.append("email", "example@example.com"); // 임시 값, 실제 데이터로 교체 필요
+    formData.append("comment", reviewText);
+    if (uploadedFile) {
+      const file = await fetch(uploadedFile)
+        .then((res) => res.blob())
+        .then((blob) => new File([blob], "photo.jpg", { type: "image/jpeg" }));
+      formData.append("photo", file);
     }
 
-    // 제출 시 콘솔 출력 (실제로는 서버 전송 등)
-    console.log('카테고리:', selectedCategory);
-    console.log('세부 카테고리:', selectedSubCategory);
-    console.log('시간대:', selectedTime);
-    console.log('리뷰 내용:', reviewText);
-    console.log('업로드된 파일:', uploadedFile || '없음');
-    console.log('별점 정보:', ratings);
+    const response = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-    alert('리뷰가 제출되었습니다.');
-    // 필요하다면 상태 리셋 혹은 다른 처리
-  };
+    console.log("리뷰 제출 성공:", response.data);
+    alert("리뷰가 성공적으로 제출되었습니다!");
+  } catch (error) {
+    console.error("리뷰 제출 실패:", error);
+    alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");
+  }
+};
+
 
   return (
     <div>
-      <div style={styles.container}>
-        <h1 style={styles.title}>평가</h1>
+    <div style={styles.container}>
+      <h1 style={styles.title}>평가</h1>
 
-        {/* 1) 대분류 카테고리 선택 */}
+      {/* 카테고리 선택 */}
+      <div style={styles.buttonGroup}>
+        {Object.keys(CATEGORIES).map((category) => (
+          <button
+            key={category}
+            style={{
+              ...styles.button,
+              ...(selectedCategory === category ? styles.selectedButton : {}),
+            }}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* 세부 카테고리 선택 */}
+      {selectedCategory && (
         <div style={styles.buttonGroup}>
-          {Object.keys(CATEGORIES).map((category) => (
+          {CATEGORIES[selectedCategory]?.map((subCategory) => (
             <button
-              key={category}
+              key={subCategory}
               style={{
                 ...styles.button,
-                ...(selectedCategory === category ? styles.selectedButton : {}),
+                ...(selectedSubCategory === subCategory ? styles.selectedButton : {}),
               }}
-              onClick={() => handleCategoryClick(category)}
+              onClick={() => setSelectedSubCategory(subCategory)}
             >
-              {category}
+              {subCategory}
             </button>
           ))}
         </div>
+      )}
 
-        {/* 2) 세부 카테고리 선택 */}
-        {selectedCategory && (
-          <div style={styles.buttonGroup}>
-            {CATEGORIES[selectedCategory]?.map((sub) => (
-              <button
-                key={sub}
-                style={{
-                  ...styles.button,
-                  ...(selectedSubCategory === sub ? styles.selectedButton : {}),
-                }}
-                onClick={() => handleSubCategoryClick(sub)}
-              >
-                {sub}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* 3) 시간대 선택 */}
-        {selectedSubCategory && (
-          <div style={styles.buttonGroup}>
-            {/* 만약 '웅비관' 이라면 조식도 표시 */}
-            {selectedSubCategory === '웅비관' && (
-              <button
-                style={{
-                  ...styles.button,
-                  ...(selectedTime === '조식' ? styles.selectedButton : {}),
-                }}
-                onClick={() => handleTimeClick('조식')}
-              >
-                조식
-              </button>
-            )}
-            {TIMES.map((time) => (
-              <button
-                key={time}
-                style={{
-                  ...styles.button,
-                  ...(selectedTime === time ? styles.selectedButton : {}),
-                }}
-                onClick={() => handleTimeClick(time)}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* 4) 음식 리스트 + 별점 */}
-        <FoodRatings ratings={ratings} onStarChange={handleStarChange} />
-
-        {/* 5) 사진 업로드 */}
-        <div
-          style={{
-            ...styles.addPhoto,
-            backgroundImage: uploadedFile ? `url(${uploadedFile})` : 'none',
-          }}
-          onClick={() => document.getElementById('fileInput').click()}
-        >
-          {!uploadedFile && '사진 추가'}
-          <input
-            id="fileInput"
-            type="file"
-            style={styles.hiddenInput}
-            onChange={handleFileChange}
-          />
+      {/* 시간 선택 */}
+      {selectedSubCategory && (
+        <div style={styles.buttonGroup}>
+          {TIMES.map((time) => (
+            <button
+              key={time}
+              style={{
+                ...styles.button,
+                ...(selectedTime === time ? styles.selectedButton : {}),
+              }}
+              onClick={() => setSelectedTime(time)}
+            >
+              {time}
+            </button>
+          ))}
         </div>
+      )}
 
-        {/* 6) 리뷰 작성 텍스트박스 */}
-        <textarea
-          style={styles.textArea}
-          placeholder="리뷰를 작성해주세요"
-          value={reviewText}
-          onChange={(e) => setReviewText(e.target.value)}
+      {/* 음식 리스트 + 별점 */}
+      <FoodRatings ratings={ratings} onStarChange={(index, score) => {
+        const updatedRatings = ratings.map((item, idx) =>
+          idx === index ? { ...item, score } : item
+        );
+        setRatings(updatedRatings);
+      }} />
+
+      {/* 사진 업로드 */}
+      <div
+        style={styles.addPhoto}
+        onClick={() => document.getElementById('fileInput').click()}
+      >
+        {uploadedFile ? (
+          <img src={uploadedFile} alt="업로드된 사진" style={{ width: '100%' }} />
+        ) : (
+          '사진 추가'
+        )}
+        <input
+          id="fileInput"
+          type="file"
+          style={{ display: 'none' }}
+          onChange={(e) =>
+            e.target.files[0] && setUploadedFile(URL.createObjectURL(e.target.files[0]))
+          }
         />
-
-        {/* 7) 제출 버튼 */}
-        <button style={styles.submitButton} onClick={handleReviewSubmit}>
-          확인
-        </button>
       </div>
 
-      <Navbar />
+      {/* 리뷰 작성 */}
+      <textarea
+        style={styles.textArea}
+        placeholder="리뷰를 작성해주세요"
+        value={reviewText}
+        onChange={(e) => setReviewText(e.target.value)}
+      />
+
+      {/* 제출 버튼 */}
+      <button style={styles.submitButton} onClick={handleReviewSubmit}>
+        확인
+      </button>
+    </div>
+    <div style={styles.navbar}>
+        <Navbar />
+      </div>
     </div>
   );
 };

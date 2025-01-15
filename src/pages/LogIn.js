@@ -8,10 +8,32 @@ function LogIn() {
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log('닉네임:', nickname);
-    console.log('이메일:', email);
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/v1/auth/email/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, nickname }), // 이메일과 닉네임 전송
+      });
+  
+      if (response.ok) {
+        const data = await response.json(); // 서버에서 반환된 사용자 정보
+        console.log('로그인 성공:', data);
+        alert('로그인 성공! 환영합니다.');
+        navigate('/home'); // 로그인 성공 시 홈 페이지로 이동
+      } else {
+        const errorData = await response.json();
+        console.error('로그인 실패:', errorData);
+        alert(errorData.message || '로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 요청 에러:', error);
+      alert('서버와의 연결에 문제가 발생했습니다.');
+    }
   };
+  
 
   const handleSignup = () => {
     navigate('/signinemail');
@@ -20,6 +42,8 @@ function LogIn() {
   const handleKakaoLogin = () => {
     navigate('/signinkakao');
   };
+
+  
 
   const styles = {
     container: {

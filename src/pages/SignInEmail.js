@@ -13,41 +13,122 @@ function SignInEmail() {
   // (5) 전화번호 상태 추가
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // (1) 이메일 코드 전송
-  const handleSendCode = () => {
-    console.log('이메일로 인증 코드를 전송합니다. 이메일:', email);
-  };
+// 이메일 코드 전송
+const handleSendCode = async () => {
+  try {
+    const response = await fetch('http://localhost:4000/api/v1/auth/email/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
 
-  // (2) 인증 코드 확인
-  const handleVerifyCode = () => {
-    console.log('사용자가 입력한 인증 코드:', code);
-  };
+    if (response.ok) {
+      console.log('인증 코드 전송 성공');
+    } else {
+      const errorData = await response.json();
+      console.error('인증 코드 전송 실패:', errorData);
+    }
+  } catch (error) {
+    console.error('인증 코드 요청 에러:', error);
+  }
+};
 
-  // (3) 닉네임 중복 확인
-  const handleCheckNickname = () => {
-    console.log('닉네임 중복 확인 요청:', nickname);
-  };
+// 인증 코드 확인
+const handleVerifyCode = async () => {
+  try {
+    const response = await fetch('http://localhost:4000/api/v1/auth/email/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code }),
+    });
 
-  // (4) 소속 대학 확인
-  const handleCheckCollege = () => {
+    if (response.ok) {
+      console.log('인증 코드 확인 성공');
+    } else {
+      const errorData = await response.json();
+      console.error('인증 코드 확인 실패:', errorData);
+    }
+  } catch (error) {
+    console.error('인증 코드 확인 요청 에러:', error);
+  }
+};
+
+// 닉네임 중복 확인
+const handleCheckNickname = async () => {
+  try {
+    const response = await fetch('http://localhost:4000/api/v1/auth/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nickname }), // 닉네임만 포함한 JSON 전송
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('닉네임 중복 확인 성공:', data);
+      alert(data.message);
+    } else {
+      const errorData = await response.json();
+      console.error('닉네임 중복 확인 실패:', errorData);
+      alert(errorData.message || '닉네임 중복 확인 실패');
+    }
+  } catch (error) {
+    console.error('닉네임 중복 확인 요청 에러:', error);
+    alert('서버와의 연결에 문제가 발생했습니다.');
+  }
+};
+
+
+
+// 소속 대학 확인
+const handleCheckCollege = async () => {
+  try {
     console.log('소속 대학 확인 요청:', college);
-  };
+    // 추가 API 호출이 필요하면 여기에 추가 가능합니다.
+  } catch (error) {
+    console.error('소속 대학 확인 에러:', error);
+  }
+};
+
+// 최종 회원가입
+const handleSignIn = async () => {
+  try {
+    const response = await fetch('http://localhost:4000/api/v1/auth/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, nickname, phoneNumber, college }),
+    });
+
+    if (response.ok) {
+      console.log('회원가입 성공');
+      navigate('/home'); // 성공 시 홈으로 이동s
+      alert('회원가입이 완료되었습니다.');
+    } else {
+      const errorData = await response.json();
+      console.error('회원가입 실패:', errorData);
+    }
+  } catch (error) {
+    console.error('회원가입 요청 에러:', error);
+  }
+};
+
 
   // (5) 전화번호 입력 시 숫자만 남기기
   const handlePhoneNumberChange = (e) => {
-    const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
-    setPhoneNumber(onlyNumbers);
+    const input = e.target.value;
+    // 숫자와 하이픈(-)만 허용
+    const formattedInput = input.replace(/[^0-9-]/g, '');
+    setPhoneNumber(formattedInput);
   };
-
-  // (6) 로그인 버튼 클릭 시 -> Home으로 이동
-  const handleLogin = () => {
-    console.log('이메일: ', email);
-    console.log('닉네임: ', nickname);
-    console.log('선택한 소속 대학:', college);
-    console.log('전화번호:', phoneNumber);
-    navigate('/home');
-  };
-
+  
+ 
   // 인라인 스타일
   const styles = {
     container: {
@@ -114,7 +195,7 @@ function SignInEmail() {
       backgroundColor: '#F5F5F8',
       marginTop: '0px',
     },
-    loginButton: {
+    SignInButton: {
       width: '100%',
       padding: '12px',
       border: 'none',
@@ -232,8 +313,8 @@ function SignInEmail() {
         </select>
 
         {/* (6) 최종 로그인 버튼 */}
-        <button style={styles.loginButton} onClick={handleLogin}>
-          로그인
+        <button style={styles.SignInButton} onClick={handleSignIn}>
+          회원가입
         </button>
       </div>
     </div>

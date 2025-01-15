@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-function CalendarHeader() {
-  const [currentDate, setCurrentDate] = useState(new Date()); // 현재 날짜 상태
-  const [selectedDate, setSelectedDate] = useState(null); // 클릭된 날짜 상태
+function CalendarHeader({ onDateChange }) {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const styles = {
     calendar: {
@@ -28,7 +28,7 @@ function CalendarHeader() {
       fontSize: "16px",
       padding: "5px 10px",
       borderRadius: "4px",
-      marginBottom: '18px'
+      marginBottom: "18px",
     },
     daysRow: {
       display: "flex",
@@ -60,18 +60,16 @@ function CalendarHeader() {
       marginBottom: "10px",
       fontWeight: "600",
     },
-
     yearMonth: {
-      fontSize: '18px',
-      fontWeight: '700',
-      marginBottom: '18px'
-    }
+      fontSize: "18px",
+      fontWeight: "700",
+      marginBottom: "18px",
+    },
   };
 
-  // 현재 날짜 기준으로 한 주(7일) 계산
   const generateWeekDates = (date) => {
     const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay()); // 현재 날짜에서 요일 차이만큼 빼서 주의 시작일 설정
+    startOfWeek.setDate(date.getDate() - date.getDay());
 
     return Array.from({ length: 7 }, (_, i) => {
       const newDate = new Date(startOfWeek);
@@ -81,8 +79,15 @@ function CalendarHeader() {
   };
 
   const handleDateClick = (date) => {
-    setSelectedDate(date.toDateString());
-    console.log(`Clicked date: ${date.toDateString()}`);
+    // date가 Date 객체인지 확인
+    if (!(date instanceof Date) || isNaN(date)) {
+      console.error("유효하지 않은 날짜가 선택되었습니다:", date);
+      return;
+    }
+  
+    const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD 포맷
+    setSelectedDate(formattedDate);
+    onDateChange(formattedDate); // 부모 컴포넌트로 YYYY-MM-DD 포맷 전달
   };
 
   const handlePrevWeek = () => {
@@ -101,7 +106,6 @@ function CalendarHeader() {
 
   return (
     <div style={styles.calendar}>
-      {/* 상단 화살표 버튼 */}
       <div style={styles.topRow}>
         <button style={styles.arrowButton} onClick={handlePrevWeek}>
           ◀
@@ -114,7 +118,6 @@ function CalendarHeader() {
         </button>
       </div>
 
-      {/* 요일 표시 */}
       <div style={styles.daysRow}>
         <span style={styles.day}>일</span>
         <span style={styles.day}>월</span>
@@ -125,10 +128,9 @@ function CalendarHeader() {
         <span style={styles.day}>토</span>
       </div>
 
-      {/* 날짜 버튼 */}
       <div style={styles.datesRow}>
         {weekDates.map((date, index) => {
-          const isSelected = selectedDate === date.toDateString();
+          const isSelected = selectedDate === date.toISOString().split("T")[0];
 
           return (
             <button
@@ -138,16 +140,6 @@ function CalendarHeader() {
                 backgroundColor: isSelected ? "#67D3C4" : "#ffffff",
               }}
               onClick={() => handleDateClick(date)}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.target.style.backgroundColor = "#67D3C4";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.target.style.backgroundColor = "#ffffff";
-                }
-              }}
             >
               {date.getDate()}
             </button>

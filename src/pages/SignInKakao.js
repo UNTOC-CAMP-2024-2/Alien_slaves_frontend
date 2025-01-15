@@ -25,11 +25,43 @@ function SignInKakao() {
     console.log('소속 대학 확인 요청:', college);
   };
 
-  // 카카오 로그인/회원가입 버튼
-  const handleKakaoSignIn = () => {
-    console.log('카카오로 회원가입/로그인 시도');
-    navigate('/home');
+  const handleKakaoSignIn = async () => {
+    try {
+      // 입력값 검증
+      if (!nickname.trim() || !phoneNumber.trim() || !college) {
+        alert('모든 정보를 입력해주세요.');
+        return;
+      }
+  
+      // 서버로 사용자 정보 업데이트 요청
+      const response = await fetch('http://localhost:4000/api/v1/auth/kakao', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname,
+          phoneNumber,
+          college,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('카카오 사용자 정보 업데이트 성공:', data);
+        alert('회원 정보가 업데이트되었습니다!');
+        navigate('/home'); // 성공 후 홈 페이지로 이동
+      } else {
+        const errorData = await response.json();
+        console.error('카카오 사용자 정보 업데이트 실패:', errorData);
+        alert(errorData.message || '회원 정보 업데이트에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('카카오 사용자 정보 업데이트 요청 에러:', error);
+      alert('서버와의 연결에 문제가 발생했습니다.');
+    }
   };
+  
 
   // 인라인 스타일 정의
   const styles = {
