@@ -6,13 +6,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+  overflow: hidden; /* 기본 스크롤 바 숨김 */
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
 }
 
 #app-container {
@@ -20,28 +21,54 @@ html, body {
   padding: 0px;
   height: 100%;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll; /* 세로 스크롤 작동 */
   background-color: #FAFAFA;
   position: relative;
 }
 
+/* 스크롤 바 숨기기 */
+#app-container::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 엣지 */
+}
+#app-container {
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
 #root {
-    margin: 0px;
-    padding: 0px;
-    height: 100%;
-    width: 25%
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 25%;
+  overflow-y: scroll; /* 세로 스크롤 작동 */
+}
+
+/* 스크롤 바 숨기기 */
+#root::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 엣지 */
+}
+#root {
+  scrollbar-width: none; /* 파이어폭스 */
 }
 
 /* Mobile - Landscape */
 @media (max-width: 576px) {
-    #root {
-        margin: 0px;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-    }
+  #root {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll; /* 모바일 환경에서도 스크롤 작동 */
+  }
+
+  /* 스크롤 바 숨기기 */
+  #root::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 엣지 */
+  }
+  #root {
+    scrollbar-width: none; /* 파이어폭스 */
+  }
 }
 
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;

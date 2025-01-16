@@ -12,12 +12,22 @@ const CATEGORIES = {
 const TIMES = ['아침', '점심', '저녁'];
 
 const styles = {
+  box: {
+    width: '100%',
+    minHeight: '100vh', // 세로를 화면 전체로
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center', // 가로 중앙 정렬
+  },
   container: {
-    fontFamily: 'Arial, sans-serif',
-    maxWidth: '400px',
-    padding: '20px 10px 20px 20px',
+    width: '100%',
+    maxWidth: '400px', // 가로 길이를 고정
+    padding: '20px',
     backgroundColor: '#f9f9f9',
-    margin: '0 auto',
+    boxSizing: 'border-box', // 패딩 포함 크기 유지
   },
   title: {
     textAlign: 'center',
@@ -77,7 +87,7 @@ const styles = {
     cursor: 'pointer',
     textAlign: 'center',
   },
-  textArea : {
+  textArea: {
     width: '100%',
     height: '100px',
     borderRadius: '8px',
@@ -88,7 +98,7 @@ const styles = {
     marginBottom: '10px',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
-  submitButton : {
+  submitButton: {
     width: '100%',
     backgroundColor: '#9CE3D4',
     color: '#fff',
@@ -103,7 +113,7 @@ const styles = {
     transition: 'background-color 0.3s ease',
   },
   navbar: {
-    position: 'sticky', /* 'sticky' -> 'fixed' */
+    position: 'sticky',
     bottom: 0,
     width: '100%',
     backgroundColor: '#ffffff',
@@ -300,7 +310,7 @@ const Evaluating = () => {
         menu_date_id: menuDateId,
         email,
         comment: reviewText,
-        photo_path: uploadedFile || null, // 파일 경로 또는 null
+        photo_path: uploadedFile || null,
         review_date: new Date().toISOString(),
       };
   
@@ -326,7 +336,7 @@ const Evaluating = () => {
   
 
   return (
-    <div>
+    <div style={styles.box}>
     <div style={styles.container}>
       <h1 style={styles.title}>평가</h1>
 
