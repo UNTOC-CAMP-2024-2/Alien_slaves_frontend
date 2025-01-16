@@ -276,7 +276,7 @@ const Evaluating = () => {
       const emailResponse = await axios.post(
         "http://localhost:4000/api/v1/auth/email/login",
         {
-          email: "user1@test.com", // 실제 사용자의 이메일
+          email: "hoyeong4585@naver.com", // 실제 사용자의 이메일
           nickname: "유저1", // 실제 사용자의 닉네임
         },
         {
