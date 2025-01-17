@@ -325,7 +325,7 @@ const socket = io("http://localhost:4000");
 const Test = () => {
   const [bets, setBets] = useState([]);
   const [raceData, setRaceData] = useState({});
-  const [history, setHistory] = useState([]);
+  const [history] = useState([]);
   const [selectedHorse, setSelectedHorse] = useState(null);
   const [betAmount, setBetAmount] = useState("");
   const [userEmail, setUserEmail] = useState("");

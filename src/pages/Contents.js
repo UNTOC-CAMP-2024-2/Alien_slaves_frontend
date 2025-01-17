@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { IoIosText } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 /** 중복되는 스타일을 재활용하기 위한 기본 스타일 정의 */
 const baseBoxShadow = {
@@ -31,7 +33,6 @@ const styles = {
     fontSize: '20px',
     fontWeight: '700',
   },
-  // 공통 영역
   section: {
     margin: '10px',
     padding: '20px',
@@ -39,7 +40,6 @@ const styles = {
     border: '1px solid #FAFAFA',
     borderRadius: '10px',
   },
-  // 추천 식단 영역
   recommendationBlock: {
     marginBottom: '30px',
   },
@@ -74,7 +74,6 @@ const styles = {
     ...baseBoxShadow,
     padding: '10px', 
   },
-  // 밥친구 매칭 영역
   matchingTitle: {
     textAlign: 'center',
     marginBottom: '20px',
@@ -95,7 +94,7 @@ const styles = {
   },
   select: {
     flex: 1,
-    ...inputBase, // select에도 같은 인풋 스타일 적용
+    ...inputBase,
   },
   input: {
     flex: 1,
@@ -111,7 +110,6 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
-  // 매칭 목록
   listContainer: {
     marginTop: '0px',
   },
@@ -163,53 +161,36 @@ function Contents() {
   const navigate = useNavigate();
 
   const restaurantOptions = [
-    '금정회관',
-    '문창회관',
-    '샛별회관',
-    '학생회관',
-    '웅비관',
-    '진리관',
-    '자유관',
+    '금정회관', '문창회관', '샛별회관', '학생회관', '웅비관', '진리관', '자유관',
   ];
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
   const [mealTime, setMealTime] = useState('');
   const [maxPeople, setMaxPeople] = useState('');
-
-  // 추가된 title state
   const [title, setTitle] = useState('');
+  const [matchingList, setMatchingList] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
+  const [newRoomTitle, setNewRoomTitle] = useState('');
+  const [newRoomRestaurant, setNewRoomRestaurant] = useState('');
+  const [newRoomMaxParticipants, setNewRoomMaxParticipants] = useState(5);
 
-  const [matchingList, setMatchingList] = useState([
-    {
-      id: 1,
-      title: '22/남 같이 금정회관 저녁 먹을 사람',
-      restaurant: '금정회관',
-      time: '저녁',
-      currentPeople: 1,
-      maxPeople: 3,
-      nickname: '(닉네임)',
-      isActive: true,
-    },
-    {
-      id: 2,
-      title: '졸업 앞둔 24/여 점심 드실 분~',
-      restaurant: '문창회관',
-      time: '점심',
-      currentPeople: 2,
-      maxPeople: 4,
-      nickname: '(닉네임)',
-      isActive: true,
-    },
-    {
-      id: 3,
-      title: '아침 든든하게 먹을 사람 구해요!',
-      restaurant: '웅비관',
-      time: '아침',
-      currentPeople: 1,
-      maxPeople: 2,
-      nickname: '(닉네임)',
-      isActive: true,
-    },
-  ]);
+  // 채팅방 목록 가져오기
+  useEffect(() => {
+    axios.get('http://localhost:4000/api/v1/chat/rooms')
+      .then(response => {
+        const fetchedList = response.data.map(item => ({
+          id: item.id,
+          title: item.title,
+          restaurant: item.restaurant,
+          time: item.created_at,
+          currentPeople: item.current_participants,
+          maxPeople: item.max_participants,
+          nickname: '(닉네임)', 
+          isActive: true,
+        }));
+        setMatchingList(fetchedList);
+      })
+      .catch(error => console.error('Error fetching rooms:', error));
+  }, []);
 
   const handleRegister = () => {
     if (!title || !selectedRestaurant || !mealTime || !maxPeople) {
@@ -218,7 +199,7 @@ function Contents() {
     }
     const newMatching = {
       id: matchingList.length + 1,
-      title: title,
+      title,
       restaurant: selectedRestaurant,
       time: mealTime,
       currentPeople: 1,
@@ -227,14 +208,35 @@ function Contents() {
       isActive: true,
     };
     setMatchingList([...matchingList, newMatching]);
-
     setTitle('');
     setSelectedRestaurant('');
     setMealTime('');
     setMaxPeople('');
   };
 
+  const createRoom = () => {
+    if (!newRoomTitle || !newRoomRestaurant) {
+      alert('모든 항목을 입력해주세요!');
+      return;
+    }
+
+    axios.post('http://localhost:4000/api/v1/chat/create-room', {
+      title: newRoomTitle,
+      restaurant: newRoomRestaurant,
+      maxParticipants: newRoomMaxParticipants,
+    })
+      .then(response => {
+        setChatRooms([...chatRooms, { id: response.data.roomId, title: newRoomTitle }]);
+        setNewRoomTitle('');
+        setNewRoomRestaurant('');
+        setNewRoomMaxParticipants(5);
+      })
+      .catch(error => console.error('Error creating room:', error));
+  };
+
   const handleChatClick = (item) => {
+    // 채팅방 아이디를 쿠키에 저장
+    Cookies.set('chatRoomId', item.id, { expires: 7 }); // 7일간 저장
     navigate('/chat');
   };
 
@@ -247,9 +249,7 @@ function Contents() {
       {/* 추천 식단 영역 */}
       <div style={styles.section}>
         <div style={styles.recommendationBlock}>
-          <h3 style={styles.recommendationTitle}>
-            Chat GPT가 추천하는 오늘의 식단
-          </h3>
+          <h3 style={styles.recommendationTitle}>Chat GPT가 추천하는 오늘의 식단</h3>
           <div style={styles.recommendationContent}>
             <div style={styles.imgWrapper}>
               <img
@@ -265,9 +265,7 @@ function Contents() {
           </div>
         </div>
         <div style={styles.recommendationBlock}>
-          <h3 style={styles.recommendationTitle}>
-            Gemini가 추천하는 오늘의 식단
-          </h3>
+          <h3 style={styles.recommendationTitle}>Gemini가 추천하는 오늘의 식단</h3>
           <div style={styles.recommendationContent}>
             <div style={styles.imgWrapper}>
               <img
@@ -286,63 +284,43 @@ function Contents() {
 
       {/* 밥친구 매칭 섹션 */}
       <div style={styles.section}>
-        <div style={styles.matchingTitle}>밥친구 매칭</div>
+        <div style={styles.matchingTitle}>채팅방 생성</div>
         <div style={styles.formRow}>
-          <label style={styles.label}>제목:</label>
+          <label style={styles.label}>방 제목:</label>
           <input
             type="text"
             style={styles.input}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력해주세요."
+            value={newRoomTitle}
+            onChange={(e) => setNewRoomTitle(e.target.value)}
+            placeholder="방 제목을 입력하세요"
           />
         </div>
         <div style={styles.formRow}>
-          <label style={styles.label}>식당 선택:</label>
-          <select
-            style={styles.select}
-            value={selectedRestaurant}
-            onChange={(e) => setSelectedRestaurant(e.target.value)}
-          >
-            <option value="">선택하세요</option>
-            {restaurantOptions.map((res) => (
-              <option key={res} value={res}>
-                {res}
-              </option>
-            ))}
-          </select>
+          <label style={styles.label}>식당:</label>
+          <input
+            type="text"
+            style={styles.input}
+            value={newRoomRestaurant}
+            onChange={(e) => setNewRoomRestaurant(e.target.value)}
+            placeholder="식당 이름"
+          />
         </div>
         <div style={styles.formRow}>
-          <label style={styles.label}>식사 시간:</label>
-          <select
-            style={styles.select}
-            value={mealTime}
-            onChange={(e) => setMealTime(e.target.value)}
-          >
-            <option value="">선택하세요</option>
-            <option value="아침">아침</option>
-            <option value="점심">점심</option>
-            <option value="저녁">저녁</option>
-          </select>
-        </div>
-        <div style={styles.formRow}>
-          <label style={styles.label}>최대인원:</label>
+          <label style={styles.label}>최대 인원:</label>
           <input
             type="number"
-            min="1"
+            min="2"
             style={styles.input}
-            value={maxPeople}
-            onChange={(e) => setMaxPeople(e.target.value)}
-            placeholder="ex) 3"
+            value={newRoomMaxParticipants}
+            onChange={(e) => setNewRoomMaxParticipants(Number(e.target.value))}
           />
         </div>
-        <div style={{ textAlign: 'center', marginTop: '10px' }}>
-          <button style={styles.button} onClick={handleRegister}>
-            등록
+        <div style={{ textAlign: 'center' }}>
+          <button style={styles.button} onClick={createRoom}>
+            생성
           </button>
         </div>
       </div>
-
       {/* 매칭 목록 표시 */}
       <div style={styles.section}>
         <div style={styles.listContainer}>

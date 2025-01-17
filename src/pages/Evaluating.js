@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import Cookies from 'js-cookie';
 
 // 데이터/상수 정의
 const CATEGORIES = {
@@ -121,7 +122,6 @@ const styles = {
   },
 };
 
-
 // 별점 표시 컴포넌트
 const StarRating = ({ stars, onStarClick }) => {
   return (
@@ -130,7 +130,7 @@ const StarRating = ({ stars, onStarClick }) => {
         const starValue = index + 1;
         const isActive = starValue <= stars;
         const IconComponent = isActive ? FaStar : FaRegStar;
-
+        
         return (
           <button
             key={starValue}
@@ -195,7 +195,7 @@ const Evaluating = () => {
       });
   
       const data = response.data.data;
-  
+      
       const uniqueData = data.filter(
         (menu, index, self) =>
           index ===
@@ -206,7 +206,7 @@ const Evaluating = () => {
               m.food_name === menu.food_name
           )
       );
-  
+
       // 기숙사별 데이터 초기화
       const groupedByDorm = {
         자유관: { 아침: [], 점심: [], 저녁: [] },
@@ -281,39 +281,25 @@ const Evaluating = () => {
       }
   
       const menuDateId = menuItem.menu_date_id;
+      console.log(menuDateId);
   
-      // 로그인 사용자 이메일 가져오기
-      const emailResponse = await axios.post(
-        "http://localhost:4000/api/v1/auth/email/login",
-        {
-          email: "hoyeong4585@naver.com", // 실제 사용자의 이메일
-          nickname: "유저1", // 실제 사용자의 닉네임
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
-      if (!emailResponse.data || !emailResponse.data.email) {
-        alert("사용자 이메일 정보를 가져오는 데 실패했습니다.");
-        return;
-      }
-  
-      const email = emailResponse.data.email;
-  
+      const email = Cookies.get('email');
+
       // 리뷰 데이터 전송
-      const url = `http://localhost:4000/api/v1/reviews`;
-  
+      const url = `http://localhost:4000/api/v1/review/`;
+      const formattedRatings = ratings.map(item => ({
+        food_name: item.name,
+        rating_value: item.score.toString() // 숫자를 문자열로 변환
+      }));
+      console.log(formattedRatings);
       const requestBody = {
         menu_date_id: menuDateId,
         email,
         comment: reviewText,
-        photo_path: uploadedFile || null,
-        review_date: new Date().toISOString(),
+        uploadedFile,
+        data: [JSON.stringify(formattedRatings)]
       };
-  
+      console.log(requestBody);
       const reviewResponse = await axios.post(url, requestBody, {
         headers: {
           "Content-Type": "application/json",
@@ -332,8 +318,6 @@ const Evaluating = () => {
       alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");
     }
   };
-  
-  
 
   return (
     <div style={styles.box}>
@@ -398,6 +382,7 @@ const Evaluating = () => {
           idx === index ? { ...item, score } : item
         );
         setRatings(updatedRatings);
+        console.log(ratings);
       }} />
 
       {/* 사진 업로드 */}

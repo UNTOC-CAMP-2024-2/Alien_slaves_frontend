@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CalendarHeader from "../components/CalendarHeader";
 
@@ -105,17 +105,36 @@ const styles = {
 };
 
 const Ranking = () => {
-  const rankingListData = [
-    { id: 1, name: "웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-    { id: 2, name: "웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-  ];
+  const [rankingListData, setRankingListData] = useState([]);
+  const [menuRankingData, setMenuRankingData] = useState([]);
 
-  const menuRankingData = [
-    { id: 1, name: "짜장면 - 웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-    { id: 2, name: "짬뽕 - 웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-    { id: 3, name: "탕수육 - 웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-    { id: 4, name: "볶음밥 - 웅비관 중식", rating: 4.5, img: "/assets/qkq.jpg" },
-  ];
+  // 식당 랭킹 데이터 가져오기
+  const fetchRestaurantData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/rank/restaurants/all");
+      const result = await response.json();
+      setRankingListData(result.data);
+    } catch (error) {
+      console.error("Error fetching restaurant data:", error);
+    }
+  };
+
+  // 메뉴 랭킹 데이터 가져오기
+  const fetchFoodData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/rank/foods/all");
+      const result = await response.json();
+      setMenuRankingData(result.data);
+    } catch (error) {
+      console.error("Error fetching food data:", error);
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 데이터를 가져오기
+  useEffect(() => {
+    fetchRestaurantData();
+    fetchFoodData();
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -128,27 +147,24 @@ const Ranking = () => {
       </div>
 
       {/* Rankings */}
-      <div>
       <div style={styles.rankingsContainer}>
-        {/* 식단별 랭킹 */}
+        {/* 식당별 랭킹 */}
         <section>
-          <h2 style={styles.sectionTitle}>식단별 랭킹</h2>
+          <h2 style={styles.sectionTitle}>식당별 랭킹</h2>
           <div style={styles.gridContainer}>
-            {rankingListData.map((item) => (
-              <div key={item.id} style={styles.rankingCard}>
+            {rankingListData.map((item, index) => (
+              <div key={index} style={styles.rankingCard}>
                 <img
-                  src={`${process.env.PUBLIC_URL}${item.img}`}
-                  alt={item.name}
+                  src={`${process.env.PUBLIC_URL}/assets/qkq.jpg`} // 이미지 경로를 적절히 설정
+                  alt={item.restaurant_name}
                   style={styles.cardImage}
                 />
                 <div style={styles.cardContent}>
                   <div style={styles.cardHeader}>
-                    <h3 style={styles.cardTitle}>{item.name}</h3>
-                    <p style={styles.cardRating}>⭐ {item.rating}</p>
+                    <h3 style={styles.cardTitle}>{item.restaurant_name}</h3>
+                    <p style={styles.cardRating}>⭐ {item.average_rating}</p>
                   </div>
-                  <p style={styles.cardDescription}>
-                    흑미밥 + 참치김치찌개 + 돈육장조림 + 맛김 + 콩나물 무침 + 배추김치 + 우유(두유)
-                  </p>
+                  <p style={styles.cardDescription}>평점: {item.average_rating}점</p>
                 </div>
               </div>
             ))}
@@ -159,22 +175,24 @@ const Ranking = () => {
         <section>
           <h2 style={styles.sectionTitle}>메뉴별 랭킹</h2>
           <div>
-            {menuRankingData.map((item) => (
-              <div key={item.id} style={styles.listContainer}>
+            {menuRankingData.map((item, index) => (
+              <div key={index} style={styles.listContainer}>
                 <img
-                  src={`${process.env.PUBLIC_URL}${item.img}`}
-                  alt={item.name}
+                  src={`${process.env.PUBLIC_URL}/assets/qkq.jpg`} // 이미지 경로를 적절히 설정
+                  alt={item.food_name}
                   style={styles.listImage}
                 />
-                <h3 style={styles.listTitle}>{item.name}</h3>
-                <p style={styles.listRating}>⭐ {item.rating}</p>
+                <h3 style={styles.listTitle}>
+                  {item.food_name} - {item.name}
+                </h3>
+                <p style={styles.listRating}>⭐ {item.average_rating}</p>
               </div>
             ))}
           </div>
         </section>
       </div>
-    </div>
-    <Navbar />
+
+      <Navbar />
     </div>
   );
 };

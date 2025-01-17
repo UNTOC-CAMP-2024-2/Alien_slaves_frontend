@@ -26,6 +26,7 @@ const handleSendCode = async () => {
 
     if (response.ok) {
       console.log('인증 코드 전송 성공');
+      alert("인증 코드가 전송되었습니다.");
     } else {
       const errorData = await response.json();
       console.error('인증 코드 전송 실패:', errorData);
@@ -48,9 +49,11 @@ const handleVerifyCode = async () => {
 
     if (response.ok) {
       console.log('인증 코드 확인 성공');
+      alert("인증 코드가 확인되었습니다.");
     } else {
       const errorData = await response.json();
       console.error('인증 코드 확인 실패:', errorData);
+      alert("인증 코드가 틀렸습니다.");
     }
   } catch (error) {
     console.error('인증 코드 확인 요청 에러:', error);
@@ -60,18 +63,16 @@ const handleVerifyCode = async () => {
 // 닉네임 중복 확인
 const handleCheckNickname = async () => {
   try {
-    const response = await fetch('http://localhost:4000/api/v1/auth/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ nickname }), // 닉네임만 포함한 JSON 전송
+    console.log(nickname);
+    const response = await fetch(`http://localhost:4000/api/v1/users/checkUsername/${nickname}`, {
+      method: 'GET'
     });
 
     if (response.ok) {
       const data = await response.json();
       console.log('닉네임 중복 확인 성공:', data);
-      alert(data.message);
+      //alert(data.message);
+      alert("닉네임 중복 확인되었습니다.")
     } else {
       const errorData = await response.json();
       console.error('닉네임 중복 확인 실패:', errorData);

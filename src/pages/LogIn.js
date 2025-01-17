@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { IoIosText } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function LogIn() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
 
+ 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -18,8 +20,12 @@ function LogIn() {
         body: JSON.stringify({ email, nickname }), // 이메일과 닉네임 전송
       });
   
-      if (response.ok) {
+      if (response.ok) {  
         const data = await response.json(); // 서버에서 반환된 사용자 정보
+        const { accessToken, refreshToken } = response;
+        Cookies.set('accessToken', accessToken, { expires: 7 });
+        Cookies.set('refreshToken', refreshToken, { expires: 7 });
+        Cookies.set('email', email, { expires: 7 });
         console.log('로그인 성공:', data);
         alert('로그인 성공! 환영합니다.');
         navigate('/home'); // 로그인 성공 시 홈 페이지로 이동
@@ -43,7 +49,6 @@ function LogIn() {
     navigate('/signinkakao');
   };
 
-  
 
   const styles = {
     container: {

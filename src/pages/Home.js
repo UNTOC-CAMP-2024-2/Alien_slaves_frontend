@@ -164,9 +164,6 @@ function Home() {
   }
 };
 
-
-
-
 // 기숙사 및 학식 메뉴 데이터 가져오기
 useEffect(() => {
   const fetchDormMenus = async () => {
@@ -185,8 +182,6 @@ useEffect(() => {
   // fetchHallMenus();
 }, [selectedDorm, selectedHall, selectedDate]);
 
-  
-
   // 기숙사 버튼 핸들러
 const handleDormClick = (dorm) => {
   setSelectedDorm(dorm);
@@ -198,7 +193,6 @@ const handleHallClick = (hall) => {
   setSelectedHall(hall);
   console.log(`현재 선택된 학식: ${hall}`);
 };
-
 
   // 리뷰 페이지 이동
   const handleReviewNavigate = (type, location, time) => {
